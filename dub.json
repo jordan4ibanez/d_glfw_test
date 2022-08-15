@@ -8,6 +8,7 @@
 		"bindbc-openal": "~>1.0.0",
 		"bindbc-opengl": "~>1.0.2"
 	},
+    "versions": ["GLFW_33"],
 	"description": "A learning experience for GLFW in D",
 	"license": "MIT",
 	"name": "d_glfw_test"
