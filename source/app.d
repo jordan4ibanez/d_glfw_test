@@ -1,7 +1,10 @@
 import std.stdio;
 
 import bindbc.glfw;
+import glfw_interface.glfw_interface;
 
 void main() {
-	writeln("Edit source/app.d to start your project.");
+
+    gameLoadGLFW();
+    
 }
