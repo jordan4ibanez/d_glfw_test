@@ -1,0 +1,9 @@
+{
+	"authors": [
+		"jordan4ibanez"
+	],
+	"copyright": "Copyright © 2022, jordan4ibanez",
+	"description": "A learning experience for GLFW in D",
+	"license": "MIT",
+	"name": "d_glfw_test"
+}

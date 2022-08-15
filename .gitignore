@@ -1,0 +1,15 @@
+.dub
+docs.json
+__dummy.html
+docs/
+/d_glfw_test
+d_glfw_test.so
+d_glfw_test.dylib
+d_glfw_test.dll
+d_glfw_test.a
+d_glfw_test.lib
+d_glfw_test-test-*
+*.exe
+*.o
+*.obj
+*.lst
