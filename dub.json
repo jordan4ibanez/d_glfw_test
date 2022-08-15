@@ -5,6 +5,7 @@
 	"copyright": "Copyright © 2022, jordan4ibanez",
 	"dependencies": {
 		"bindbc-glfw": "~>1.0.1",
+		"bindbc-openal": "~>1.0.0",
 		"bindbc-opengl": "~>1.0.2"
 	},
 	"description": "A learning experience for GLFW in D",
