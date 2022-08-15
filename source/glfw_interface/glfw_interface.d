@@ -4,9 +4,10 @@ import bindbc.glfw;
 import std.stdio;
 import loader = bindbc.loader.sharedlib;
 import std.conv;
+import window.window;
 
 // Returns true if there was an error
-bool gameLoadGLFW() {
+private bool gameLoadGLFW() {
 
     GLFWSupport returnedError;
     
@@ -14,7 +15,7 @@ bool gameLoadGLFW() {
         returnedError = loadGLFW("libs/glfw3.dll");
     } else {
         // Linux,FreeBSD, OpenBSD, macOSX, haiku, etc
-        returnedError = loadGLFW("flool");
+        returnedError = loadGLFW();
     }
 
     if(returnedError != glfwSupport) {
@@ -43,5 +44,36 @@ bool gameLoadGLFW() {
         return true;
     }
 
+    return false;
+}
+
+
+bool gameInitializeGLFWComponents() {
+
+    // Something fails to load
+    if (gameLoadGLFW()) {
+        return true;
+    }
+
+    // Something scary fails to load
+    if (!glfwInit()) {
+        return true;
+    }
+
+    // Nice 720p window, why not?
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "blah", null, null);
+
+    // Something even scarier fails to load
+    if (!window) {
+        writeln("WINDOW FAILED TO OPEN!\n",
+        "ABORTING!");
+        glfwTerminate();
+        return true;
+    }
+
+    // Pass the window pointer to the game, it makes the context current
+    setWindowPointer(window);
+
+    // No error :)
     return false;
 }
