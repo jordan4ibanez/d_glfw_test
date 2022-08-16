@@ -19,7 +19,7 @@ bool gameInitializeOpenGL() {
     writeln("The current supported context is: ", ret);
 
     // Minimum version is GL 3.3 (March 11, 2010)
-    if(ret < GLSupport.gl33) {
+    if(ret < GLSupport.gl32) {
         writeln("ERROR IN gl_interface.d");
         // Log the error info
         foreach(info; loader.errors) {
