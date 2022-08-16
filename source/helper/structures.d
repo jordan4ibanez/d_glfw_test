@@ -15,3 +15,12 @@ struct RGBA {
         this.a = a;
     }
 }
+
+struct Vector2I {
+    int x = 0;
+    int y = 0;
+    this(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+}
