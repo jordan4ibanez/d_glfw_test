@@ -7,6 +7,7 @@ import bindbc.opengl;
 import helper.structures;
 import helper.log;
 import window.window;
+import std.conv: to;
 
 bool gameInitializeOpenGL() {
     /*
@@ -56,4 +57,10 @@ bool gameInitializeOpenGL() {
     glViewport(0, 0, windowSize.x, windowSize.y);
 
     return false;
+}
+
+string getInitialOpenGLVersion() {
+    string raw = to!string(loadedOpenGLVersion());
+    char[] charArray = raw.dup[2..raw.length];
+    return "OpenGL " ~ charArray[0] ~ "." ~ charArray[1];
 }
