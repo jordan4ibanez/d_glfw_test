@@ -14,7 +14,6 @@ import delta_time;
 
 void main() {
 
-
     if (gameInitializeGLFWComponents("blah")) {
         return;
     }
@@ -23,6 +22,7 @@ void main() {
         return;
     }
 
+    
 
     string vertexShaderCode = "
     #version 330 core
