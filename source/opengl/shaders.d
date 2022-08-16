@@ -19,7 +19,11 @@ struct GameShader {
 private GameShader[string] container;
 
 uint getShaderProgram(string name){
-    return container[name].shaderProgram;
+    uint id = container[name].shaderProgram;
+
+    // writeln("Got shader program ID: ", id);
+
+    return id;
 }
 
 // Automates shader compilation
@@ -40,8 +44,7 @@ private uint compileShader(string sourceCode, uint shaderType) {
 
     // Log info in terminal, freeze the program to prevent erroneous behavior
     if (!success) {
-        int sizeOfInfoLog = cast(int)infoLog.sizeof;
-        glGetShaderInfoLog(shader, 512, &sizeOfInfoLog, infoLog.ptr);
+        glGetShaderInfoLog(shader, 512, null, infoLog.ptr);
         writeln(infoLog);
 
         writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
@@ -82,8 +85,7 @@ void createGLShaderProgram(string shaderName, string vertexShaderCode, string fr
     glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 
     if (!success) {
-        int sizeOfInfoLog = cast(int)infoLog.sizeof;
-        glGetProgramInfoLog(shaderProgram, 512, &sizeOfInfoLog, infoLog.ptr);
+        glGetProgramInfoLog(shaderProgram, 512, null, infoLog.ptr);
         writeln(infoLog);
 
         writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
