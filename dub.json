@@ -6,10 +6,14 @@
 	"dependencies": {
 		"bindbc-glfw": "~>1.0.1",
 		"bindbc-openal": "~>1.0.0",
-		"bindbc-opengl": "~>1.0.2"
+		"bindbc-opengl": "~>1.0.2",
+		"delta_time": "~>1.0.2"
 	},
-    "versions": ["GLFW_33","GL_33"],
 	"description": "A learning experience for GLFW in D",
 	"license": "MIT",
-	"name": "d_glfw_test"
+	"name": "d_glfw_test",
+	"versions": [
+		"GLFW_33",
+		"GL_33"
+	]
 }

@@ -4,6 +4,7 @@
 		"bindbc-glfw": "1.0.1",
 		"bindbc-loader": "1.0.1",
 		"bindbc-openal": "1.0.0",
-		"bindbc-opengl": "1.0.2"
+		"bindbc-opengl": "1.0.2",
+		"delta_time": "1.0.3"
 	}
 }
