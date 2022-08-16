@@ -10,6 +10,7 @@ import opengl.gl_interface;
 import std.string: toStringz;
 import std.conv: to;
 import opengl.shaders;
+import delta_time;
 
 void main() {
 
@@ -62,7 +63,7 @@ void main() {
     glEnableVertexAttribArray(0);
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBindBuffer(GL_ARRAY_BUFFER, 1);
 
     glDisable(GL_CULL_FACE);
 
@@ -73,7 +74,26 @@ void main() {
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
     writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
 
-    while(!gameWindowShouldClose()) {        
+    glfwSwapInterval(0);
+
+    double clock = 0.0;
+
+    int fpsCounter = 1;
+
+    while(!gameWindowShouldClose()) {
+
+        calculateDelta();
+
+        clock += getDelta();
+
+        fpsCounter++;
+
+        if (clock >= 1) {
+            writeln("FPS: ", fpsCounter);
+            clock = 0;
+            fpsCounter = 0;
+        }
+
 
         gameClearWindow();
 
