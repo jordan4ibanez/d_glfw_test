@@ -1,10 +1,11 @@
 module glfw_interface.glfw_interface;
 
 import bindbc.glfw;
+import bindbc.opengl;
 import std.stdio;
 import loader = bindbc.loader.sharedlib;
-import std.conv;
 import window.window;
+import helper.log;
 
 // Returns true if there was an error
 private bool gameLoadGLFW() {
@@ -22,9 +23,7 @@ private bool gameLoadGLFW() {
         writeln("---------- DIRECT DEBUG ERROR ---------------");
         // Log the direct error info
         foreach(info; loader.errors) {
-            string error = to!string(info.error);
-            string message = to!string(info.message);
-            writeln("(ERROR LOADING): ", error, "\n(DEBUG INFO): ", message);
+            logCError(info.error, info.message);
         }
         writeln("---------------------------------------------");
         writeln("------------ FUZZY SUGGESTION ---------------");
@@ -48,7 +47,7 @@ private bool gameLoadGLFW() {
 }
 
 
-bool gameInitializeGLFWComponents() {
+bool gameInitializeGLFWComponents(string name) {
 
     // Something fails to load
     if (gameLoadGLFW()) {
@@ -60,8 +59,17 @@ bool gameInitializeGLFWComponents() {
         return true;
     }
 
+    // Minimum version is 3.2 (August 3 2009)
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // Allow driver optimizations
+    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+
     // Nice 720p window, why not?
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "blah", null, null);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, name.dup.ptr, null, null);
+
 
     // Something even scarier fails to load
     if (!window) {
