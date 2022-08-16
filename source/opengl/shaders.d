@@ -3,10 +3,23 @@ module opengl.shaders;
 import bindbc.opengl;
 import std.stdio;
 
-private uint mainShaderProgram;
+struct GameShader {
+    string name;
+    uint vertexShader = 0;
+    uint fragmentShader = 0;
+    uint shaderProgram = 0;
+    this(string name, uint vertexShader, uint fragmentShader, uint shaderProgram) {
+        this.name = name;
+        this.vertexShader = vertexShader;
+        this.fragmentShader = fragmentShader;
+        this.shaderProgram = shaderProgram;
+    }
+}
 
-uint getMainShaderProgram(){
-    return mainShaderProgram;
+private GameShader[string] container;
+
+uint getShaderProgram(string name){
+    return container[name].shaderProgram;
 }
 
 // Automates shader compilation
@@ -52,7 +65,7 @@ private uint compileShader(string sourceCode, uint shaderType) {
 }
 
 
-uint createGLShaderProgram(string vertexShaderCode, string fragmentShaderCode) {
+void createGLShaderProgram(string shaderName, string vertexShaderCode, string fragmentShaderCode) {
 
     uint vertexShader = compileShader(vertexShaderCode, GL_VERTEX_SHADER);
     uint fragmentShader = compileShader(fragmentShaderCode, GL_FRAGMENT_SHADER);
@@ -82,7 +95,27 @@ uint createGLShaderProgram(string vertexShaderCode, string fragmentShaderCode) {
 
     writeln("GL Shader Program with ID ", shaderProgram, " successfully linked!");
 
-    writeln("REMEMBER TO MAKE THIS FUNCTION VOID!! ~~~~~~~~~~~~~~~~~~~");
+    GameShader thisShader = GameShader(shaderName,vertexShader,fragmentShader, shaderProgram);
+    container[shaderName] = thisShader;
+}
 
-    return shaderProgram;
+void deleteShaders() {
+    foreach (GameShader thisShader; container) {
+
+        // Detach shaders from program
+        glDetachShader(thisShader.shaderProgram, thisShader.vertexShader);
+        glDetachShader(thisShader.shaderProgram, thisShader.fragmentShader);
+
+        // Delete shaders
+        glDeleteShader(thisShader.vertexShader);
+        glDeleteShader(thisShader.fragmentShader);
+
+        // Delete the program
+        glDeleteProgram(thisShader.shaderProgram);
+
+        writeln("deleted: ", thisShader.name);
+
+        // Remove the program from game memory
+        container.remove(thisShader.name);
+    }
 }
