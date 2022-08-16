@@ -71,7 +71,6 @@ bool gameInitializeGLFWComponents(string name) {
     // Nice 720p window, why not?
     GLFWwindow* window = glfwCreateWindow(1280, 720, name.ptr, null, null);
 
-
     // Something even scarier fails to load
     if (!window) {
         writeln("WINDOW FAILED TO OPEN!\n",
