@@ -15,7 +15,9 @@ bool gameInitializeOpenGL() {
     */
     GLSupport ret = loadOpenGL();
 
-    if(ret != GLSupport.gl32) {
+    // Minimum version is GL 3.2
+    if(ret < GLSupport.gl32) {
+        writeln("ERROR IN gl_interface.d");
         // Log the error info
         foreach(info; loader.errors) {
             /*
