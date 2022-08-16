@@ -25,7 +25,7 @@ void main() {
     
 
     string vertexShaderCode = "
-    #version 330 core
+    #version 410 core
     layout (location = 0) in vec3 aPos;
 
     void main()
@@ -34,7 +34,7 @@ void main() {
     }";
 
     string fragmentShaderCode = "
-    #version 330 core
+    #version 410 core
     out vec4 FragColor;
 
     void main()
