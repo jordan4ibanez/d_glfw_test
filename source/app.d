@@ -50,7 +50,7 @@ void main() {
         FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
     }";
 
-    createGLShaderProgram(vertexShaderCode, fragmentShaderCode);
+    createGLShaderProgram("main", vertexShaderCode, fragmentShaderCode);
 
 
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
@@ -67,6 +67,7 @@ void main() {
         glfwPollEvents();
     }
 
+    deleteShaders();
     gameDestroyWindow();
     
 }
