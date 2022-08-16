@@ -14,6 +14,6 @@
 	"name": "d_glfw_test",
 	"versions": [
 		"GLFW_33",
-		"GL_32"
+		"GL_41"
 	]
 }
