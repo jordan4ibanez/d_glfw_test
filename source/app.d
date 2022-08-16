@@ -9,7 +9,7 @@ import helper.log;
 import opengl.gl_interface;
 import std.string: toStringz;
 import std.conv: to;
-import opengl.shader_compiler;
+import opengl.shaders;
 
 void main() {
 
@@ -40,7 +40,6 @@ void main() {
     {
         gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
     }";
-    uint vertexShader = compileShader(vertexShaderCode, GL_VERTEX_SHADER);
 
     string fragmentShaderCode = "
     #version 330 core
@@ -50,7 +49,9 @@ void main() {
     {
         FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
     }";
-    uint fragmentShader = compileShader(fragmentShaderCode, GL_FRAGMENT_SHADER);
+
+    createGLShaderProgram(vertexShaderCode, fragmentShaderCode);
+
 
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
     writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
