@@ -89,7 +89,7 @@ void main() {
         fpsCounter++;
 
         if (clock >= 1) {
-            writeln("FPS: ", fpsCounter);
+            // writeln("FPS: ", fpsCounter);
             clock = 0;
             fpsCounter = 0;
         }
