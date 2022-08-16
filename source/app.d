@@ -19,19 +19,19 @@ void main() {
         return;
     }
 
-
-
-    
-
     while(!gameWindowShouldClose()) {
 
         writeln(loadedOpenGLVersion());
 
         gameClearWindow();
 
+        // Rendering goes here
+
         gameSwapBuffers();
 
         glfwPollEvents();
     }
+
+    gameDestroyWindow();
     
 }
