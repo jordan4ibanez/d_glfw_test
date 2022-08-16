@@ -60,9 +60,9 @@ bool gameInitializeGLFWComponents(string name) {
         return true;
     }
 
-    // Minimum version is 3.2 (August 3 2009)
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
+    // Minimum version is 4.1 (July 26, 2010)
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Allow driver optimizations
