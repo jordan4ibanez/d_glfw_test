@@ -20,6 +20,7 @@ private bool gameLoadGLFW() {
     }
 
     if(returnedError != glfwSupport) {
+        writeln("ERROR IN glfw_interface.d");
         writeln("---------- DIRECT DEBUG ERROR ---------------");
         // Log the direct error info
         foreach(info; loader.errors) {
@@ -68,7 +69,7 @@ bool gameInitializeGLFWComponents(string name) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     // Nice 720p window, why not?
-    GLFWwindow* window = glfwCreateWindow(1280, 720, name.dup.ptr, null, null);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, name.ptr, null, null);
 
 
     // Something even scarier fails to load
