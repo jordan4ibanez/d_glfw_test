@@ -16,10 +16,10 @@ bool gameInitializeOpenGL() {
     */
     GLSupport ret = loadOpenGL();
 
-    writeln("The current supported context is: ", ret);
+    writeln("The current supported context is: ", translateGLVersionName(ret));
 
-    // Minimum version is GL 3.3 (March 11, 2010)
-    if(ret < GLSupport.gl32) {
+    // Minimum version is GL 4.1 (July 26, 2010)
+    if(ret < GLSupport.gl41) {
         writeln("ERROR IN gl_interface.d");
         // Log the error info
         foreach(info; loader.errors) {
@@ -40,16 +40,16 @@ bool gameInitializeOpenGL() {
         }
         // GLSupport.noContext
         else {
-            msg = "This program has encountered a graphics configuration error. Please report it to the developers.";
+            msg = "Your GPU cannot support the minimum OpenGL Version: 4.1! Released: July 26, 2010.\n" ~
+                  "Are your graphics drivers updated?";
         }
         // A hypothetical message box function
         writeln(msg);
+        writeln("ABORTING");
         return true;
     }
 
-    bool test = isOpenGLLoaded();
-
-    if (!test) {
+    if (!isOpenGLLoaded()) {
         writeln("GL FAILED TO LOAD!!");
         return true;
     }
@@ -63,6 +63,12 @@ bool gameInitializeOpenGL() {
 
 string getInitialOpenGLVersion() {
     string raw = to!string(loadedOpenGLVersion());
+    char[] charArray = raw.dup[2..raw.length];
+    return "OpenGL " ~ charArray[0] ~ "." ~ charArray[1];
+}
+
+string translateGLVersionName(GLSupport name) {
+    string raw = to!string(name);
     char[] charArray = raw.dup[2..raw.length];
     return "OpenGL " ~ charArray[0] ~ "." ~ charArray[1];
 }
