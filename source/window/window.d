@@ -43,13 +43,13 @@ Vector2I getWindowSize() {
 
 void gameClearWindow() {
 
-    RGBA color = RGBA(1.0,1.0,1.0,1.0);
+    RGBA color = RGBA(0,0,0,0);
 
     glClearColor(
-        GLclampf(color.r),
-        GLclampf(color.b),
-        GLclampf(color.g),
-        GLclampf(color.a)
+        color.r,
+        color.b,
+        color.g,
+        color.a
     );
 
     glClear(GL_COLOR_BUFFER_BIT);    
