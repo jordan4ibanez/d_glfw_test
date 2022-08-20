@@ -5,6 +5,7 @@
 		"bindbc-loader": "1.0.1",
 		"bindbc-openal": "1.0.0",
 		"bindbc-opengl": "1.0.2",
-		"delta_time": "1.0.3"
+		"delta_time": "1.0.3",
+		"doml": "0.0.3"
 	}
 }
