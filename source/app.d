@@ -44,7 +44,7 @@ void main() {
 
     void main()
     {
-        FragColor = vec4(1.0f, 0.5f, 0.2f, 1.0f);
+        FragColor = vec4(1.0, 0.5, 0.2, 1.0);
     }";
 
     createGLShaderProgram("main", vertexShaderCode, fragmentShaderCode);
@@ -53,10 +53,10 @@ void main() {
 
     main.createUniform("projectionMatrix");
 
-    float[] vertices = [
-        -0.5f, -0.5f, -1.5f,
-        0.5f,  -0.5f, -1.5f,
-        0.0f,   0.5f, -1.5f
+    double[] vertices = [
+        -0.5f, -0.5f, 0.5f,
+        0.5f,  -0.5f, 0.5f,
+        0.0f,   0.5f, 0.5f
     ];    
 
     uint VBO, VAO;
@@ -66,9 +66,9 @@ void main() {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.length * float.sizeof, vertices.ptr, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.length * double.sizeof, vertices.ptr, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * float.sizeof, cast(void*)0);
+    glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 3 * double.sizeof, cast(void*)0);
     glEnableVertexAttribArray(0);
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
@@ -83,7 +83,7 @@ void main() {
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
     writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
 
-    glfwSwapInterval(0);
+    glfwSwapInterval(1);
 
     double clock = 0.0;
 
@@ -91,10 +91,7 @@ void main() {
 
     while(!gameWindowShouldClose()) {
 
-        Matrix4d test = getProjectionMatrix();
-        glUniformMatrix4dv(main.getUniform("projectionMatrix"),1,false,cast(const(double)*)&test);
-
-        // updateCamera();
+        updateCamera();
 
         calculateDelta();
 
@@ -107,12 +104,44 @@ void main() {
             clock = 0;
             fpsCounter = 0;
         }
-
-
         gameClearWindow();
+
+        glEnable(GL_DEBUG_OUTPUT);
 
         // Rendering goes here
         glUseProgram(getShaderProgram("main").shaderProgram);
+
+        Matrix4d test = getProjectionMatrix();
+        double[] testArray = new double[16];
+        test.get(testArray, 0);
+        writeln(testArray);
+
+        glUniformMatrix4dv(main.getUniform("projectionMatrix"), double.sizeof * testArray.sizeof, false, testArray[0..16].ptr);
+
+        int success;
+        char[512] infoLog = (' ');
+        // glGetShaderiv(main.shaderProgram, GL_VALIDATE_STATUS, &success);
+
+        GLenum glErrorInfo = glGetError();
+
+
+        if (glErrorInfo != 0) {
+            writeln("GL ERROR: ", glErrorInfo);
+            writeln("FAILING");
+            writeln("ERROR IN SHADER ", main.name);
+
+            uint test2 =  glGetError();
+
+            glGetShaderInfoLog(main.shaderProgram, 512, null, infoLog.ptr);
+            writeln(infoLog);
+
+            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
+
+            while(true) {
+                
+            }
+        }
+
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
