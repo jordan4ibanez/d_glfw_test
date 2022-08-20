@@ -23,3 +23,7 @@ void updateCamera() {
     writeln("aspect ratio is: ", aspectRatio);
     projectionMatrix = Matrix4d().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
 }
+
+Matrix4d getProjectionMatrix () {
+    return projectionMatrix;
+}
