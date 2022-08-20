@@ -37,7 +37,7 @@ GameShader getShaderProgram(string name){
 }
 
 // Automates shader compilation
-private uint compileShader(string sourceCode, uint shaderType) { 
+private uint compileShader(string name, string sourceCode, uint shaderType) { 
 
     uint shader;
     shader = glCreateShader(shaderType);
@@ -54,6 +54,15 @@ private uint compileShader(string sourceCode, uint shaderType) {
 
     // Log info in terminal, freeze the program to prevent erroneous behavior
     if (!success) {
+        string infoName = "?Other Shader?";
+        if (shaderType == GL_VERTEX_SHADER) {
+            infoName = "GL Vertex Shader";
+        } else if (shaderType == GL_FRAGMENT_SHADER) {
+            infoName = "GL Fragment Shader";
+        }
+
+        writeln("ERROR IN SHADER ", name, " ", infoName);
+
         glGetShaderInfoLog(shader, 512, null, infoLog.ptr);
         writeln(infoLog);
 
@@ -80,8 +89,8 @@ private uint compileShader(string sourceCode, uint shaderType) {
 
 void createGLShaderProgram(string shaderName, string vertexShaderCode, string fragmentShaderCode) {
 
-    uint vertexShader = compileShader(vertexShaderCode, GL_VERTEX_SHADER);
-    uint fragmentShader = compileShader(fragmentShaderCode, GL_FRAGMENT_SHADER);
+    uint vertexShader = compileShader(shaderName, vertexShaderCode, GL_VERTEX_SHADER);
+    uint fragmentShader = compileShader(shaderName, fragmentShaderCode, GL_FRAGMENT_SHADER);
 
     uint shaderProgram = glCreateProgram();
     glAttachShader(shaderProgram, vertexShader);
