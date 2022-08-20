@@ -3,14 +3,19 @@ module window.window;
 import std.stdio;
 import bindbc.glfw;
 import bindbc.opengl;
-import helper.structures;
+import vector_2i;
+import vector_4d;
+import vector_3d;
 
 // Starts off as a null pointer
 GLFWwindow* window;
-Vector2I size;
+Vector2i size;
+Vector3d clearColor = Vector3d(0,0,0);
 
 nothrow
 static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, int y) {
+    size.x = x;
+    size.y = y;
     glViewport(0,0,x,y);
 }
 
@@ -36,25 +41,24 @@ void gameSwapBuffers() {
     glfwSwapBuffers(window);
 }
 
-Vector2I getWindowSize() {
+Vector2i getWindowSize() {
     return size;
 }
 
+void setClearColor(double r, double g, double b) {
+    clearColor = Vector3d(r,g,b);
+}
 
 void gameClearWindow() {
-
-    RGBA color = RGBA(0,0,0,0);
-
-    glClearColor(
-        color.r,
-        color.b,
-        color.g,
-        color.a
-    );
+    glClearColor(clearColor.x,clearColor.y,clearColor.z,1);
 
     glClear(GL_COLOR_BUFFER_BIT);    
 }
 
 void gameDestroyWindow() {
     glfwDestroyWindow(window);
+}
+
+double getAspectRatio() {
+    return cast(double)size.x / cast(double)size.y;
 }
