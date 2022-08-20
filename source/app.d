@@ -54,9 +54,9 @@ void main() {
     main.createUniform("projectionMatrix");
 
     double[] vertices = [
-        -0.5f, -0.5f, 0.5f,
-        0.5f,  -0.5f, 0.5f,
-        0.0f,   0.5f, 0.5f
+        -0.5f, -0.5f, -1.05f,
+        0.5f,  -0.5f, -1.05f,
+        0.0f,   0.5f, -1.05f
     ];    
 
     uint VBO, VAO;
@@ -106,38 +106,31 @@ void main() {
         }
         gameClearWindow();
 
-        glEnable(GL_DEBUG_OUTPUT);
-
         // Rendering goes here
         glUseProgram(getShaderProgram("main").shaderProgram);
 
         Matrix4d test = getProjectionMatrix();
         double[] testArray = new double[16];
         test.get(testArray, 0);
-        writeln(testArray);
 
-        glUniformMatrix4dv(main.getUniform("projectionMatrix"), double.sizeof * testArray.sizeof, false, testArray[0..16].ptr);
+        float[16] myBoi;
+        for (int i = 0; i < 16; i++){
+            myBoi[i] = cast(float)testArray[i];
+        }
 
-        int success;
-        char[512] infoLog = (' ');
-        // glGetShaderiv(main.shaderProgram, GL_VALIDATE_STATUS, &success);
+        writeln(myBoi);
+
+        glUniformMatrix4fv(main.getUniform("projectionMatrix"),1, GL_FALSE, myBoi.ptr);
 
         GLenum glErrorInfo = glGetError();
 
 
         if (glErrorInfo != 0) {
             writeln("GL ERROR: ", glErrorInfo);
-            writeln("FAILING");
             writeln("ERROR IN SHADER ", main.name);
-
-            uint test2 =  glGetError();
-
-            glGetShaderInfoLog(main.shaderProgram, 512, null, infoLog.ptr);
-            writeln(infoLog);
-
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
-            while(true) {
+            while(false) {
                 
             }
         }
