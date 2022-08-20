@@ -53,11 +53,14 @@ void main() {
 
     main.createUniform("projectionMatrix");
 
-    double[] vertices = [
-        -0.5f, -0.5f, -1.05f,
-        0.5f,  -0.5f, -1.05f,
-        0.0f,   0.5f, -1.05f
-    ];    
+    float[] vertices = [
+        -0.5f,  0.5f, -1.0f,
+        -0.5f, -0.5f, -1.0f,
+         0.5f,  0.5f, -1.0f,
+         0.5f,  0.5f, -1.0f,
+        -0.5f, -0.5f, -1.0f,
+         0.5f, -0.5f, -1.0f,
+    ];  
 
     uint VBO, VAO;
     glGenVertexArrays(1, &VAO);
@@ -66,9 +69,9 @@ void main() {
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, vertices.length * double.sizeof, vertices.ptr, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, vertices.length * float.sizeof, vertices.ptr, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0, 3, GL_DOUBLE, GL_FALSE, 3 * double.sizeof, cast(void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, cast(void*)0);
     glEnableVertexAttribArray(0);
 
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
@@ -136,7 +139,7 @@ void main() {
         }
 
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawArrays(GL_TRIANGLES, 0, 7);
 
         gameSwapBuffers();
 
