@@ -12,6 +12,7 @@ import std.conv: to;
 import opengl.shaders;
 import delta_time;
 import camera.camera;
+import matrix_4d;
 
 void main() {
 
@@ -30,9 +31,11 @@ void main() {
 
     layout (location = 0) in vec3 position;
 
+    uniform mat4 projectionMatrix;
+
     void main()
     {
-        gl_Position = vec4(position, 1.0);
+        gl_Position = projectionMatrix * vec4(position, 1.0);
     }";
 
     string fragmentShaderCode = "
@@ -45,11 +48,15 @@ void main() {
     }";
 
     createGLShaderProgram("main", vertexShaderCode, fragmentShaderCode);
+    
+    GameShader main = getShaderProgram("main");
+
+    main.createUniform("projectionMatrix");
 
     float[] vertices = [
-        -0.5f, -0.5f, 0.0f,
-        0.5f,  -0.5f, 0.0f,
-        0.0f,   0.5f, 0.0f
+        -0.5f, -0.5f, -1.5f,
+        0.5f,  -0.5f, -1.5f,
+        0.0f,   0.5f, -1.5f
     ];    
 
     uint VBO, VAO;
@@ -84,7 +91,10 @@ void main() {
 
     while(!gameWindowShouldClose()) {
 
-        updateCamera();
+        Matrix4d test = getProjectionMatrix();
+        glUniformMatrix4dv(main.getUniform("projectionMatrix"),1,false,cast(const(double)*)&test);
+
+        // updateCamera();
 
         calculateDelta();
 
@@ -102,7 +112,7 @@ void main() {
         gameClearWindow();
 
         // Rendering goes here
-        glUseProgram(getShaderProgram("main"));
+        glUseProgram(getShaderProgram("main").shaderProgram);
         glBindVertexArray(VAO);
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
