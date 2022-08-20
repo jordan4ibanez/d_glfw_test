@@ -4,10 +4,10 @@ import std.stdio;
 import bindbc.glfw;
 import loader = bindbc.loader.sharedlib;
 import bindbc.opengl;
-import helper.structures;
 import helper.log;
 import window.window;
 import std.conv: to;
+import vector_2i;
 
 bool gameInitializeOpenGL() {
     /*
@@ -54,7 +54,7 @@ bool gameInitializeOpenGL() {
         return true;
     }
 
-    Vector2I windowSize = getWindowSize();
+    Vector2i windowSize = getWindowSize();
 
     glViewport(0, 0, windowSize.x, windowSize.y);
 
