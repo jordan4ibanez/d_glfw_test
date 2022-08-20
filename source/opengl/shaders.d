@@ -3,11 +3,27 @@ module opengl.shaders;
 import bindbc.opengl;
 import std.stdio;
 
+private GameShader[string] container;
+
 struct GameShader {
     string name;
     uint vertexShader = 0;
     uint fragmentShader = 0;
     uint shaderProgram = 0;
+
+    uint[string] uniforms;
+
+    void createUniform(string uniformName) {
+        uint location = glGetUniformLocation(this.shaderProgram, uniformName.dup.ptr);
+        // Do not allow out of bounds
+        assert(location >= 0);
+        uniforms[uniformName] = location;
+    }
+
+    uint getUniform(string uniformName) {
+        return uniforms[uniformName];
+    }
+
     this(string name, uint vertexShader, uint fragmentShader, uint shaderProgram) {
         this.name = name;
         this.vertexShader = vertexShader;
@@ -16,14 +32,8 @@ struct GameShader {
     }
 }
 
-private GameShader[string] container;
-
-uint getShaderProgram(string name){
-    uint id = container[name].shaderProgram;
-
-    // writeln("Got shader program ID: ", id);
-
-    return id;
+GameShader getShaderProgram(string name){
+    return container[name];
 }
 
 // Automates shader compilation
