@@ -11,6 +11,7 @@ import std.string: toStringz;
 import std.conv: to;
 import opengl.shaders;
 import delta_time;
+import camera.camera;
 
 void main() {
 
@@ -26,11 +27,12 @@ void main() {
 
     string vertexShaderCode = "
     #version 410 core
-    layout (location = 0) in vec3 aPos;
+
+    layout (location = 0) in vec3 position;
 
     void main()
     {
-        gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
+        gl_Position = vec4(position, 1.0);
     }";
 
     string fragmentShaderCode = "
@@ -81,6 +83,8 @@ void main() {
     int fpsCounter = 1;
 
     while(!gameWindowShouldClose()) {
+
+        updateCamera();
 
         calculateDelta();
 
