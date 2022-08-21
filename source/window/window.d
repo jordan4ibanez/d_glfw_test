@@ -61,3 +61,7 @@ void gameDestroyWindow() {
 double getAspectRatio() {
     return cast(double)size.x / cast(double)size.y;
 }
+
+void closeWindow() {
+    glfwSetWindowShouldClose(window, true);
+}
