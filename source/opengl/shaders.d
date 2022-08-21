@@ -33,7 +33,7 @@ struct GameShader {
     }
 }
 
-GameShader getShaderProgram(string name){
+GameShader getShader(string name){
     return container[name];
 }
 
@@ -88,7 +88,12 @@ private uint compileShader(string name, string sourceCode, uint shaderType) {
 }
 
 
-void createGLShaderProgram(string shaderName, string vertexShaderCode, string fragmentShaderCode) {
+void createGLShaderProgram(
+    string shaderName,
+    string vertexShaderCode,
+    string fragmentShaderCode,
+    string[] uniforms
+    ) {
 
     uint vertexShader = compileShader(shaderName, vertexShaderCode, GL_VERTEX_SHADER);
     uint fragmentShader = compileShader(shaderName, fragmentShaderCode, GL_FRAGMENT_SHADER);
@@ -118,6 +123,12 @@ void createGLShaderProgram(string shaderName, string vertexShaderCode, string fr
     writeln("GL Shader Program with ID ", shaderProgram, " successfully linked!");
 
     GameShader thisShader = GameShader(shaderName,vertexShader,fragmentShader, shaderProgram);
+
+    foreach (string uniformName; uniforms)
+    {
+        thisShader.createUniform(uniformName);
+    }
+
     container[shaderName] = thisShader;
 }
 
