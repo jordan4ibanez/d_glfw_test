@@ -6,6 +6,8 @@ import math;
 import matrix_4d;
 import vector_3d;
 import Math = math;
+import bindbc.opengl;
+import opengl.shaders;
 
 // There can only be one camera in the game, this is it
 
@@ -38,4 +40,11 @@ Matrix4d getWorldMatrix(Vector3d offset, Vector3d rotation, float scale) {
         rotateZ(Math.toRadians(rotation.z)).
         scale(scale);
     return worldMatrix;
+}
+
+void updateCameraProjectionMatrix() {
+    GameShader bloop = getShader("main");
+    Matrix4d test = getProjectionMatrix();
+    float[16] floatBuffer = test.getFloatArray();
+    glUniformMatrix4fv(bloop.getUniform("projectionMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
