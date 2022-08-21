@@ -106,7 +106,7 @@ void main() {
             }
         }
 
-        writeln("scaler: ", scaler);
+        // writeln("scaler: ", scaler);
 
         clock += delta;
 
@@ -129,7 +129,7 @@ void main() {
 
         Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
         float[16] floatBuffer2 = test2.getFloatArray();
-        writeln(floatBuffer2);
+        // writeln(floatBuffer2);
 
         glUniformMatrix4fv(getShader("main").getUniform("worldMatrix"),1, GL_FALSE, floatBuffer2.ptr);
 
