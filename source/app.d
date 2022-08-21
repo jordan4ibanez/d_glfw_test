@@ -36,11 +36,11 @@ void main() {
     layout (location = 0) in vec3 position;
 
     uniform mat4 cameraMatrix;
-    uniform mat4 worldMatrix;
+    uniform mat4 objectMatrix;
 
     void main()
     {
-        gl_Position = cameraMatrix * worldMatrix * vec4(position, 1.0);
+        gl_Position = cameraMatrix * objectMatrix * vec4(position, 1.0);
     }";
 
     string fragmentShaderCode = "
@@ -59,7 +59,7 @@ void main() {
         fragmentShaderCode,
         [
             "cameraMatrix",
-            "worldMatrix"
+            "objectMatrix"
         ]
     );
 
@@ -125,11 +125,11 @@ void main() {
 
         updateCameraMatrix();
 
-        Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
+        Matrix4d test2 = getObjectMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
         float[16] floatBuffer2 = test2.getFloatArray();
         // writeln(floatBuffer2);
 
-        glUniformMatrix4fv(getShader("main").getUniform("worldMatrix"),1, GL_FALSE, floatBuffer2.ptr);
+        glUniformMatrix4fv(getShader("main").getUniform("objectMatrix"),1, GL_FALSE, floatBuffer2.ptr);
 
         GLenum glErrorInfo = glGetError();
 

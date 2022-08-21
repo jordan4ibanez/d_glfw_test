@@ -23,9 +23,9 @@ immutable double Z_FAR = 10_000.;
 Vector3d clearColor = Vector3d(0,0,0);
 
 Matrix4d cameraMatrix = Matrix4d();
-Matrix4d worldMatrix = Matrix4d();
+Matrix4d objectMatrix = Matrix4d();
 
-Vector3d position = Vector3d(0,0,-1);
+Vector3d position = Vector3d(0,0,1);
 
 double aspectRatio = 0;
 
@@ -39,18 +39,18 @@ Matrix4d getcameraMatrix () {
     return cameraMatrix;
 }
 
-Matrix4d getWorldMatrix(Vector3d offset, Vector3d rotation, float scale) {
-    worldMatrix.identity().translate(offset).
+Matrix4d getObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
+    objectMatrix.identity().translate(offset).
         rotateX(Math.toRadians(rotation.x)).
         rotateY(Math.toRadians(rotation.y)).
         rotateZ(Math.toRadians(rotation.z)).
         scale(scale);
-    return worldMatrix;
+    return objectMatrix;
 }
 
 void updateCameraMatrix() {
     GameShader bloop = getShader("main");
-    Matrix4d test = getcameraMatrix().translate(position);
+    Matrix4d test = getcameraMatrix().translate(-position.x, -position.y, -position.z);
     float[16] floatBuffer = test.getFloatArray();
     glUniformMatrix4fv(bloop.getUniform("cameraMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
@@ -70,4 +70,10 @@ void setFOV(double newFOV) {
 
 double getFOV() {
     return FOV;
+}
+
+void moveCameraPosition(Vector3d positionModification) {
+    position.x += positionModification.x;
+    position.y += positionModification.y;
+    position.z += positionModification.z;
 }
