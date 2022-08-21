@@ -13,6 +13,9 @@ import opengl.shaders;
 import delta_time;
 import camera.camera;
 import matrix_4d;
+import std.conv: to;
+import vector_3d;
+import Math = math;
 
 void main() {
 
@@ -32,14 +35,16 @@ void main() {
     layout (location = 0) in vec3 position;
 
     uniform mat4 projectionMatrix;
+    uniform mat4 worldMatrix;
 
     void main()
     {
-        gl_Position = projectionMatrix * vec4(position, 1.0);
+        gl_Position = projectionMatrix * worldMatrix * vec4(position, 1.0);
     }";
 
     string fragmentShaderCode = "
     #version 410 core
+
     out vec4 FragColor;
 
     void main()
@@ -52,14 +57,15 @@ void main() {
     GameShader main = getShaderProgram("main");
 
     main.createUniform("projectionMatrix");
+    main.createUniform("worldMatrix");
 
     float[] vertices = [
-        -0.5f,  0.5f, -1.0f,
-        -0.5f, -0.5f, -1.0f,
-         0.5f,  0.5f, -1.0f,
-         0.5f,  0.5f, -1.0f,
-        -0.5f, -0.5f, -1.0f,
-         0.5f, -0.5f, -1.0f,
+        -0.5f,  0.5f, -0.0f,
+        -0.5f, -0.5f, -0.0f,
+         0.5f,  0.5f, -0.0f,
+         0.5f,  0.5f, -0.0f,
+        -0.5f, -0.5f, -0.0f,
+         0.5f, -0.5f, -0.0f,
     ];  
 
     uint VBO, VAO;
@@ -92,13 +98,32 @@ void main() {
 
     int fpsCounter = 1;
 
+    float scaler = 0.0;
+    bool up = true;
+
     while(!gameWindowShouldClose()) {
 
         updateCamera();
 
         calculateDelta();
 
-        clock += getDelta();
+        double delta = getDelta();
+
+        if (up) {
+            scaler += delta * 100;
+            if (scaler > 90) {
+                up = false;
+            }
+        } else {
+            scaler -= delta * 100;
+            if (scaler < -90) {
+                up = true;
+            }
+        }
+
+        writeln("scaler: ", scaler);
+
+        clock += delta;
 
         fpsCounter++;
 
@@ -113,17 +138,14 @@ void main() {
         glUseProgram(getShaderProgram("main").shaderProgram);
 
         Matrix4d test = getProjectionMatrix();
-        double[] testArray = new double[16];
-        test.get(testArray, 0);
+        float[16] floatBuffer = test.getFloatArray();
+        glUniformMatrix4fv(main.getUniform("projectionMatrix"),1, GL_FALSE, floatBuffer.ptr);
 
-        float[16] myBoi;
-        for (int i = 0; i < 16; i++){
-            myBoi[i] = cast(float)testArray[i];
-        }
 
-        writeln(myBoi);
-
-        glUniformMatrix4fv(main.getUniform("projectionMatrix"),1, GL_FALSE, myBoi.ptr);
+        Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
+        float[16] floatBuffer2 = test2.getFloatArray();
+        writeln(floatBuffer2);
+        glUniformMatrix4fv(main.getUniform("worldMatrix"),1, GL_FALSE, floatBuffer2.ptr);
 
         GLenum glErrorInfo = glGetError();
 
