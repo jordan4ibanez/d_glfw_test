@@ -52,7 +52,7 @@ void setClearColor(double r, double g, double b) {
 void gameClearWindow() {
     glClearColor(clearColor.x,clearColor.y,clearColor.z,1);
 
-    glClear(GL_COLOR_BUFFER_BIT);    
+    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void gameDestroyWindow() {
