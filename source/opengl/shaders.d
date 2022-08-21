@@ -14,7 +14,8 @@ struct GameShader {
     uint[string] uniforms;
 
     void createUniform(string uniformName) {
-        uint location = glGetUniformLocation(this.shaderProgram, uniformName.dup.ptr);
+        GLint location = glGetUniformLocation(this.shaderProgram, uniformName.dup.ptr);
+        writeln("uniform ", uniformName, " is at id ", location);
         // Do not allow out of bounds
         assert(location >= 0);
         uniforms[uniformName] = location;
