@@ -142,7 +142,7 @@ void main() {
         glUniformMatrix4fv(main.getUniform("projectionMatrix"),1, GL_FALSE, floatBuffer.ptr);
 
 
-        Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
+        Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(scaler,scaler,scaler), 1.0);
         float[16] floatBuffer2 = test2.getFloatArray();
         writeln(floatBuffer2);
         glUniformMatrix4fv(main.getUniform("worldMatrix"),1, GL_FALSE, floatBuffer2.ptr);
