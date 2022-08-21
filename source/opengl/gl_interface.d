@@ -61,6 +61,13 @@ bool gameInitializeOpenGL() {
     // Enable backface culling
     glEnable(GL_CULL_FACE);
 
+    // Alpha color blending
+    glEnable(GL_BLEND);
+
+    // Enable depth testing
+    glEnable(GL_DEPTH_TEST);
+    glDepthFunc(GL_LESS);
+
     return false;
 }
 
