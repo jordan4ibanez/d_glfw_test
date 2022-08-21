@@ -1,9 +1,10 @@
 module mesh.mesh;
 
+import std.stdio;
 import bindbc.opengl;
 
 struct Mesh {
-    bool exists = false;
+    private bool exists = false;
     GLuint vao = 0;
     GLuint vbo = 0;
     GLuint ebo = 0;
@@ -11,6 +12,10 @@ struct Mesh {
     GLuint vertexCount = 0;
 
     this(float[] vertices) {
+
+        // Existence lock
+        this.exists = true;
+
         // Don't bother if not divisible by 3 (x,y,z)
         assert(vertices.length % 3 == 0 && vertices.length >= 3);
         this.vertexCount = cast(GLuint)(vertices.length / 3);
@@ -38,6 +43,7 @@ struct Mesh {
     void render() {
         glBindVertexArray(this.vao);
         glDrawArrays(GL_TRIANGLES, 0, this.vertexCount);
+        writeln("REMEMBER TO ADD A DESTRUCTOR CLEAN UP!");
     }
     /*
     void appendGLData(int vao, int vbo, int ebo, int vertexCount, int texture){

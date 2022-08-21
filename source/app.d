@@ -143,7 +143,7 @@ void main() {
             }
         }
 
-        renderMesh(testMesh);
+        testMesh.render();
 
         gameSwapBuffers();
 
