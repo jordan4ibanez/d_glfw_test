@@ -27,9 +27,21 @@ struct Mesh {
         glBindVertexArray(this.vao);
 
         glBindBuffer(GL_ARRAY_BUFFER, this.vbo);
-        glBufferData(GL_ARRAY_BUFFER, vertices.length * float.sizeof, vertices.ptr, GL_STATIC_DRAW);
+        glBufferData(
+            GL_ARRAY_BUFFER,                // Target object
+            vertices.length * float.sizeof, // How big the object is
+            vertices.ptr,                   // The pointer to the data for the object
+            GL_STATIC_DRAW                  // Which draw mode OpenGL will use
+        );
 
-        glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, cast(void*)0);
+        glVertexAttribPointer(
+            0,           // Attribute 0 (matches the attribute in the glsl shader)
+            3,           // Size (literal like 3 points)  
+            GL_FLOAT,    // Type
+            GL_FALSE,    // Normalized?
+            0,           // Stride
+            cast(void*)0 // Array buffer offset
+        );
         glEnableVertexAttribArray(0);
 
         // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
