@@ -28,7 +28,7 @@ double aspectRatio = 0;
 
 void updateCamera() {
     aspectRatio = getAspectRatio();
-    writeln("aspect ratio is: ", aspectRatio);
+    // writeln("aspect ratio is: ", aspectRatio);
     projectionMatrix = Matrix4d().identity().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
 }
 
