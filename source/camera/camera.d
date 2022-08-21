@@ -13,7 +13,8 @@ import opengl.shaders;
 
 immutable double FOV = toRadians(60.0);
 
-immutable double Z_NEAR = 0.00000;
+// Never set this to 0 :P
+immutable double Z_NEAR = 0.00001;
 
 immutable double Z_FAR = 10_000.;
 
