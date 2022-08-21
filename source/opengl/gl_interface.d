@@ -58,6 +58,9 @@ bool gameInitializeOpenGL() {
 
     glViewport(0, 0, windowSize.x, windowSize.y);
 
+    // Enable backface culling
+    glEnable(GL_CULL_FACE);
+
     return false;
 }
 

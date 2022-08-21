@@ -83,8 +83,6 @@ void main() {
     // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
     glBindBuffer(GL_ARRAY_BUFFER, 1);
 
-    glEnable(GL_CULL_FACE);
-
     // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
     // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
     glBindVertexArray(0); 
@@ -136,11 +134,6 @@ void main() {
 
         // Rendering goes here
         glUseProgram(getShaderProgram("main").shaderProgram);
-
-        Matrix4d test = getProjectionMatrix();
-        float[16] floatBuffer = test.getFloatArray();
-        glUniformMatrix4fv(main.getUniform("projectionMatrix"),1, GL_FALSE, floatBuffer.ptr);
-
 
         Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(scaler,scaler,scaler), 1.0);
         float[16] floatBuffer2 = test2.getFloatArray();
