@@ -25,13 +25,13 @@ struct Mesh {
         assert(vertices.length % 3 == 0 && vertices.length >= 3);
         this.vertexCount = cast(GLuint)(vertices.length / 3);
 
-
-        glGenVertexArrays(1, &this.vao);
-        glGenBuffers(1, &this.vbo);
         // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
+        glGenVertexArrays(1, &this.vao);
         glBindVertexArray(this.vao);
 
+        glGenBuffers(1, &this.vbo);
         glBindBuffer(GL_ARRAY_BUFFER, this.vbo);
+
         glBufferData(
             GL_ARRAY_BUFFER,                // Target object
             vertices.length * float.sizeof, // How big the object is
@@ -49,17 +49,30 @@ struct Mesh {
         );
         glEnableVertexAttribArray(0);
 
-        // note that this is allowed, the call to glVertexAttribPointer registered VBO as the vertex attribute's bound vertex buffer object so afterwards we can safely unbind
-        glBindBuffer(GL_ARRAY_BUFFER, 1);
+        GLuint glErrorInfo = glGetError();
+
+        if (glErrorInfo != 0) {
+            writeln("GL ERROR: ", glErrorInfo);
+            writeln("ERROR IN A MESH CONSTRUCTOR");
+            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
+
+            while(true) {
+                
+            }
+        }
+
 
         // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
         // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
         glBindVertexArray(0);
+
+        
     }
 
     // Automatically clean up the mesh
     ~this() {
 
+        // Don't bother the gpu with garbage data
         if (!this.exists) {
             writeln("sorry, I cannot clear gpu memory, I don't exist in gpu memory");
             return;
@@ -80,7 +93,7 @@ struct Mesh {
 
         if (glErrorInfo != 0) {
             writeln("GL ERROR: ", glErrorInfo);
-            writeln("ERROR IN SHADER ", "main");
+            writeln("ERROR IN A MESH DESTRUCTOR");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
             while(true) {
@@ -92,11 +105,13 @@ struct Mesh {
     }
 
     void render() {
+
         // Don't bother the gpu with garbage data
         if (!this.exists) {
             writeln("sorry, I cannot render, I don't exist in gpu memory");
             return;
         }
+
         glBindVertexArray(this.vao);
         glDrawArrays(GL_TRIANGLES, 0, this.vertexCount);
     }
