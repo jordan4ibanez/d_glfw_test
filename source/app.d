@@ -96,12 +96,12 @@ void main() {
 
         if (up) {
             scaler += delta * 100;
-            if (scaler > 90) {
+            if (scaler > 45) {
                 up = false;
             }
         } else {
             scaler -= delta * 100;
-            if (scaler < -90) {
+            if (scaler < -45) {
                 up = true;
             }
         }
@@ -117,14 +117,17 @@ void main() {
             clock = 0;
             fpsCounter = 0;
         }
-        gameClearWindow();
+        gameClearWindow();        
+
+        // It is extremely important to clear the buffer bit!
+        glClear(GL_DEPTH_BUFFER_BIT);
 
         // Rendering goes here
         glUseProgram(getShader("main").shaderProgram);
 
         updateCameraProjectionMatrix();
 
-        Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(scaler,scaler,scaler), 1.0);
+        Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
         float[16] floatBuffer2 = test2.getFloatArray();
         writeln(floatBuffer2);
 
@@ -143,6 +146,7 @@ void main() {
             }
         }
 
+        
         testMesh.render();
 
         gameSwapBuffers();
