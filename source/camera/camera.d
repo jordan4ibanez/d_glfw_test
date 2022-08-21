@@ -18,6 +18,7 @@ immutable double Z_NEAR = 0.00001;
 
 immutable double Z_FAR = 10_000.;
 
+Vector3d clearColor = Vector3d(0,0,0);
 
 Matrix4d projectionMatrix = Matrix4d();
 Matrix4d worldMatrix = Matrix4d();
@@ -48,4 +49,13 @@ void updateCameraProjectionMatrix() {
     Matrix4d test = getProjectionMatrix();
     float[16] floatBuffer = test.getFloatArray();
     glUniformMatrix4fv(bloop.getUniform("projectionMatrix"),1, GL_FALSE, floatBuffer.ptr);
+}
+
+void gameClearWindow() {
+    glClearColor(clearColor.x,clearColor.y,clearColor.z,1);
+    glClear(GL_COLOR_BUFFER_BIT);
+}
+
+void setClearColor(double r, double g, double b) {
+    clearColor = Vector3d(r,g,b);
 }

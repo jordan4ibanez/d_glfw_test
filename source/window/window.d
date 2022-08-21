@@ -10,7 +10,6 @@ import vector_3d;
 // Starts off as a null pointer
 GLFWwindow* window;
 Vector2i size;
-Vector3d clearColor = Vector3d(0,0,0);
 
 nothrow
 static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, int y) {
@@ -43,16 +42,6 @@ void gameSwapBuffers() {
 
 Vector2i getWindowSize() {
     return size;
-}
-
-void setClearColor(double r, double g, double b) {
-    clearColor = Vector3d(r,g,b);
-}
-
-void gameClearWindow() {
-    glClearColor(clearColor.x,clearColor.y,clearColor.z,1);
-
-    glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void gameDestroyWindow() {
