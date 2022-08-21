@@ -11,7 +11,8 @@ import opengl.shaders;
 
 // There can only be one camera in the game, this is it
 
-immutable double FOV = toRadians(60.0);
+
+double FOV = toRadians(60.0);
 
 // Never set this to 0 :P
 immutable double Z_NEAR = 0.00001;
@@ -58,4 +59,12 @@ void gameClearWindow() {
 
 void setClearColor(double r, double g, double b) {
     clearColor = Vector3d(r,g,b);
+}
+
+void setFOV(double newFOV) {
+    FOV = newFOV;
+}
+
+double getFOV() {
+    return FOV;
 }
