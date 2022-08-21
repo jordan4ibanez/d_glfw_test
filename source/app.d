@@ -72,8 +72,6 @@ void main() {
          0.5f, -0.5f, -0.0f,
     ];
 
-    Mesh testMesh = Mesh(vertices);
-
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
     writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
 
@@ -141,13 +139,18 @@ void main() {
             writeln("ERROR IN SHADER ", "main");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
-            while(false) {
+            while(true) {
                 
             }
         }
 
-        
-        testMesh.render();
+        // An "alive" mesh
+        Mesh thisMesh = Mesh(vertices);
+        thisMesh.render();
+
+        // A "dead" mesh
+        Mesh ghostMesh = Mesh();
+        ghostMesh.render();
 
         gameSwapBuffers();
 
