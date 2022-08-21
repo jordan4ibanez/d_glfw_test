@@ -84,7 +84,14 @@ void main() {
     float scaler = 0.0;
     bool up = true;
 
+    setMaxDeltaFPS(10);
+
     while(!gameWindowShouldClose()) {
+
+        int q = 0;
+        for (int i = 0; i < 1_000_000; i++) {
+            q += q + 1 * 2;
+        }
 
         updateCamera();
 
@@ -156,6 +163,8 @@ void main() {
         gameSwapBuffers();
 
         glfwPollEvents();
+
+        writeln(1.0/10);
     }
 
     deleteShaders();
