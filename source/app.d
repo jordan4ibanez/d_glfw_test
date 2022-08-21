@@ -35,12 +35,12 @@ void main() {
 
     layout (location = 0) in vec3 position;
 
-    uniform mat4 projectionMatrix;
+    uniform mat4 cameraMatrix;
     uniform mat4 worldMatrix;
 
     void main()
     {
-        gl_Position = projectionMatrix * worldMatrix * vec4(position, 1.0);
+        gl_Position = cameraMatrix * worldMatrix * vec4(position, 1.0);
     }";
 
     string fragmentShaderCode = "
@@ -58,7 +58,7 @@ void main() {
         vertexShaderCode,
         fragmentShaderCode,
         [
-            "projectionMatrix",
+            "cameraMatrix",
             "worldMatrix"
         ]
     );
@@ -123,7 +123,7 @@ void main() {
         // Rendering goes here
         glUseProgram(getShader("main").shaderProgram);
 
-        updateCameraProjectionMatrix();
+        updateCameraMatrix();
 
         Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
         float[16] floatBuffer2 = test2.getFloatArray();

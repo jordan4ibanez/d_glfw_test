@@ -8,6 +8,7 @@ import vector_3d;
 import Math = math;
 import bindbc.opengl;
 import opengl.shaders;
+import vector_3d;
 
 // There can only be one camera in the game, this is it
 
@@ -21,19 +22,21 @@ immutable double Z_FAR = 10_000.;
 
 Vector3d clearColor = Vector3d(0,0,0);
 
-Matrix4d projectionMatrix = Matrix4d();
+Matrix4d cameraMatrix = Matrix4d();
 Matrix4d worldMatrix = Matrix4d();
+
+Vector3d position = Vector3d(0,0,-1);
 
 double aspectRatio = 0;
 
 void updateCamera() {
     aspectRatio = getAspectRatio();
     // writeln("aspect ratio is: ", aspectRatio);
-    projectionMatrix = Matrix4d().identity().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
+    cameraMatrix = Matrix4d().identity().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
 }
 
-Matrix4d getProjectionMatrix () {
-    return projectionMatrix;
+Matrix4d getcameraMatrix () {
+    return cameraMatrix;
 }
 
 Matrix4d getWorldMatrix(Vector3d offset, Vector3d rotation, float scale) {
@@ -45,11 +48,11 @@ Matrix4d getWorldMatrix(Vector3d offset, Vector3d rotation, float scale) {
     return worldMatrix;
 }
 
-void updateCameraProjectionMatrix() {
+void updateCameraMatrix() {
     GameShader bloop = getShader("main");
-    Matrix4d test = getProjectionMatrix();
+    Matrix4d test = getcameraMatrix().translate(position);
     float[16] floatBuffer = test.getFloatArray();
-    glUniformMatrix4fv(bloop.getUniform("projectionMatrix"),1, GL_FALSE, floatBuffer.ptr);
+    glUniformMatrix4fv(bloop.getUniform("cameraMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
 
 void gameClearWindow() {
