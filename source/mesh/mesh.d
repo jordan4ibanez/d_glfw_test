@@ -2,9 +2,12 @@ module mesh.mesh;
 
 import std.stdio;
 import bindbc.opengl;
+import bindbc.glfw;
 
 struct Mesh {
+
     private bool exists = false;
+
     GLuint vao = 0;
     GLuint vbo = 0;
     GLuint ebo = 0;
@@ -12,6 +15,8 @@ struct Mesh {
     GLuint vertexCount = 0;
 
     this(float[] vertices) {
+
+        writeln("I'M ALIVE, I'M BORN");
 
         // Existence lock
         this.exists = true;
@@ -52,10 +57,48 @@ struct Mesh {
         glBindVertexArray(0);
     }
 
+    // Automatically clean up the mesh
+    ~this() {
+
+        if (!this.exists) {
+            writeln("sorry, I cannot clear gpu memory, I don't exist in gpu memory");
+            return;
+        }
+
+        glDisableVertexAttribArray(0);
+
+        // Delete the vbo
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glDeleteBuffers(1, &this.vbo);
+
+        // Delete the vao
+        glBindVertexArray(0);
+        glDeleteVertexArrays(1, &this.vao);
+        
+
+        GLenum glErrorInfo = glGetError();
+
+        if (glErrorInfo != 0) {
+            writeln("GL ERROR: ", glErrorInfo);
+            writeln("ERROR IN SHADER ", "main");
+            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
+
+            while(true) {
+                
+            }
+        }
+
+        writeln("OKAY I WAS DELETED SUCCESSFULLY");
+    }
+
     void render() {
+        // Don't bother the gpu with garbage data
+        if (!this.exists) {
+            writeln("sorry, I cannot render, I don't exist in gpu memory");
+            return;
+        }
         glBindVertexArray(this.vao);
         glDrawArrays(GL_TRIANGLES, 0, this.vertexCount);
-        writeln("REMEMBER TO ADD A DESTRUCTOR CLEAN UP!");
     }
     /*
     void appendGLData(int vao, int vbo, int ebo, int vertexCount, int texture){
