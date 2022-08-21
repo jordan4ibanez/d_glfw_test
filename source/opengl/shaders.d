@@ -146,7 +146,7 @@ void deleteShaders() {
         // Delete the program
         glDeleteProgram(thisShader.shaderProgram);
 
-        writeln("deleted: ", thisShader.name);
+        writeln("Deleted shader: ", thisShader.name);
 
         // Remove the program from game memory
         container.remove(thisShader.name);
