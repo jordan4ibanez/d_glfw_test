@@ -9,6 +9,8 @@ import Math = math;
 import bindbc.opengl;
 import opengl.shaders;
 import vector_3d;
+import glfw_interface.keyboard_input;
+import delta_time;
 
 // There can only be one camera in the game, this is it
 
@@ -40,6 +42,24 @@ Matrix4d getcameraMatrix () {
 }
 
 Matrix4d getObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
+
+    // This is an extreme hack for testing remove this garbage
+    Vector3d modifier = Vector3d(0,0,0);
+
+    if(forward){
+        modifier.z -= getDelta() * 10;
+    } else if (back) {
+        modifier.z += getDelta() * 10;
+    }
+
+    if(left){
+        modifier.x += getDelta() * 10;
+    } else if (right) {
+        modifier.x -= getDelta() * 10;
+    }
+
+    moveCameraPosition(modifier);
+
     objectMatrix.identity().translate(offset).
         rotateX(Math.toRadians(rotation.x)).
         rotateY(Math.toRadians(rotation.y)).
@@ -49,6 +69,7 @@ Matrix4d getObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
 }
 
 void updateCameraMatrix() {
+    // writeln("blah");
     GameShader bloop = getShader("main");
     Matrix4d test = getcameraMatrix().translate(-position.x, -position.y, -position.z);
     float[16] floatBuffer = test.getFloatArray();
