@@ -6,6 +6,7 @@ import bindbc.opengl;
 import vector_2i;
 import vector_4d;
 import vector_3d;
+import glfw_interface.keyboard_input;
 
 // Starts off as a null pointer
 GLFWwindow* window;
@@ -16,6 +17,13 @@ static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, in
     size.x = x;
     size.y = y;
     glViewport(0,0,x,y);
+}
+nothrow
+static extern(C) void externalKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods){
+    // This is the best hack ever
+    try {
+    keyCallback(window,key,scancode,action,mods);
+    } catch(Exception){}
 }
 
 // Stores and gives context to the C window
@@ -29,6 +37,8 @@ void setWindowPointer(GLFWwindow* newWindow) {
     glfwMakeContextCurrent(window);
 
     glfwSetFramebufferSizeCallback(window, &myframeBufferSizeCallback);
+
+    glfwSetKeyCallback(window, &externalKeyCallBack);
 }
 
 // Internally handles interfacing to C
