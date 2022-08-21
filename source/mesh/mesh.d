@@ -50,3 +50,9 @@ struct Mesh {
     }
     */
 }
+
+// A duplicate function that inverses the call in case
+// it's ever easier to render it like that for some reason
+void renderMesh(Mesh thisMesh) {
+    thisMesh.render();
+}
