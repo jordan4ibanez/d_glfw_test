@@ -52,12 +52,15 @@ void main() {
         FragColor = vec4(1.0, 0.5, 0.2, 1.0);
     }";
 
-    createGLShaderProgram("main", vertexShaderCode, fragmentShaderCode);
-    
-    GameShader main = getShaderProgram("main");
-
-    main.createUniform("projectionMatrix");
-    main.createUniform("worldMatrix");
+    createGLShaderProgram(
+        "main",
+        vertexShaderCode,
+        fragmentShaderCode,
+        [
+            "projectionMatrix",
+            "worldMatrix"
+        ]
+    );
 
     float[] vertices = [
         -0.5f,  0.5f, -0.0f,
@@ -133,19 +136,22 @@ void main() {
         gameClearWindow();
 
         // Rendering goes here
-        glUseProgram(getShaderProgram("main").shaderProgram);
+        glUseProgram(getShader("main").shaderProgram);
+
+        updateCameraProjectionMatrix();
 
         Matrix4d test2 = getWorldMatrix(Vector3d(0,0,-1),Vector3d(scaler,scaler,scaler), 1.0);
         float[16] floatBuffer2 = test2.getFloatArray();
         writeln(floatBuffer2);
-        glUniformMatrix4fv(main.getUniform("worldMatrix"),1, GL_FALSE, floatBuffer2.ptr);
+
+        glUniformMatrix4fv(getShader("main").getUniform("worldMatrix"),1, GL_FALSE, floatBuffer2.ptr);
 
         GLenum glErrorInfo = glGetError();
 
 
         if (glErrorInfo != 0) {
             writeln("GL ERROR: ", glErrorInfo);
-            writeln("ERROR IN SHADER ", main.name);
+            writeln("ERROR IN SHADER ", "main");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
             while(false) {
