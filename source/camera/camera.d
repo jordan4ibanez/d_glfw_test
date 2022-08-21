@@ -4,6 +4,8 @@ import std.stdio;
 import window.window;
 import math;
 import matrix_4d;
+import vector_3d;
+import Math = math;
 
 // There can only be one camera in the game, this is it
 
@@ -15,15 +17,25 @@ immutable double Z_FAR = 10_000.;
 
 
 Matrix4d projectionMatrix = Matrix4d();
+Matrix4d worldMatrix = Matrix4d();
 
 double aspectRatio = 0;
 
 void updateCamera() {
     aspectRatio = getAspectRatio();
     writeln("aspect ratio is: ", aspectRatio);
-    projectionMatrix = Matrix4d().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
+    projectionMatrix = Matrix4d().identity().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
 }
 
 Matrix4d getProjectionMatrix () {
     return projectionMatrix;
+}
+
+Matrix4d getWorldMatrix(Vector3d offset, Vector3d rotation, float scale) {
+    worldMatrix.identity().translate(offset).
+        rotateX(Math.toRadians(rotation.x)).
+        rotateY(Math.toRadians(rotation.y)).
+        rotateZ(Math.toRadians(rotation.z)).
+        scale(scale);
+    return worldMatrix;
 }
