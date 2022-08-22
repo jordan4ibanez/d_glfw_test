@@ -125,14 +125,27 @@ void createGLShaderProgram(
         }
     }
 
+    
+
     writeln("GL Shader Program with ID ", shaderProgram, " successfully linked!");
 
     GameShader thisShader = GameShader(shaderName,vertexShader,fragmentShader, shaderProgram);
 
-    foreach (string uniformName; uniforms)
-    {
+    foreach (string uniformName; uniforms) {
         thisShader.createUniform(uniformName);
+        GLenum glErrorInfo = glGetError();
+
+        if (glErrorInfo != 0) {
+            writeln("GL ERROR: ", glErrorInfo);
+            writeln("ERROR CREATING UNIFORM: ", uniformName);
+            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
+
+            while(true) {
+                    
+            }
+        }
     }
+    
 
     container[shaderName] = thisShader;
 }
