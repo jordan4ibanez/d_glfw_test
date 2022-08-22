@@ -20,7 +20,7 @@ import mesh.texture;
 
 void main() {
 
-    if (gameInitializeGLFWComponents("blah")) {
+    if (gameInitializeGLFWComponents("Crafter Engine 0.0.0")) {
         return;
     }
 
