@@ -10,13 +10,13 @@ import std.string: toStringz;
 import std.conv: to;
 import opengl.shaders;
 import delta_time;
-import camera.camera;
 import matrix_4d;
 import std.conv: to;
 import vector_3d;
 import Math = math;
 import mesh.mesh;
 import mesh.texture;
+import Camera = camera.camera;
 
 void main() {
 
@@ -129,7 +129,7 @@ void main() {
         }
         */
 
-        updateCamera();
+        Camera.updateAspectRatio();
 
         calculateDelta();
 
@@ -158,17 +158,20 @@ void main() {
             clock = 0;
             fpsCounter = 0;
         }
-        gameClearWindow();        
+
+        Camera.clear();        
 
         // It is extremely important to clear the buffer bit!
+        // Put this into the camera, camera controls all rendering
+        // It's the gl movie studio basically
         glClear(GL_DEPTH_BUFFER_BIT);
 
         // Rendering goes here
         glUseProgram(getShader("main").shaderProgram);
 
-        updateCameraMatrix();
+        Camera.updateCameraMatrix();
 
-        Matrix4d test2 = getObjectMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
+        Matrix4d test2 = Camera.getObjectMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
         float[16] floatBuffer2 = test2.getFloatArray();
         // writeln(floatBuffer2);
 

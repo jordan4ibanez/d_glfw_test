@@ -1,43 +1,42 @@
 module camera.camera;
 
 import std.stdio;
-import window.window;
-import math;
+import Window = window.window;
+import Math = math;
 import matrix_4d;
 import vector_3d;
-import Math = math;
 import bindbc.opengl;
 import opengl.shaders;
 import vector_3d;
-import input.keyboard;
+import Keyboard = input.keyboard;
 import delta_time;
 
 // There can only be one camera in the game, this is it
 
-double FOV = toRadians(60.0);
+double FOV = Math.toRadians(60.0);
 
 // Never set this to 0 :P
-immutable double Z_NEAR = 0.00001;
+private immutable double Z_NEAR = 0.00001;
 
-immutable double Z_FAR = 10_000.;
+private immutable double Z_FAR = 10_000.0;
 
-Vector3d clearColor = Vector3d(0,0,0);
+private Vector3d clearColor = Vector3d(0,0,0);
 
-Matrix4d cameraMatrix = Matrix4d();
-Matrix4d objectMatrix = Matrix4d();
+private Matrix4d cameraMatrix = Matrix4d();
+private Matrix4d objectMatrix = Matrix4d();
 
-Vector3d position = Vector3d(0,0,1);
-Vector3d rotation = Vector3d(0,0,0);
+private Vector3d position = Vector3d(0,0,1);
+private Vector3d rotation = Vector3d(0,0,0); 
 
-double aspectRatio = 0;
+private double aspectRatio = 0;
 
-void updateCamera() {
-    aspectRatio = getAspectRatio();
+void updateAspectRatio() {
+    aspectRatio = Window.getAspectRatio();
     // writeln("aspect ratio is: ", aspectRatio);
     cameraMatrix = Matrix4d().identity().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
 }
 
-Matrix4d getcameraMatrix () {
+Matrix4d getCameraMatrix () {
     return cameraMatrix;
 }
 
@@ -46,19 +45,19 @@ Matrix4d getObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
     // This is an extreme hack for testing remove this garbage
     Vector3d modifier = Vector3d(0,0,0);
 
-    if(forward){
+    if(Keyboard.forward){
         modifier.z -= getDelta() * 10;
-    } else if (back) {
+    } else if (Keyboard.back) {
         modifier.z += getDelta() * 10;
     }
 
-    if(left){
+    if(Keyboard.left){
         modifier.x += getDelta() * 10;
-    } else if (right) {
+    } else if (Keyboard.right) {
         modifier.x -= getDelta() * 10;
     }
 
-    moveCameraPosition(modifier);
+    movePosition(modifier);
 
     objectMatrix.identity().translate(offset).
         rotateX(Math.toRadians(rotation.x)).
@@ -69,14 +68,13 @@ Matrix4d getObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
 }
 
 void updateCameraMatrix() {
-    // writeln("blah");
-    GameShader bloop = getShader("main");
-    Matrix4d test = getcameraMatrix().translate(-position.x, -position.y, -position.z);
-    float[16] floatBuffer = test.getFloatArray();
-    glUniformMatrix4fv(bloop.getUniform("cameraMatrix"),1, GL_FALSE, floatBuffer.ptr);
+    GameShader mainShader = getShader("main");
+    Matrix4d stackWorkerMatrix = getCameraMatrix().translate(-position.x, -position.y, -position.z);
+    float[16] floatBuffer = stackWorkerMatrix.getFloatArray();
+    glUniformMatrix4fv(mainShader.getUniform("cameraMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
 
-void gameClearWindow() {
+void clear() {
     glClearColor(clearColor.x,clearColor.y,clearColor.z,1);
     glClear(GL_COLOR_BUFFER_BIT);
 }
@@ -93,12 +91,39 @@ double getFOV() {
     return FOV;
 }
 
-void moveCameraPosition(Vector3d positionModification) {
+void movePosition(Vector3d positionModification) {
     position.x += positionModification.x;
     position.y += positionModification.y;
     position.z += positionModification.z;
 }
 
-void setCameraPosition(Vector3d newCameraPosition){
+void setPosition(Vector3d newCameraPosition){
     position = newCameraPosition;
+}
+
+
+void rotationLimiter(){
+    // Pitch limiter
+    if (rotation.x > 90) {
+        rotation.x = 90;
+    } else if (rotation.x < -90) {
+        rotation.x = -90;
+    }
+    // Yaw overflower
+    if (rotation.y > 180) {
+        rotation.y -= 180.0;
+    } else if (rotation.y < -180) {
+        rotation.y += 180.0;
+    }
+}
+
+void addRotation(Vector3d rotationModification) {
+    rotation.x += rotationModification.x;
+    rotation.y += rotationModification.y;
+    rotation.z += rotationModification.z;
+}
+
+void setRotation(Vector3d newRotation) {
+    rotation = newRotation;
+    rotationLimiter();
 }
