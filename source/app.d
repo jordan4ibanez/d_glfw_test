@@ -108,9 +108,21 @@ void main() {
     GLuint textureID;
     glGenTextures(1, &textureID);
     glBindTexture(GL_TEXTURE_2D, textureID);    
-    // glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myCoolImage.width(), myCoolImage.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, myCoolImageData.ptr);
-    glGenerateMipmap(GL_TEXTURE_2D);
+
+        // Enable texture clamping to edge
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
+    // Border color is nothing
+    float[4] borderColor = [0,0,0,0];
+    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor.ptr);
+
+    // Add in nearest neighbor texture filtering
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST/*_MIPMAP_NEAREST*/);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+    // glGenerateMipmap(GL_TEXTURE_2D);
 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, textureID); 
@@ -147,12 +159,12 @@ void main() {
 
         if (up) {
             scaler += delta * 100;
-            if (scaler > 180) {
+            if (scaler > 45) {
                 up = false;
             }
         } else {
             scaler -= delta * 100;
-            if (scaler < -180) {
+            if (scaler < -45) {
                 up = true;
             }
         }

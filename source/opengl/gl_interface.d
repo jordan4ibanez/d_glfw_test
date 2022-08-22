@@ -68,21 +68,19 @@ bool gameInitializeOpenGL() {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_LESS);
 
-    // Enable texture clamping to edge
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_BORDER);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_BORDER);
-    // Border color is nothing
-    float[4] borderColor = [0,0,0,0];
-    glTexParameterfv(GL_TEXTURE_2D, GL_TEXTURE_BORDER_COLOR, borderColor.ptr);
 
-    // Add in nearest neighbor texture filtering
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    // glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    GLenum glErrorInfo = glGetError();
 
-    // Add in nearest neighbor texture mipmap
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST_MIPMAP_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+    if (glErrorInfo != 0) {
+        writeln("GL ERROR: ", glErrorInfo);
+        writeln("ERROR IN GL INIT");
+        writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
+
+        while(true) {
+            
+        }
+    }
     return false;
 }
 
