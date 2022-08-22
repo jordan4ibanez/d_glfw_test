@@ -13,8 +13,8 @@ import helper.log;
 import input.mouse;
 
 // Starts off as a null pointer
-GLFWwindow* window;
-Vector2i size;
+private GLFWwindow* window;
+private Vector2i size;
 
 nothrow
 static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, int y) {
