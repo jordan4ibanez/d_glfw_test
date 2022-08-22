@@ -55,7 +55,7 @@ bool initializeOpenGL() {
         return true;
     }
 
-    Vector2i windowSize = Window.getWindowSize();
+    Vector2i windowSize = Window.getSize();
 
     glViewport(0, 0, windowSize.x, windowSize.y);
 

@@ -25,12 +25,12 @@ void mouseCallback(Vector2d newPosition) {
 void lockMouse(bool newLockMode) {
     if (newLockMode) {
         if (!locked) {
-            Window.glfwLockMouse();
+            Window.lockMouse();
             locked = true;
         } // Don't send out another callback to C
     } else {
         if (locked) {
-            Window.glfwUnlockMouse();
+            Window.unlockMouse();
             locked = false;
         } // Don't send out another callback to C
     }
@@ -41,12 +41,12 @@ void debugLockMouse() {
     bool newLockMode = !locked;
     if (newLockMode) {
         if (!locked) {
-            Window.glfwLockMouse();
+            Window.lockMouse();
             locked = true;
         } // Don't send out another callback to C
     } else {
         if (locked) {
-            Window.glfwUnlockMouse();
+            Window.unlockMouse();
             locked = false;
         } // Don't send out another callback to C
     }

@@ -21,7 +21,7 @@ import opengl.shaders;
 
 void main() {
 
-    if (Window.gameInitializeGLFWComponents("Crafter Engine 0.0.0")) {
+    if (Window.initializeGLFWComponents("Crafter Engine 0.0.0")) {
         return;
     }
 
@@ -121,7 +121,7 @@ void main() {
 
     Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
 
-    while(!Window.gameWindowShouldClose()) {
+    while(!Window.shouldClose()) {
 
         // Game load simulation
         /*
@@ -187,7 +187,7 @@ void main() {
         // Mesh ghostMesh = Mesh();
         // ghostMesh.render();
 
-        Window.gameSwapBuffers();
+        Window.swapBuffers();
 
         glErrorInfo = glGetError();
 
@@ -206,6 +206,6 @@ void main() {
     }
 
     deleteShaders();
-    Window.gameDestroyWindow();
+    Window.destroy();
     
 }

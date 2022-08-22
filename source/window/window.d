@@ -39,19 +39,19 @@ static extern(C) void externalcursorPositionCallback(GLFWwindow* window, double 
 }
 
 // Internally handles interfacing to C
-bool gameWindowShouldClose() {
+bool shouldClose() {
     return glfwWindowShouldClose(window) != 0;
 }
 
-void gameSwapBuffers() {
+void swapBuffers() {
     glfwSwapBuffers(window);
 }
 
-Vector2i getWindowSize() {
+Vector2i getSize() {
     return size;
 }
 
-void gameDestroyWindow() {
+void destroy() {
     glfwDestroyWindow(window);
 }
 
@@ -59,12 +59,12 @@ double getAspectRatio() {
     return cast(double)size.x / cast(double)size.y;
 }
 
-void closeWindow() {
+void close() {
     glfwSetWindowShouldClose(window, true);
 }
 
 // Returns true if there was an error
-private bool gameLoadGLFW() {
+private bool startGLFW() {
 
     GLFWSupport returnedError;
     
@@ -104,10 +104,10 @@ private bool gameLoadGLFW() {
 }
 
 
-bool gameInitializeGLFWComponents(string name) {
+bool initializeGLFWComponents(string name) {
 
     // Something fails to load
-    if (gameLoadGLFW()) {
+    if (startGLFW()) {
         return true;
     }
 
@@ -152,10 +152,10 @@ bool gameInitializeGLFWComponents(string name) {
     return false;
 }
 
-void glfwLockMouse() {
+void lockMouse() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
-void glfwUnlockMouse() {
+void unlockMouse() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
