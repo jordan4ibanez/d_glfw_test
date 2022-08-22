@@ -1,6 +1,7 @@
 {
 	"fileVersion": 1,
 	"versions": {
+		"arsd-official": "10.8.4",
 		"bindbc-glfw": "1.0.1",
 		"bindbc-loader": "1.0.1",
 		"bindbc-openal": "1.0.0",
