@@ -6,7 +6,7 @@ import bindbc.glfw;
 import mesh.texture;
 import opengl.shaders;
 
-immutable bool debugNow = false;
+private immutable bool debugNow = false;
 
 struct Mesh {
 
