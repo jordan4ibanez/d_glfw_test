@@ -16,7 +16,7 @@ private bool right = false;
 private bool forward = false;
 private bool back = false;
 
-bool quickSwitch(int input) {
+private bool quickSwitch(int input) {
     return input > 0;
 }
 
