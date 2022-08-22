@@ -21,6 +21,11 @@ struct GameShader {
         uniforms[uniformName] = location;
     }
 
+    // Set the uniform's int value in GPU memory
+    void setUniform(string uniformName, GLuint value) {
+        glUniform1i(uniforms[uniformName], value);
+    }
+
     uint getUniform(string uniformName) {
         return uniforms[uniformName];
     }
