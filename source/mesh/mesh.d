@@ -4,20 +4,25 @@ import std.stdio;
 import bindbc.opengl;
 import bindbc.glfw;
 
+immutable bool debugNow = true;
+
 struct Mesh {
 
     private bool exists = false;
 
     GLuint vao = 0; // Vertex array object - Main object
     GLuint pbo = 0; // Positions vertex buffer object
+    GLuint tbo = 0; // Texture positions vertex buffer object
     GLuint ibo = 0; // Indices vertex buffer object
-    GLuint cbo = 0; // Colors vertex buffer object
+    // GLuint cbo = 0; // Colors vertex buffer object
     GLuint texture = 0;
     GLuint indexCount = 0;
 
-    this(float[] vertices, int[] indices) {
+    this(float[] vertices, int[] indices, float[] textureCoordinates) {
 
-        writeln("I'M ALIVE, I'M BORN");
+        if (debugNow) {
+            writeln("I'M ALIVE, I'M BORN");
+        }
 
         // Existence lock
         this.exists = true;
@@ -31,7 +36,7 @@ struct Mesh {
         glBindVertexArray(this.vao);
     
 
-        // Positions VBO - Colors will use a similar VBO     
+        // Positions VBO - Colors will use a similar VBO 
 
         glGenBuffers(1, &this.pbo);
         glBindBuffer(GL_ARRAY_BUFFER, this.pbo);
@@ -54,6 +59,28 @@ struct Mesh {
         glEnableVertexAttribArray(0);
 
 
+        // Texture coordinates VBO
+        glGenBuffers(1, &this.tbo);
+        glBindBuffer(GL_ARRAY_BUFFER, this.tbo);
+
+        glBufferData(
+            GL_ARRAY_BUFFER,
+            textureCoordinates.length * float.sizeof,
+            textureCoordinates.ptr,
+            GL_STATIC_DRAW
+        );
+
+        glVertexAttribPointer(
+            1,
+            2,
+            GL_FLOAT,
+            GL_FALSE,
+            0,
+            cast(const(void)*)0
+        );
+        glEnableVertexAttribArray(1); 
+
+
         // Indices VBO
 
         glGenBuffers(1, &this.ibo);
@@ -67,7 +94,7 @@ struct Mesh {
         );
 
 
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);        
         // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
         // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
         glBindVertexArray(0);
@@ -90,7 +117,9 @@ struct Mesh {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
-            writeln("sorry, I cannot clear gpu memory, I don't exist in gpu memory");
+            if (debugNow) {
+                writeln("sorry, I cannot clear gpu memory, I don't exist in gpu memory");
+            }
             return;
         }
 
@@ -99,6 +128,10 @@ struct Mesh {
         // Delete the positions vbo
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDeleteBuffers(1, &this.pbo);
+
+        // Delete the texture coordinates vbo
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glDeleteBuffers(1, &this.tbo);
 
         // Delete the indices vbo
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
@@ -121,14 +154,18 @@ struct Mesh {
             }
         }
 
-        writeln("OKAY I WAS DELETED SUCCESSFULLY");
+        if (debugNow) {
+            writeln("OKAY I WAS DELETED SUCCESSFULLY");
+        }
     }
 
     void render() {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
-            writeln("sorry, I cannot render, I don't exist in gpu memory");
+            if (debugNow) {
+                writeln("sorry, I cannot render, I don't exist in gpu memory");
+            }
             return;
         }
 
@@ -147,8 +184,9 @@ struct Mesh {
                 
             }
         }
-
-        writeln("AYO I RENDERED RIGHT");
+        if (debugNow) {
+            writeln("AYO I RENDERED RIGHT");
+        }
     }
 }
 
