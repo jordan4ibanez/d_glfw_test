@@ -19,7 +19,7 @@ void mouseCallback(Vector2d newPosition) {
     writeln("mouse is at: ", newPosition);
     vector = Vector2d(
         newPosition.x - oldPosition.x,
-        oldPosition.y - newPosition.y
+        newPosition.y - oldPosition.y
     );
     writeln("the mouse vector is: ", vector);
     position = newPosition;
