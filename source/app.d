@@ -107,6 +107,8 @@ void main() {
 
     GLenum glErrorInfo = 0;
 
+    Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, "textures/debug.png");
+
     while(!gameWindowShouldClose()) {
 
         // Game load simulation
@@ -163,7 +165,7 @@ void main() {
         glUniformMatrix4fv(getShader("main").getUniform("objectMatrix"),1, GL_FALSE, floatBuffer2.ptr);
 
         // An "alive" mesh
-        Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, "textures/debug.png");
+        // Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, "textures/debug.png");
         thisMesh.render();
 
         // A "dead" mesh
