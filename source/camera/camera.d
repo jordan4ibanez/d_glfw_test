@@ -13,7 +13,7 @@ import delta_time;
 
 // There can only be one camera in the game, this is it
 
-double FOV = Math.toRadians(60.0);
+private double FOV = Math.toRadians(60.0);
 
 // Never set this to 0 :P
 private immutable double Z_NEAR = 0.00001;
