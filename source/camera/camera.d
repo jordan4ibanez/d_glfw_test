@@ -4,13 +4,13 @@ import std.stdio;
 import matrix_4d;
 import vector_3d;
 import bindbc.opengl;
-import opengl.shaders;
 import vector_3d;
 import delta_time;
 
 import Keyboard = input.keyboard;
 import Window = window.window;
 import Math = math;
+import opengl.shaders;
 
 // There can only be one camera in the game, this is it
 

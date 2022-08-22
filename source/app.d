@@ -6,7 +6,6 @@ import helper.log;
 import opengl.gl_interface;
 import std.string: toStringz;
 import std.conv: to;
-import opengl.shaders;
 import delta_time;
 import matrix_4d;
 import std.conv: to;
@@ -18,6 +17,7 @@ import Math = math;
 import loader = bindbc.loader.sharedlib;
 import Camera = camera.camera;
 import Window = window.window;
+import opengl.shaders;
 
 void main() {
 
@@ -64,7 +64,7 @@ void main() {
         fragColor = texture(textureSampler, outputTextureCoordinate) * vec4(outputColor, 1.0);
     }";
 
-    createGLShaderProgram(
+    createShaderProgram(
         "main",
         vertexShaderCode,
         fragmentShaderCode,

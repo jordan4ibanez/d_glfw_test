@@ -4,6 +4,7 @@ import std.stdio;
 import bindbc.opengl;
 import bindbc.glfw;
 import mesh.texture;
+
 import opengl.shaders;
 
 private immutable bool debugNow = false;

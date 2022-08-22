@@ -105,7 +105,7 @@ private uint compileShader(string name, string sourceCode, uint shaderType) {
 }
 
 
-void createGLShaderProgram(
+void createShaderProgram(
     string shaderName,
     string vertexShaderCode,
     string fragmentShaderCode,
