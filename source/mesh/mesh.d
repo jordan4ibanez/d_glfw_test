@@ -66,6 +66,12 @@ struct Mesh {
             GL_STATIC_DRAW               // The draw mode OpenGL will use
         );
 
+
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
+        // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
+        glBindVertexArray(0);
+
         GLuint glErrorInfo = glGetError();
 
         if (glErrorInfo != 0) {
@@ -76,15 +82,7 @@ struct Mesh {
             while(true) {
                 
             }
-        }
-
-
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
-        // You can unbind the VAO afterwards so other VAO calls won't accidentally modify this VAO, but this rarely happens. Modifying other
-        // VAOs requires a call to glBindVertexArray anyways so we generally don't unbind VAOs (nor VBOs) when it's not directly necessary.
-        glBindVertexArray(0);
-
-        
+        }        
     }
 
     // Automatically clean up the mesh
