@@ -17,6 +17,7 @@ import std.conv: to;
 import vector_3d;
 import Math = math;
 import mesh.mesh;
+import image;
 
 void main() {
 
@@ -64,12 +65,13 @@ void main() {
     );
 
     float[] vertices = [
-        -0.5f,  0.5f, -0.0f,
-        -0.5f, -0.5f, -0.0f,
-         0.5f,  0.5f, -0.0f,
-         0.5f,  0.5f, -0.0f,
-        -0.5f, -0.5f, -0.0f,
-         0.5f, -0.5f, -0.0f,
+        -0.5f,  0.5f, 0.0f,
+        -0.5f, -0.5f, 0.0f,
+         0.5f, -0.5f, 0.0f,
+         0.5f,  0.5f, 0.0f,
+    ];
+    int[] indices = [
+        0, 1, 3, 3, 1, 2,
     ];
 
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
@@ -86,8 +88,13 @@ void main() {
 
     setMaxDeltaFPS(10);
 
+
+    // Test of images
+    ubyte[] myCoolImageData = loadImageFromFile("textures/debug.png").getAsTrueColorImage().imageData.bytes;
+
     while(!gameWindowShouldClose()) {
 
+        // Game load simulation
         int q = 0;
         for (int i = 0; i < 1_000_000; i++) {
             q += q + 1 * 2;
@@ -153,7 +160,7 @@ void main() {
         
                 
         // An "alive" mesh
-        Mesh thisMesh = Mesh(vertices);
+        Mesh thisMesh = Mesh(vertices, indices);
         thisMesh.render();
 
         // A "dead" mesh

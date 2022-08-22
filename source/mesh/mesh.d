@@ -13,7 +13,7 @@ struct Mesh {
     GLuint ibo = 0; // Indices vertex buffer object
     GLuint cbo = 0; // Colors vertex buffer object
     GLuint texture = 0;
-    GLuint vertexCount = 0;
+    GLuint indexCount = 0;
 
     this(float[] vertices, int[] indices) {
 
@@ -24,7 +24,7 @@ struct Mesh {
 
         // Don't bother if not divisible by 3 (x,y,z)
         assert(indices.length % 3 == 0 && indices.length >= 3);
-        this.vertexCount = cast(GLuint)(indices.length);
+        this.indexCount = cast(GLuint)(indices.length);
 
         // bind the Vertex Array Object first, then bind and set vertex buffer(s), and then configure vertex attributes(s).
         glGenVertexArrays(1, &this.vao);
@@ -135,19 +135,9 @@ struct Mesh {
         }
 
         glBindVertexArray(this.vao);
-        // glDrawArrays(GL_TRIANGLES, 0, this.vertexCount);
-        glDrawElements(GL_TRIANGLES, this.vertexCount, GL_UNSIGNED_INT, cast(const(void)*)0);
+        // glDrawArrays(GL_TRIANGLES, 0, this.indexCount);
+        glDrawElements(GL_TRIANGLES, this.indexCount, GL_UNSIGNED_INT, cast(const(void)*)0);
     }
-    /*
-    void appendGLData(int vao, int vbo, int ebo, int vertexCount, int texture){
-        this.exists = true;
-        this.vao = vao;
-        this.vbo = vbo;
-        this.ebo = ebo;
-        this.vertexCount = vertexCount;
-        this.texture = texture;
-    }
-    */
 }
 
 // A duplicate function that inverses the call in case
