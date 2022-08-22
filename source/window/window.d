@@ -144,6 +144,9 @@ bool gameInitializeGLFWComponents(string name) {
 
     glfwSetCursorPosCallback(window, &externalcursorPositionCallback);
 
+    // Using 3.3 regardless so enable
+    glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+
     // No error :)
     return false;
 }
