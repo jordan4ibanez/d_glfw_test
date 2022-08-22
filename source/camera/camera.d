@@ -98,3 +98,7 @@ void moveCameraPosition(Vector3d positionModification) {
     position.y += positionModification.y;
     position.z += positionModification.z;
 }
+
+void setCameraPosition(Vector3d newCameraPosition){
+    position = newCameraPosition;
+}
