@@ -35,6 +35,9 @@ void main() {
     #version 410 core
 
     layout (location = 0) in vec3 position;
+    layout (location = 1) in vec2 textureCoordinate;
+
+    out vec2 outputTextureCoordinate;
 
     uniform mat4 cameraMatrix;
     uniform mat4 objectMatrix;
@@ -42,11 +45,13 @@ void main() {
     void main()
     {
         gl_Position = cameraMatrix * objectMatrix * vec4(position, 1.0);
+        outputTextureCoordinate = textureCoordinate;
     }";
 
     string fragmentShaderCode = "
     #version 410 core
 
+    in vec2 outputTextureCoordinate;
     out vec4 FragColor;
 
     void main()
@@ -170,8 +175,6 @@ void main() {
         gameSwapBuffers();
 
         glfwPollEvents();
-
-        writeln(1.0/10);
     }
 
     deleteShaders();
