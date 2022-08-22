@@ -24,10 +24,6 @@ struct Mesh {
 
     this(float[] vertices, int[] indices, float[] textureCoordinates, string textureName) {
 
-        if (debugNow) {
-            writeln("I'M ALIVE, I'M BORN");
-        }
-
         this.textureID = getTexture(textureName);
 
         // Existence lock
@@ -115,7 +111,11 @@ struct Mesh {
             while(true) {
                 
             }
-        }        
+        }
+
+        if (debugNow) {
+            writeln("Mesh ", this.vao, " has been successfully created");
+        }       
     }
 
     // Automatically clean up the mesh
@@ -165,7 +165,7 @@ struct Mesh {
         }
 
         if (debugNow) {
-            writeln("OKAY I WAS DELETED SUCCESSFULLY");
+            writeln("Mesh ", this.vao, " has been successfully deleted from gpu memory");
         }
     }
 
@@ -199,7 +199,7 @@ struct Mesh {
             }
         }
         if (debugNow) {
-            writeln("AYO I RENDERED RIGHT");
+            writeln("Mesh ", this.vao, " has rendered successfully ");
         }
     }
 }
