@@ -17,21 +17,24 @@ private bool locked = false;
 
 void mouseCallback(Vector2d newPosition) {
     writeln("mouse is at: ", newPosition);
-    vector = Vector2d(
-        newPosition.x - oldPosition.x,
-        newPosition.y - oldPosition.y
-    );
     writeln("the mouse vector is: ", vector);
-    position = newPosition;
-    oldPosition = newPosition;
 
     if (locked) {
+        vector = Vector2d(
+            newPosition.x,
+            newPosition.y
+        );
         Camera.moveRotation(Vector3d(
             vector.x * sensitivity,
             vector.y * sensitivity,
             0
         ));
+
+        Window.setMousePosition(0,0);
     }
+
+    position = newPosition;
+    oldPosition = newPosition;
 }
 
 void lockMouse(bool newLockMode) {

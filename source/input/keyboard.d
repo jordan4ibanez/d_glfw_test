@@ -45,6 +45,7 @@ void keyCallback(int key, int scancode, int action, int mods){
         }
         case GLFW_KEY_LEFT_SHIFT: {
             if (action == GLFW_PRESS) {
+                Window.setMousePosition(0,0);
                 Mouse.debugLockMouse();
             }
             break;
