@@ -24,6 +24,18 @@ struct GameShader {
     // Set the uniform's int value in GPU memory
     void setUniform(string uniformName, GLuint value) {
         glUniform1i(uniforms[uniformName], value);
+        
+        GLenum glErrorInfo = glGetError();
+
+        if (glErrorInfo != 0) {
+            writeln("GL ERROR: ", glErrorInfo);
+            writeln("ERROR CREATING UNIFORM: ", uniformName);
+            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
+
+            while(true) {
+                    
+            }
+        }
     }
 
     uint getUniform(string uniformName) {
