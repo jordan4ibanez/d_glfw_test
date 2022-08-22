@@ -129,27 +129,27 @@ struct Mesh {
             return;
         }
 
-        // Might not need to bind here
-        // It does not create a GL error though
-        glBindVertexArray(this.vao);
-
-        glDisableVertexAttribArray(0);
-
+        
         // Delete the positions vbo
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDeleteBuffers(1, &this.pbo);
 
+        assert (glIsBuffer(this.pbo) == GL_FALSE);
+    
         // Delete the texture coordinates vbo
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
         glDeleteBuffers(1, &this.tbo);
 
+        assert (glIsBuffer(this.tbo) == GL_FALSE);
+
         // Delete the indices vbo
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
         glDeleteBuffers(1, &this.ibo);
 
+        assert (glIsBuffer(this.ibo) == GL_FALSE);
+
         // Delete the vao
-        glBindVertexArray(0);
         glDeleteVertexArrays(1, &this.vao);
+
+        assert(glIsVertexArray(this.vao) == GL_FALSE);
+
         
 
         GLenum glErrorInfo = glGetError();
