@@ -135,6 +135,20 @@ struct Mesh {
         glBindVertexArray(this.vao);
         // glDrawArrays(GL_TRIANGLES, 0, this.indexCount);
         glDrawElements(GL_TRIANGLES, this.indexCount, GL_UNSIGNED_INT, cast(const(void)*)0);
+
+        GLuint glErrorInfo = glGetError();
+
+        if (glErrorInfo != 0) {
+            writeln("GL ERROR: ", glErrorInfo);
+            writeln("ERROR IN A MESH CONSTRUCTOR");
+            writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
+
+            while(true) {
+                
+            }
+        }
+
+        writeln("AYO I RENDERED RIGHT");
     }
 }
 
