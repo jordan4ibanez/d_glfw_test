@@ -69,7 +69,10 @@ Matrix4d getObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
 
 void updateCameraMatrix() {
     GameShader mainShader = getShader("main");
-    Matrix4d stackWorkerMatrix = getCameraMatrix().translate(-position.x, -position.y, -position.z);
+    Matrix4d stackWorkerMatrix = getCameraMatrix()
+        .translate(-position.x, -position.y, -position.z)
+        .rotate(rotation.x, 0,1,0)
+        .rotate(rotation.y, 1,0,0);
     float[16] floatBuffer = stackWorkerMatrix.getFloatArray();
     glUniformMatrix4fv(mainShader.getUniform("cameraMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
