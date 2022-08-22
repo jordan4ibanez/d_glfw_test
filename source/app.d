@@ -52,11 +52,13 @@ void main() {
     #version 410 core
 
     in vec2 outputTextureCoordinate;
-    out vec4 FragColor;
+    out vec4 fragColor;
+
+    uniform sampler2D textureSampler;
 
     void main()
     {
-        FragColor = vec4(1.0, 0.5, 0.2, 1.0);
+        fragColor = texture(textureSampler, outputTextureCoordinate);
     }";
 
     createGLShaderProgram(
