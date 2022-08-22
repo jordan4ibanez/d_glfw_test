@@ -45,15 +45,15 @@ Matrix4d getObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
     // This is an extreme hack for testing remove this garbage
     Vector3d modifier = Vector3d(0,0,0);
 
-    if(Keyboard.forward){
+    if(Keyboard.getForward()){
         modifier.z -= getDelta() * 10;
-    } else if (Keyboard.back) {
+    } else if (Keyboard.getBack()) {
         modifier.z += getDelta() * 10;
     }
 
-    if(Keyboard.left){
+    if(Keyboard.getLeft()){
         modifier.x += getDelta() * 10;
-    } else if (Keyboard.right) {
+    } else if (Keyboard.getRight()) {
         modifier.x -= getDelta() * 10;
     }
 

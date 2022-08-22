@@ -10,10 +10,10 @@ import input.mouse;
 // Do this when not half awake
 //bool[int] keyboardInput;
 
-bool left = false;
-bool right = false;
-bool forward = false;
-bool back = false;
+private bool left = false;
+private bool right = false;
+private bool forward = false;
+private bool back = false;
 
 bool quickSwitch(int input) {
     return input > 0;
@@ -52,4 +52,17 @@ void keyCallback(int key, int scancode, int action, int mods){
             writeln("YOU HIT THE WRONG BUTTON");
         }
     }
+}
+
+bool getLeft() {
+    return left;
+}
+bool getRight() {
+    return right;
+}
+bool getForward() {
+    return forward;
+}
+bool getBack() {
+    return back;
 }
