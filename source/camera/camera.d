@@ -14,7 +14,6 @@ import delta_time;
 
 // There can only be one camera in the game, this is it
 
-
 double FOV = toRadians(60.0);
 
 // Never set this to 0 :P

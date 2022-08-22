@@ -18,7 +18,7 @@ bool quickSwitch(int input) {
     return input > 0;
 }
 
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods){
+void keyCallback(int key, int scancode, int action, int mods){
     //keyboardInput[key] = action > 0;
     switch(key) {
         case GLFW_KEY_D:{

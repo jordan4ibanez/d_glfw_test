@@ -4,11 +4,13 @@ import std.stdio;
 import bindbc.glfw;
 import bindbc.opengl;
 import vector_2i;
+import vector_2d;
 import vector_4d;
 import vector_3d;
 import input.keyboard;
 import loader = bindbc.loader.sharedlib;
 import helper.log;
+import input.mouse;
 
 // Starts off as a null pointer
 GLFWwindow* window;
@@ -22,9 +24,16 @@ static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, in
 }
 nothrow
 static extern(C) void externalKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods){
-    // This is the best hack ever
+    // This is the best hack ever, or the worst
     try {
-    keyCallback(window,key,scancode,action,mods);
+    keyCallback(key,scancode,action,mods);
+    } catch(Exception){}
+}
+
+nothrow
+static extern(C) void externalcursorPositionCallback(GLFWwindow* window, double xpos, double ypos) {
+    try {
+        mouseCallback(Vector2d(xpos, ypos));
     } catch(Exception){}
 }
 
@@ -132,6 +141,8 @@ bool gameInitializeGLFWComponents(string name) {
     glfwSetFramebufferSizeCallback(window, &myframeBufferSizeCallback);
 
     glfwSetKeyCallback(window, &externalKeyCallBack);
+
+    glfwSetCursorPosCallback(window, &externalcursorPositionCallback);
 
     // No error :)
     return false;
