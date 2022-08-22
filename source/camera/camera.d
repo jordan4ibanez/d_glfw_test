@@ -9,7 +9,7 @@ import Math = math;
 import bindbc.opengl;
 import opengl.shaders;
 import vector_3d;
-import glfw_interface.keyboard_input;
+import input.keyboard_input;
 import delta_time;
 
 // There can only be one camera in the game, this is it

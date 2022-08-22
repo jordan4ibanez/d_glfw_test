@@ -2,7 +2,6 @@ import std.stdio;
 
 import bindbc.glfw;
 import bindbc.opengl;
-import glfw_interface.glfw_interface;
 import window.window;
 import loader = bindbc.loader.sharedlib;
 import helper.log;

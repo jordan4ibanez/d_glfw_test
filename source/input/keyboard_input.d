@@ -1,4 +1,4 @@
-module glfw_interface.keyboard_input;
+module input.keyboard_input;
 
 import std.stdio;
 import bindbc.glfw;

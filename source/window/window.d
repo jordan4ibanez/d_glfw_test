@@ -6,7 +6,7 @@ import bindbc.opengl;
 import vector_2i;
 import vector_4d;
 import vector_3d;
-import glfw_interface.keyboard_input;
+import input.keyboard_input;
 import loader = bindbc.loader.sharedlib;
 import helper.log;
 
