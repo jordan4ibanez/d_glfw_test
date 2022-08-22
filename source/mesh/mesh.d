@@ -16,13 +16,13 @@ struct Mesh {
     GLuint pbo = 0; // Positions vertex buffer object
     GLuint tbo = 0; // Texture positions vertex buffer object
     GLuint ibo = 0; // Indices vertex buffer object
-    // GLuint cbo = 0; // Colors vertex buffer object
+    GLuint cbo = 0; // Colors vertex buffer object
     GLuint indexCount = 0;
     
     // Holds the texture id
     GLuint textureID = 0;
 
-    this(float[] vertices, int[] indices, float[] textureCoordinates, string textureName) {
+    this(float[] vertices, int[] indices, float[] textureCoordinates, float[] colors, string textureName) {
 
         this.textureID = getTexture(textureName);
 
@@ -38,7 +38,7 @@ struct Mesh {
         glBindVertexArray(this.vao);
     
 
-        // Positions VBO - Colors will use a similar VBO 
+        // Positions VBO
 
         glGenBuffers(1, &this.pbo);
         glBindBuffer(GL_ARRAY_BUFFER, this.pbo);
@@ -62,6 +62,7 @@ struct Mesh {
 
 
         // Texture coordinates VBO
+
         glGenBuffers(1, &this.tbo);
         glBindBuffer(GL_ARRAY_BUFFER, this.tbo);
 
@@ -81,6 +82,28 @@ struct Mesh {
             cast(const(void)*)0
         );
         glEnableVertexAttribArray(1); 
+
+        // Colors VBO
+
+        glGenBuffers(1, &this.cbo);
+        glBindBuffer(GL_ARRAY_BUFFER, this.cbo);
+
+        glBufferData(
+            GL_ARRAY_BUFFER,
+            colors.length * float.sizeof,
+            colors.ptr,
+            GL_STATIC_DRAW
+        );
+
+        glVertexAttribPointer(
+            2,
+            3,
+            GL_FLOAT,
+            GL_FALSE,
+            0,
+            cast(const(void)*)0
+        );
+        glEnableVertexAttribArray(2); 
 
 
         // Indices VBO
@@ -128,7 +151,6 @@ struct Mesh {
             }
             return;
         }
-
         
         // Delete the positions vbo
         glDeleteBuffers(1, &this.pbo);
@@ -139,6 +161,11 @@ struct Mesh {
         glDeleteBuffers(1, &this.tbo);
 
         assert (glIsBuffer(this.tbo) == GL_FALSE);
+
+        // Delete the colors vbo
+        glDeleteBuffers(1, &this.cbo);
+
+        assert (glIsBuffer(this.cbo) == GL_FALSE);
 
         // Delete the indices vbo
         glDeleteBuffers(1, &this.ibo);

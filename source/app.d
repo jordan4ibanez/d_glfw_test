@@ -91,6 +91,13 @@ void main() {
         1, 1,
         1, 0
     ];
+    // Very fancy
+    float[] colors = [
+        0.5f, 0.0f, 0.0f,
+        0.0f, 0.5f, 0.0f,
+        0.0f, 0.0f, 0.5f,
+        0.0f, 0.5f, 0.5f,
+    ];
 
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
     writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
@@ -169,7 +176,7 @@ void main() {
         glUniformMatrix4fv(getShader("main").getUniform("objectMatrix"),1, GL_FALSE, floatBuffer2.ptr);
 
         // An "alive" mesh
-        Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, "textures/debug.png");
+        Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
         thisMesh.render();
 
         // A "dead" mesh
