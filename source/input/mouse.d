@@ -2,7 +2,8 @@ module input.mouse;
 
 import vector_2d;
 import std.stdio;
-import window.window;
+
+import Window = window.window;
 
 private Vector2d oldPosition = Vector2d(0,0);
 private Vector2d position    = Vector2d(0,0);
@@ -24,12 +25,12 @@ void mouseCallback(Vector2d newPosition) {
 void lockMouse(bool newLockMode) {
     if (newLockMode) {
         if (!locked) {
-            glfwLockMouse();
+            Window.glfwLockMouse();
             locked = true;
         } // Don't send out another callback to C
     } else {
         if (locked) {
-            glfwUnlockMouse();
+            Window.glfwUnlockMouse();
             locked = false;
         } // Don't send out another callback to C
     }
@@ -40,12 +41,12 @@ void debugLockMouse() {
     bool newLockMode = !locked;
     if (newLockMode) {
         if (!locked) {
-            glfwLockMouse();
+            Window.glfwLockMouse();
             locked = true;
         } // Don't send out another callback to C
     } else {
         if (locked) {
-            glfwUnlockMouse();
+            Window.glfwUnlockMouse();
             locked = false;
         } // Don't send out another callback to C
     }

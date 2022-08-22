@@ -7,10 +7,11 @@ import vector_2i;
 import vector_2d;
 import vector_4d;
 import vector_3d;
-import input.keyboard;
-import loader = bindbc.loader.sharedlib;
 import helper.log;
-import input.mouse;
+
+import Keyboard = input.keyboard;
+import loader = bindbc.loader.sharedlib;
+import Mouse = input.mouse;
 
 // Starts off as a null pointer
 private GLFWwindow* window;
@@ -26,14 +27,14 @@ nothrow
 static extern(C) void externalKeyCallBack(GLFWwindow* window, int key, int scancode, int action, int mods){
     // This is the best hack ever, or the worst
     try {
-    keyCallback(key,scancode,action,mods);
+    Keyboard.keyCallback(key,scancode,action,mods);
     } catch(Exception){}
 }
 
 nothrow
 static extern(C) void externalcursorPositionCallback(GLFWwindow* window, double xpos, double ypos) {
     try {
-        mouseCallback(Vector2d(xpos, ypos));
+        Mouse.mouseCallback(Vector2d(xpos, ypos));
     } catch(Exception){}
 }
 

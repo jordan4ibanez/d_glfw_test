@@ -3,8 +3,9 @@ module input.keyboard;
 import std.stdio;
 import bindbc.glfw;
 import std.conv: to;
-import window.window;
-import input.mouse;
+
+import Mouse = input.mouse;
+import Window = window.window;
 
 // Automate keyboard input across the entire board
 // Do this when not half awake
@@ -39,12 +40,12 @@ void keyCallback(int key, int scancode, int action, int mods){
             break;
         }
         case GLFW_KEY_ESCAPE: {
-            closeWindow();
+            Window.closeWindow();
             break;
         }
         case GLFW_KEY_LEFT_SHIFT: {
             if (action == GLFW_PRESS) {
-                debugLockMouse();
+                Mouse.debugLockMouse();
             }
             break;
         }

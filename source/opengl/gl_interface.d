@@ -2,14 +2,15 @@ module opengl.gl_interface;
 
 import std.stdio;
 import bindbc.glfw;
-import loader = bindbc.loader.sharedlib;
 import bindbc.opengl;
 import helper.log;
-import window.window;
 import std.conv: to;
 import vector_2i;
 
-bool gameInitializeOpenGL() {
+import loader = bindbc.loader.sharedlib;
+import Window = window.window;
+
+bool initializeOpenGL() {
     /*
      Compare the return value of loadGL with the global `glSupport` constant to determine if the version of GLFW
      configured at compile time is the version that was loaded.
@@ -54,7 +55,7 @@ bool gameInitializeOpenGL() {
         return true;
     }
 
-    Vector2i windowSize = getWindowSize();
+    Vector2i windowSize = Window.getWindowSize();
 
     glViewport(0, 0, windowSize.x, windowSize.y);
 

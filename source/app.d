@@ -2,8 +2,6 @@ import std.stdio;
 
 import bindbc.glfw;
 import bindbc.opengl;
-import window.window;
-import loader = bindbc.loader.sharedlib;
 import helper.log;
 import opengl.gl_interface;
 import std.string: toStringz;
@@ -13,18 +11,22 @@ import delta_time;
 import matrix_4d;
 import std.conv: to;
 import vector_3d;
-import Math = math;
 import mesh.mesh;
 import mesh.texture;
+
+import Math = math;
+import loader = bindbc.loader.sharedlib;
 import Camera = camera.camera;
+import Window = window.window;
 
 void main() {
 
-    if (gameInitializeGLFWComponents("Crafter Engine 0.0.0")) {
+    if (Window.gameInitializeGLFWComponents("Crafter Engine 0.0.0")) {
         return;
     }
 
-    if(gameInitializeOpenGL()) {
+    // GL init is purely functional
+    if(initializeOpenGL()) {
         return;
     }  
     
@@ -119,7 +121,7 @@ void main() {
 
     Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
 
-    while(!gameWindowShouldClose()) {
+    while(!Window.gameWindowShouldClose()) {
 
         // Game load simulation
         /*
@@ -185,7 +187,7 @@ void main() {
         // Mesh ghostMesh = Mesh();
         // ghostMesh.render();
 
-        gameSwapBuffers();
+        Window.gameSwapBuffers();
 
         glErrorInfo = glGetError();
 
@@ -204,6 +206,6 @@ void main() {
     }
 
     deleteShaders();
-    gameDestroyWindow();
+    Window.gameDestroyWindow();
     
 }
