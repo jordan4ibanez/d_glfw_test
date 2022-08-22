@@ -27,10 +27,8 @@ void main() {
 
     if(gameInitializeOpenGL()) {
         return;
-    }
-
+    }  
     
-
     string vertexShaderCode = "
     #version 410 core
 
@@ -67,9 +65,10 @@ void main() {
         fragmentShaderCode,
         [
             "cameraMatrix",
-            "objectMatrix"
+            "objectMatrix",
+            "textureSampler"
         ]
-    );
+    );   
 
     float[] vertices = [
         -0.5f,  0.5f, 0.0f,
@@ -80,24 +79,57 @@ void main() {
     int[] indices = [
         0, 1, 3, 3, 1, 2,
     ];
+    float[] textureCoordinates = [
+        0, 0,
+        0, 1,
+        1, 1,
+        1, 0
+    ];
 
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
     writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
 
-    glfwSwapInterval(1);
+    glfwSwapInterval(2);
 
     double clock = 0.0;
 
     int fpsCounter = 1;
 
     float scaler = 0.0;
-    bool up = true;
+    bool up = true;    
 
     setMaxDeltaFPS(10);
 
 
     // Test of images
-    ubyte[] myCoolImageData = loadImageFromFile("textures/debug.png").getAsTrueColorImage().imageData.bytes;
+    TrueColorImage myCoolImage = loadImageFromFile("textures/debug.png").getAsTrueColorImage();
+    ubyte[] myCoolImageData = myCoolImage.imageData.bytes;
+
+    GLuint textureID;
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);    
+    // glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, myCoolImage.width(), myCoolImage.height(), 0, GL_RGBA, GL_UNSIGNED_BYTE, myCoolImageData.ptr);
+    glGenerateMipmap(GL_TEXTURE_2D);
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, textureID); 
+
+    GLenum glErrorInfo = glGetError();
+
+    if (glErrorInfo != 0) {
+        writeln("GL ERROR: ", glErrorInfo);
+        writeln("ERROR IN TEXTURE");
+        writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
+
+        while(true) {
+                
+        }
+    }
+
+    // An "alive" mesh
+    // Mesh thisMesh = Mesh(vertices, indices, textureCoordinates);
+    
 
     while(!gameWindowShouldClose()) {
 
@@ -115,12 +147,12 @@ void main() {
 
         if (up) {
             scaler += delta * 100;
-            if (scaler > 45) {
+            if (scaler > 180) {
                 up = false;
             }
         } else {
             scaler -= delta * 100;
-            if (scaler < -45) {
+            if (scaler < -180) {
                 up = true;
             }
         }
@@ -152,29 +184,31 @@ void main() {
 
         glUniformMatrix4fv(getShader("main").getUniform("objectMatrix"),1, GL_FALSE, floatBuffer2.ptr);
 
-        GLenum glErrorInfo = glGetError();
+
+        getShader("main").setUniform("textureSampler", 0);
+
+        // An "alive" mesh
+        Mesh thisMesh = Mesh(vertices, indices, textureCoordinates);
+        thisMesh.render();
+
+        // A "dead" mesh
+        // Mesh ghostMesh = Mesh();
+        // ghostMesh.render();
+
+        gameSwapBuffers();
+
+        glErrorInfo = glGetError();
 
 
         if (glErrorInfo != 0) {
             writeln("GL ERROR: ", glErrorInfo);
-            writeln("ERROR IN SHADER ", "main");
+            writeln("ERROR IN MAIN LOOP");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
             while(true) {
                 
             }
         }
-        
-                
-        // An "alive" mesh
-        Mesh thisMesh = Mesh(vertices, indices);
-        thisMesh.render();
-
-        // A "dead" mesh
-        Mesh ghostMesh = Mesh();
-        ghostMesh.render();
-
-        gameSwapBuffers();
 
         glfwPollEvents();
     }
