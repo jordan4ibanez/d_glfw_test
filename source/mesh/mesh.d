@@ -3,6 +3,8 @@ module mesh.mesh;
 import std.stdio;
 import bindbc.opengl;
 import bindbc.glfw;
+import mesh.texture;
+import opengl.shaders;
 
 immutable bool debugNow = true;
 
@@ -15,14 +17,18 @@ struct Mesh {
     GLuint tbo = 0; // Texture positions vertex buffer object
     GLuint ibo = 0; // Indices vertex buffer object
     // GLuint cbo = 0; // Colors vertex buffer object
-    GLuint texture = 0;
     GLuint indexCount = 0;
+    
+    // Holds the texture id
+    GLuint textureID = 0;
 
-    this(float[] vertices, int[] indices, float[] textureCoordinates) {
+    this(float[] vertices, int[] indices, float[] textureCoordinates, string textureName) {
 
         if (debugNow) {
             writeln("I'M ALIVE, I'M BORN");
         }
+
+        this.textureID = getTexture(textureName);
 
         // Existence lock
         this.exists = true;
@@ -173,15 +179,19 @@ struct Mesh {
             return;
         }
 
+        getShader("main").setUniform("textureSampler", 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, this.textureID);
+
         glBindVertexArray(this.vao);
         // glDrawArrays(GL_TRIANGLES, 0, this.indexCount);
         glDrawElements(GL_TRIANGLES, this.indexCount, GL_UNSIGNED_INT, cast(const(void)*)0);
-
+        
         GLuint glErrorInfo = glGetError();
 
         if (glErrorInfo != 0) {
             writeln("GL ERROR: ", glErrorInfo);
-            writeln("ERROR IN A MESH CONSTRUCTOR");
+            writeln("ERROR IN A MESH RENDER");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
 
             while(true) {

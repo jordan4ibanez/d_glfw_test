@@ -1,11 +1,21 @@
 module mesh.texture;
 
+import std.stdio;
 import bindbc.opengl;
+import image;
 
 
 // Unlike meshes, textures never go out of scope until the program ends
 // Automatically deletes when the program ends
 Texture[string] container;
+
+uint getTexture(string name) {
+    return container[name].id;
+}
+
+void newTexture(string name) {    
+    container[name] = Texture(name);
+}
 
 struct Texture {
     bool exists = false;
@@ -19,11 +29,10 @@ struct Texture {
         TrueColorImage tempImageObject = loadImageFromFile(textureName).getAsTrueColorImage();
         this.width = tempImageObject.width();
         this.height = tempImageObject.height();
-        ubyte[] tempData = myCoolImage.imageData.bytes;
+        ubyte[] tempData = tempImageObject.imageData.bytes;
 
-        GLuint textureID;
-        glGenTextures(1, &textureID);
-        glBindTexture(GL_TEXTURE_2D, textureID);
+        glGenTextures(1, &this.id);
+        glBindTexture(GL_TEXTURE_2D, this.id);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, this.width, this.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, tempData.ptr);
 
@@ -40,9 +49,6 @@ struct Texture {
 
         // glGenerateMipmap(GL_TEXTURE_2D);
 
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, textureID); 
-
         GLenum glErrorInfo = glGetError();
 
         if (glErrorInfo != 0) {
@@ -54,5 +60,10 @@ struct Texture {
                     
             }
         }
+    }
+
+    ~this() {
+        glDeleteTextures(1, &this.id);
+        writeln("TEXTURE ", this.id, " HAS BEEN DELETED");
     }
 }

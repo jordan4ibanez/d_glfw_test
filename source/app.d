@@ -17,7 +17,7 @@ import std.conv: to;
 import vector_3d;
 import Math = math;
 import mesh.mesh;
-import image;
+import mesh.texture;
 
 void main() {
 
@@ -70,6 +70,8 @@ void main() {
         ]
     );   
 
+    newTexture("textures/debug.png");
+
     float[] vertices = [
         -0.5f,  0.5f, 0.0f,
         -0.5f, -0.5f, 0.0f,
@@ -102,7 +104,8 @@ void main() {
 
     // An "alive" mesh
     // Mesh thisMesh = Mesh(vertices, indices, textureCoordinates);
-    
+
+    GLenum glErrorInfo = 0;
 
     while(!gameWindowShouldClose()) {
 
@@ -157,11 +160,8 @@ void main() {
 
         glUniformMatrix4fv(getShader("main").getUniform("objectMatrix"),1, GL_FALSE, floatBuffer2.ptr);
 
-
-        getShader("main").setUniform("textureSampler", 0);
-
         // An "alive" mesh
-        Mesh thisMesh = Mesh(vertices, indices, textureCoordinates);
+        Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, "textures/debug.png");
         thisMesh.render();
 
         // A "dead" mesh
