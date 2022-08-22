@@ -123,6 +123,10 @@ struct Mesh {
             return;
         }
 
+        // Might not need to bind here
+        // It does not create a GL error though
+        glBindVertexArray(this.vao);
+
         glDisableVertexAttribArray(0);
 
         // Delete the positions vbo
