@@ -34,8 +34,10 @@ void main() {
 
     layout (location = 0) in vec3 position;
     layout (location = 1) in vec2 textureCoordinate;
+    layout (location = 2) in vec3 color;
 
     out vec2 outputTextureCoordinate;
+    out vec3 outputColor;
 
     uniform mat4 cameraMatrix;
     uniform mat4 objectMatrix;
@@ -44,19 +46,21 @@ void main() {
     {
         gl_Position = cameraMatrix * objectMatrix * vec4(position, 1.0);
         outputTextureCoordinate = textureCoordinate;
+        outputColor = color;
     }";
 
     string fragmentShaderCode = "
     #version 410 core
 
     in vec2 outputTextureCoordinate;
+    in vec3 outputColor;
     out vec4 fragColor;
 
     uniform sampler2D textureSampler;
 
     void main()
     {
-        fragColor = texture(textureSampler, outputTextureCoordinate);
+        fragColor = texture(textureSampler, outputTextureCoordinate) * vec4(outputColor, 1.0);
     }";
 
     createGLShaderProgram(
