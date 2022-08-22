@@ -7,7 +7,7 @@ import image;
 
 // Unlike meshes, textures never go out of scope until the program ends
 // Automatically deletes when the program ends
-Texture[string] container;
+private Texture[string] container;
 
 uint getTexture(string name) {
     return container[name].id;
