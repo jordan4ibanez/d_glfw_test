@@ -10,9 +10,10 @@ private Vector2d vector      = Vector2d(0,0);
 void mouseCallback(Vector2d newPosition) {
     writeln("mouse is at: ", newPosition);
     vector = Vector2d(
-        oldPosition.x - newPosition.x,
-        oldPosition.y - newPosition.y
+        newPosition.x - oldPosition.x,
+        newPosition.y - oldPosition.y
     );
     writeln("the mouse vector is: ", vector);
     position = newPosition;
+    oldPosition = newPosition;
 }
