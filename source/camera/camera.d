@@ -37,7 +37,7 @@ void updateAspectRatio() {
     cameraMatrix = Matrix4d().identity().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
 }
 
-Matrix4d getCameraMatrix () {
+Matrix4d getCameraMatrix() {
     return cameraMatrix;
 }
 
