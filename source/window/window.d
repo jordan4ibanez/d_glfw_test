@@ -159,3 +159,7 @@ void lockMouse() {
 void unlockMouse() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 }
+
+void setMousePosition(double x, double y) {
+    glfwSetCursorPos(window, x, y);
+}
