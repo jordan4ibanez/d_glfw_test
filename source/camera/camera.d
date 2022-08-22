@@ -18,7 +18,6 @@ private double FOV = Math.toRadians(60.0);
 
 // Never set this to 0 :P
 private immutable double Z_NEAR = 0.00001;
-
 private immutable double Z_FAR = 10_000.0;
 
 private Vector3d clearColor = Vector3d(0,0,0);
@@ -118,10 +117,11 @@ void rotationLimiter(){
     }
 }
 
-void addRotation(Vector3d rotationModification) {
+void moveRotation(Vector3d rotationModification) {
     rotation.x += rotationModification.x;
     rotation.y += rotationModification.y;
     rotation.z += rotationModification.z;
+    rotationLimiter();
 }
 
 void setRotation(Vector3d newRotation) {
