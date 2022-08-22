@@ -147,3 +147,11 @@ bool gameInitializeGLFWComponents(string name) {
     // No error :)
     return false;
 }
+
+void glfwLockMouse() {
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void glfwUnlockMouse() {
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+}

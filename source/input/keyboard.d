@@ -4,6 +4,7 @@ import std.stdio;
 import bindbc.glfw;
 import std.conv: to;
 import window.window;
+import input.mouse;
 
 // Automate keyboard input across the entire board
 // Do this when not half awake
@@ -39,6 +40,12 @@ void keyCallback(int key, int scancode, int action, int mods){
         }
         case GLFW_KEY_ESCAPE: {
             closeWindow();
+            break;
+        }
+        case GLFW_KEY_LEFT_SHIFT: {
+            if (action == GLFW_PRESS) {
+                debugLockMouse();
+            }
             break;
         }
         default:{
