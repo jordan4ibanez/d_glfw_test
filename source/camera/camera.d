@@ -28,6 +28,7 @@ Matrix4d cameraMatrix = Matrix4d();
 Matrix4d objectMatrix = Matrix4d();
 
 Vector3d position = Vector3d(0,0,1);
+Vector3d rotation = Vector3d(0,0,0);
 
 double aspectRatio = 0;
 
