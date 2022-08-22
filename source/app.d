@@ -91,7 +91,7 @@ void main() {
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
     writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
 
-    glfwSwapInterval(2);
+    glfwSwapInterval(1);
 
     double clock = 0.0;
 
@@ -110,10 +110,12 @@ void main() {
     while(!gameWindowShouldClose()) {
 
         // Game load simulation
+        /*
         int q = 0;
         for (int i = 0; i < 1_000_000; i++) {
             q += q + 1 * 2;
         }
+        */
 
         updateCamera();
 
