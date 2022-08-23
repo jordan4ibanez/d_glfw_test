@@ -72,7 +72,7 @@ it does 3 things:
 */
 void setObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
     objectMatrix.identity()
-        .translate(offset)
+        .translate(-position.x + offset.x, -position.y + offset.y, -position.z + offset.z)
         .rotateX(Math.toRadians(rotation.x))
         .rotateY(Math.toRadians(rotation.y))
         .rotateZ(Math.toRadians(rotation.z))
@@ -98,8 +98,7 @@ void updateCameraMatrix() {
     cameraMatrix.identity()
         .perspective(FOV, aspectRatio, Z_NEAR, Z_FAR)
         .rotateX(Math.toRadians(rotation.x))
-        .rotateY(Math.toRadians(rotation.y))
-        .translate(-position.x, -position.y, -position.z);
+        .rotateY(Math.toRadians(rotation.y));
     float[16] floatBuffer = cameraMatrix.getFloatArray();
     glUniformMatrix4fv(mainShader.getUniform("cameraMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
