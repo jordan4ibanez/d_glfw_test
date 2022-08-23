@@ -12,6 +12,7 @@ import std.conv: to;
 import vector_3d;
 import mesh.mesh;
 import mesh.texture;
+import openal.al_interface;
 
 import Math = math;
 import loader = bindbc.loader.sharedlib;
@@ -21,6 +22,7 @@ import opengl.shaders;
 
 void main() {
 
+    // Window acts as a static class handler for GLFW & game window
     if (Window.initializeGLFWComponents("Crafter Engine 0.0.0")) {
         return;
     }
@@ -28,7 +30,12 @@ void main() {
     // GL init is purely functional
     if(initializeOpenGL()) {
         return;
-    }  
+    }
+
+    // al_interface acts like a static class handler for all of OpenAL Soft
+    if (initializeOpenAL()){
+        return;
+    }
     
 
     createShaderProgram(
