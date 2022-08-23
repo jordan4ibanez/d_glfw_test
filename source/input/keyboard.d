@@ -11,10 +11,12 @@ import Window = window.window;
 // Do this when not half awake
 //bool[int] keyboardInput;
 
-private bool left = false;
-private bool right = false;
+private bool left    = false;
+private bool right   = false;
 private bool forward = false;
-private bool back = false;
+private bool back    = false;
+private bool up      = false;
+private bool down    = false;
 
 private bool quickSwitch(int input) {
     return input > 0;
@@ -39,17 +41,28 @@ void keyCallback(int key, int scancode, int action, int mods){
             back = quickSwitch(action);
             break;
         }
+        case GLFW_KEY_LEFT_SHIFT: {
+            down = quickSwitch(action);
+            break;
+        }
+        case GLFW_KEY_SPACE: {
+            up = quickSwitch(action);
+            break;
+        }
+
         case GLFW_KEY_ESCAPE: {
             Window.close();
             break;
         }
-        case GLFW_KEY_LEFT_SHIFT: {
+        case GLFW_KEY_LEFT_CONTROL: {
             if (action == GLFW_PRESS) {
                 Window.setMousePosition(0,0);
                 Mouse.debugLockMouse();
             }
             break;
         }
+
+
         default:{
             writeln("YOU HIT THE WRONG BUTTON");
         }
@@ -67,4 +80,10 @@ bool getForward() {
 }
 bool getBack() {
     return back;
+}
+bool getUp() {
+    return up;
+}
+bool getDown() {
+    return down;
 }

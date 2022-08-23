@@ -50,6 +50,12 @@ void testCameraHackRemoveThis() {
         modifier.x -= getDelta() * 10;
     }
 
+    if (Keyboard.getUp()){
+        modifier.y += getDelta() * 10;
+    } else if (Keyboard.getDown()) {
+        modifier.y -= getDelta() * 10;
+    }
+
     movePosition(modifier);
 }
 
@@ -104,7 +110,7 @@ void clear() {
 }
 
 void setClearColor(double r, double g, double b) {
-    clearColor = Vector3d(r,g,b);
+    clearColor = Vector3d(r,g,b);    
 }
 
 void setFOV(double newFOV) {
