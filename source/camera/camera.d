@@ -73,10 +73,10 @@ it does 3 things:
 void setObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
     objectMatrix.identity()
         .translate(-position.x + offset.x, -position.y + offset.y, -position.z + offset.z)
+        .scale(scale)
         .rotateX(Math.toRadians(rotation.x))
         .rotateY(Math.toRadians(rotation.y))
-        .rotateZ(Math.toRadians(rotation.z))
-        .scale(scale);
+        .rotateZ(Math.toRadians(rotation.z));
     float[16] floatBuffer = objectMatrix.getFloatArray();
     glUniformMatrix4fv(getShader("main").getUniform("objectMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
