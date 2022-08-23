@@ -171,13 +171,9 @@ void main() {
         // This is only to be called ONCE, unless switching to ortholinear view
         Camera.updateCameraMatrix();
 
-        // This needs to be called EVERY TIME an object is rendered
-        // If it is not, weird things could happen
-        Camera.setObjectMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
-
         // Finally the mesh will be rendered, GLSL will automatically
         // Move the fragments into the correct position based on the matrices
-        thisMesh.render();
+        thisMesh.render(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
 
         Window.swapBuffers();
 

@@ -4,8 +4,10 @@ import std.stdio;
 import bindbc.opengl;
 import bindbc.glfw;
 import mesh.texture;
-
 import opengl.shaders;
+import vector_3d;
+
+import Camera = camera.camera;
 
 private immutable bool debugNow = false;
 
@@ -197,7 +199,7 @@ struct Mesh {
         }
     }
 
-    void render() {
+    void render(Vector3d offset, Vector3d rotation, float scale) {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
@@ -210,6 +212,8 @@ struct Mesh {
         getShader("main").setUniform("textureSampler", 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, this.textureID);
+
+        Camera.setObjectMatrix(offset, rotation, scale);
 
         glBindVertexArray(this.vao);
         // glDrawArrays(GL_TRIANGLES, 0, this.indexCount);
@@ -230,10 +234,4 @@ struct Mesh {
             writeln("Mesh ", this.vao, " has rendered successfully ");
         }
     }
-}
-
-// A duplicate function that inverses the call in case
-// it's ever easier to render it like that for some reason
-void renderMesh(Mesh thisMesh) {
-    thisMesh.render();
 }
