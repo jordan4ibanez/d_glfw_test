@@ -4,9 +4,12 @@
 Currently in prototyping state.
 
 
+Ubuntu:
 ```
-Install glfw-dev:
-
 sudo apt install libglfw3-dev
+```
 
+Fedora:
+```
+sudo dnf install glfw
 ```
