@@ -111,13 +111,7 @@ void main() {
 
     int fpsCounter = 1;
 
-    float scaler = 0.0;
-    bool up = true;    
-
     setMaxDeltaFPS(10);
-
-    float rave = 0;
-    bool raveUp = true;
 
     // An "alive" mesh
     // Mesh thisMesh = Mesh(vertices, indices, textureCoordinates);
@@ -140,37 +134,7 @@ void main() {
 
         double delta = getDelta();
 
-        if (raveUp) {
-            rave += delta / 2.0;
-            if (rave > 1) {
-                rave = 1.0;
-                raveUp = false;
-            }
-        } else {
-            rave -= delta / 2.0;
-            if (rave < 0) {
-                rave = 0.0;
-                raveUp = true;
-            }
-        }
-
-        if (up) {
-            scaler += delta * 100;
-            if (scaler > 45) {
-                up = false;
-            }
-        } else {
-            scaler -= delta * 100;
-            if (scaler < -45) {
-                up = true;
-            }
-        }
-
-        double videoColor = Math.abs(rave - 1);
-
-        Camera.setClearColor(videoColor,videoColor,videoColor);
-
-        // writeln("scaler: ", scaler);
+        Camera.setClearColor(1,1,1);
 
         clock += delta;
 
@@ -196,10 +160,7 @@ void main() {
 
         // Finally the mesh will be rendered, GLSL will automatically
         // Move the fragments into the correct position based on the matrices
-        thisMesh.render(Vector3d(10,0,-10),Vector3d(0,scaler,0), rave, rave);
-        thisMesh.render(Vector3d(10,0,-10),Vector3d(0,scaler,0), 1, 1);
-        thisMesh.render(Vector3d(10,0,-10),Vector3d(0,0,0), rave, rave);
-        thisMesh.render(Vector3d(10,0,-10),Vector3d(0,0,0), 1, 1);
+        thisMesh.render(Vector3d(0,0,0),Vector3d(0,0,0), 1, 1);
         
 
         Window.swapBuffers();
