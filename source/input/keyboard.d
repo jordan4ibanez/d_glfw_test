@@ -56,7 +56,7 @@ void keyCallback(int key, int scancode, int action, int mods){
         }
         case GLFW_KEY_LEFT_CONTROL: {
             if (action == GLFW_PRESS) {
-                Window.setMousePosition(0,0);
+                Window.centerMouse();
                 Mouse.debugLockMouse();
             }
             break;

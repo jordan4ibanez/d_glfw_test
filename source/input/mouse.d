@@ -21,8 +21,8 @@ void mouseCallback(Vector2d newPosition) {
 
     if (locked) {
         vector = Vector2d(
-            newPosition.x,
-            newPosition.y
+            newPosition.x - oldPosition.x,
+            newPosition.y - oldPosition.y
         );
         Camera.moveRotation(Vector3d(
             // These are inverted because y is the yaw and x is the pitch
@@ -31,7 +31,7 @@ void mouseCallback(Vector2d newPosition) {
             0
         ));
 
-        Window.setMousePosition(0,0);
+        newPosition = Window.centerMouse();
     }
 
     position = newPosition;
@@ -66,4 +66,9 @@ void debugLockMouse() {
             locked = false;
         } // Don't send out another callback to C
     }
+}
+
+// This allows me to stop the jolt when the mouse moves after being locked
+void setOldPosition(Vector2d newOldPosition) {
+    oldPosition = newOldPosition;
 }

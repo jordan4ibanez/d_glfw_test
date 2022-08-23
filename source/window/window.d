@@ -153,6 +153,7 @@ bool initializeGLFWComponents(string name) {
 }
 
 void lockMouse() {
+    Mouse.setOldPosition(Vector2d(size.x / 2.0, size.y / 2.0));
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 }
 
@@ -162,4 +163,16 @@ void unlockMouse() {
 
 void setMousePosition(double x, double y) {
     glfwSetCursorPos(window, x, y);
+}
+
+Vector2d centerMouse() {
+    double x = size.x / 2.0;
+    double y = size.y / 2.0;
+    glfwSetCursorPos(
+        window,
+        x,
+        y
+    );
+
+    return Vector2d(x,y);
 }
