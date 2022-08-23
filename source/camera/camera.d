@@ -116,9 +116,15 @@ double getFOV() {
 }
 
 void movePosition(Vector3d positionModification) {
-    position.x += positionModification.x;
+    if ( positionModification.z != 0 ) {
+        position.x += -Math.sin(Math.toRadians(rotation.y)) * positionModification.z;
+        position.z += Math.cos(Math.toRadians(rotation.y)) * positionModification.z;
+    }
+    if ( positionModification.x != 0) {
+        position.x += -Math.sin(Math.toRadians(rotation.y - 90)) * positionModification.x;
+        position.z += Math.cos(Math.toRadians(rotation.y - 90)) * positionModification.x;
+    }
     position.y += positionModification.y;
-    position.z += positionModification.z;
 }
 
 void setPosition(Vector3d newCameraPosition){
