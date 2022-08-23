@@ -80,11 +80,9 @@ void updateCameraMatrix() {
     GameShader mainShader = getShader("main");
     cameraMatrix.identity()
         .perspective(FOV, aspectRatio, Z_NEAR, Z_FAR)
-        // These are inverted because yaw is the y axis and pitch is the x axis        
-        .rotate(Math.toRadians(rotation.x), 1,0,0)
-        .rotate(Math.toRadians(rotation.y), 0,1,0)
+        .rotateX(Math.toRadians(rotation.x))
+        .rotateY(Math.toRadians(rotation.y))
         .translate(-position.x, -position.y, -position.z);
-    writeln(position.x);
     float[16] floatBuffer = cameraMatrix.getFloatArray();
     glUniformMatrix4fv(mainShader.getUniform("cameraMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
