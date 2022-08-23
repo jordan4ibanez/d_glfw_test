@@ -53,6 +53,17 @@ void testCameraHackRemoveThis() {
     movePosition(modifier);
 }
 
+/*
+This is where the object get's it's render point
+
+it does 3 things:
+
+1. Calculates it's position in 4d space
+
+2. Uploads the matrix to glsl
+
+3. glsl will multiply this matrix by the camera's matrix, giving a usable position
+*/
 void setObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
     objectMatrix.identity()
         .translate(offset)
