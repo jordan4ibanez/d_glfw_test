@@ -25,6 +25,7 @@ private Vector3d clearColor = Vector3d(0,0,0);
 private Matrix4d cameraMatrix = Matrix4d();
 private Matrix4d objectMatrix = Matrix4d();
 
+// Set at x:0, y:0 z:1 so I can see the "center of the 4d world"
 private Vector3d position = Vector3d(0,0,1);
 private Vector3d rotation = Vector3d(0,0,0); 
 
