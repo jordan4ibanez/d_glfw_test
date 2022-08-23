@@ -104,13 +104,13 @@ void updateCameraMatrix() {
     glUniformMatrix4fv(mainShader.getUniform("cameraMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
 
-void clear() {
-    glClearColor(clearColor.x,clearColor.y,clearColor.z,1);
+void clear() {    
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
 void setClearColor(double r, double g, double b) {
-    clearColor = Vector3d(r,g,b);    
+    clearColor = Vector3d(r,g,b);
+    glClearColor(clearColor.x,clearColor.y,clearColor.z,1);
 }
 
 void setFOV(double newFOV) {
