@@ -199,7 +199,7 @@ struct Mesh {
         }
     }
 
-    void render(Vector3d offset, Vector3d rotation, float scale) {
+    void render(Vector3d offset, Vector3d rotation, float scale, float light) {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {
@@ -209,7 +209,9 @@ struct Mesh {
             return;
         }
 
-        getShader("main").setUniform("textureSampler", 0);
+        getShader("main").setUniformI("textureSampler", 0);
+        getShader("main").setUniformF("light", light);
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, this.textureID);
 
