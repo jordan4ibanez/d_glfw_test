@@ -39,21 +39,21 @@ void testCameraHackRemoveThis() {
     Vector3d modifier = Vector3d(0,0,0);
 
     if(Keyboard.getForward()){
-        modifier.z -= getDelta() * 1;
+        modifier.z -= getDelta() * 10;
     } else if (Keyboard.getBack()) {
-        modifier.z += getDelta() * 1;
+        modifier.z += getDelta() * 10;
     }
 
     if(Keyboard.getLeft()){
-        modifier.x += getDelta() * 1;
+        modifier.x += getDelta() * 10;
     } else if (Keyboard.getRight()) {
-        modifier.x -= getDelta() * 1;
+        modifier.x -= getDelta() * 10;
     }
 
     if (Keyboard.getUp()){
-        modifier.y += getDelta() * 1;
+        modifier.y += getDelta() * 10;
     } else if (Keyboard.getDown()) {
-        modifier.y -= getDelta() * 1;
+        modifier.y -= getDelta() * 10;
     }
 
     movePosition(modifier);
