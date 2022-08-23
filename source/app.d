@@ -197,7 +197,7 @@ void main() {
         // Finally the mesh will be rendered, GLSL will automatically
         // Move the fragments into the correct position based on the matrices
         for (int i = 0; i < 100; i++){
-            thisMesh.render(Vector3d(i,0,-1),Vector3d(0,scaler,0), rave, rave);
+            thisMesh.render(Vector3d(i,0,i),Vector3d(0,0,0), rave, rave);
         }
 
         Window.swapBuffers();

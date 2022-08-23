@@ -39,21 +39,21 @@ void testCameraHackRemoveThis() {
     Vector3d modifier = Vector3d(0,0,0);
 
     if(Keyboard.getForward()){
-        modifier.z -= getDelta() * 10;
+        modifier.z -= getDelta() * 1;
     } else if (Keyboard.getBack()) {
-        modifier.z += getDelta() * 10;
+        modifier.z += getDelta() * 1;
     }
 
     if(Keyboard.getLeft()){
-        modifier.x += getDelta() * 10;
+        modifier.x += getDelta() * 1;
     } else if (Keyboard.getRight()) {
-        modifier.x -= getDelta() * 10;
+        modifier.x -= getDelta() * 1;
     }
 
     if (Keyboard.getUp()){
-        modifier.y += getDelta() * 10;
+        modifier.y += getDelta() * 1;
     } else if (Keyboard.getDown()) {
-        modifier.y -= getDelta() * 10;
+        modifier.y -= getDelta() * 1;
     }
 
     movePosition(modifier);
@@ -73,10 +73,10 @@ it does 3 things:
 void setObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
     objectMatrix.identity()
         .translate(-position.x + offset.x, -position.y + offset.y, -position.z + offset.z)
-        .scale(scale)
         .rotateX(Math.toRadians(rotation.x))
         .rotateY(Math.toRadians(rotation.y))
-        .rotateZ(Math.toRadians(rotation.z));
+        .rotateZ(Math.toRadians(rotation.z))
+        .scale(scale);
     float[16] floatBuffer = objectMatrix.getFloatArray();
     glUniformMatrix4fv(getShader("main").getUniform("objectMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
