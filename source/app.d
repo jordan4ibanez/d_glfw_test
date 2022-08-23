@@ -58,10 +58,11 @@ void main() {
     out vec4 fragColor;
 
     uniform sampler2D textureSampler;
+    uniform float light;
 
     void main()
     {
-        fragColor = texture(textureSampler, outputTextureCoordinate) * vec4(outputColor, 1.0);
+        fragColor = texture(textureSampler, outputTextureCoordinate) * vec4(outputColor, 1.0) * light;
     }";
 
     createShaderProgram(
@@ -71,7 +72,8 @@ void main() {
         [
             "cameraMatrix",
             "objectMatrix",
-            "textureSampler"
+            "textureSampler",
+            "light"
         ]
     );   
 
@@ -114,6 +116,9 @@ void main() {
 
     setMaxDeltaFPS(10);
 
+    float rave = 0;
+    bool raveUp = true;
+
     // An "alive" mesh
     // Mesh thisMesh = Mesh(vertices, indices, textureCoordinates);
 
@@ -134,6 +139,22 @@ void main() {
         calculateDelta();
 
         double delta = getDelta();
+
+        writeln(rave);
+
+        if (raveUp) {
+            rave += delta;
+            if (rave > 1) {
+                rave = 1.0;
+                raveUp = false;
+            }
+        } else {
+            rave -= delta;
+            if (rave < 0) {
+                rave = 0.0;
+                raveUp = true;
+            }
+        }
 
         if (up) {
             scaler += delta * 100;
@@ -173,7 +194,9 @@ void main() {
 
         // Finally the mesh will be rendered, GLSL will automatically
         // Move the fragments into the correct position based on the matrices
-        thisMesh.render(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
+        for (int i = 0; i < 100; i++){
+            thisMesh.render(Vector3d(i,0,-1),Vector3d(0,scaler,0), 1.0, rave);
+        }
 
         Window.swapBuffers();
 
