@@ -140,8 +140,6 @@ void main() {
 
         double delta = getDelta();
 
-        writeln(rave);
-
         if (raveUp) {
             rave += delta;
             if (rave > 1) {
