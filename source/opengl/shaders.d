@@ -2,6 +2,7 @@ module opengl.shaders;
 
 import bindbc.opengl;
 import std.stdio;
+import std.file: read;
 
 private GameShader[string] container;
 
@@ -123,10 +124,13 @@ private uint compileShader(string name, string sourceCode, uint shaderType) {
 
 void createShaderProgram(
     string shaderName,
-    string vertexShaderCode,
-    string fragmentShaderCode,
+    string vertexShaderLocation,
+    string fragmentShaderLocation,
     string[] uniforms
     ) {
+
+    string vertexShaderCode = cast(string)read(vertexShaderLocation);
+    string fragmentShaderCode = cast(string)read(fragmentShaderLocation);
 
     uint vertexShader = compileShader(shaderName, vertexShaderCode, GL_VERTEX_SHADER);
     uint fragmentShader = compileShader(shaderName, fragmentShaderCode, GL_FRAGMENT_SHADER);
