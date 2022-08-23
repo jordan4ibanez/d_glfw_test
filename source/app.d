@@ -131,8 +131,6 @@ void main() {
         }
         */
 
-        Camera.updateAspectRatio();
-
         calculateDelta();
 
         double delta = getDelta();
@@ -171,21 +169,18 @@ void main() {
         // Rendering goes here
         glUseProgram(getShader("main").shaderProgram);
 
+        Camera.testCameraHackRemoveThis();
+
+        // This is only to be called ONCE, unless switching to ortholinear view
         Camera.updateCameraMatrix();
 
-        Matrix4d test2 = Camera.getObjectMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
-        float[16] floatBuffer2 = test2.getFloatArray();
-        // writeln(floatBuffer2);
+        // This needs to be called EVERY TIME an object is rendered
+        // If it is not, weird things could happen
+        Camera.setObjectMatrix(Vector3d(0,0,-1),Vector3d(0,scaler,0), 1.0);
 
-        glUniformMatrix4fv(getShader("main").getUniform("objectMatrix"),1, GL_FALSE, floatBuffer2.ptr);
-
-        // An "alive" mesh
-        // Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
+        // Finally the mesh will be rendered, GLSL will automatically
+        // Move the fragments into the correct position based on the matrices
         thisMesh.render();
-
-        // A "dead" mesh
-        // Mesh ghostMesh = Mesh();
-        // ghostMesh.render();
 
         Window.swapBuffers();
 

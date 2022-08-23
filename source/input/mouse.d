@@ -11,7 +11,7 @@ private Vector2d oldPosition = Vector2d(0,0);
 private Vector2d position    = Vector2d(0,0);
 private Vector2d vector      = Vector2d(0,0);
 
-private double sensitivity   = 0.001;
+private double sensitivity   = 0.1;
 
 private bool locked = false;
 
@@ -25,8 +25,9 @@ void mouseCallback(Vector2d newPosition) {
             newPosition.y
         );
         Camera.moveRotation(Vector3d(
-            vector.x * sensitivity,
+            // These are inverted because y is the yaw and x is the pitch
             vector.y * sensitivity,
+            vector.x * sensitivity,
             0
         ));
 

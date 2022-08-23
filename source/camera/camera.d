@@ -30,18 +30,11 @@ private Vector3d rotation = Vector3d(0,0,0);
 
 private double aspectRatio = 0;
 
-void updateAspectRatio() {
-    aspectRatio = Window.getAspectRatio();
-    // writeln("aspect ratio is: ", aspectRatio);
-    cameraMatrix = Matrix4d().identity().perspective(FOV, aspectRatio, Z_NEAR, Z_FAR);
-}
-
 Matrix4d getCameraMatrix() {
     return cameraMatrix;
 }
 
-Matrix4d getObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
-
+void testCameraHackRemoveThis() {
     // This is an extreme hack for testing remove this garbage
     Vector3d modifier = Vector3d(0,0,0);
 
@@ -58,22 +51,41 @@ Matrix4d getObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
     }
 
     movePosition(modifier);
-
-    objectMatrix.identity().translate(offset).
-        rotateX(Math.toRadians(rotation.x)).
-        rotateY(Math.toRadians(rotation.y)).
-        rotateZ(Math.toRadians(rotation.z)).
-        scale(scale);
-    return objectMatrix;
 }
 
+void setObjectMatrix(Vector3d offset, Vector3d rotation, float scale) {
+    objectMatrix.identity()
+        .translate(offset)
+        .rotateX(Math.toRadians(rotation.x))
+        .rotateY(Math.toRadians(rotation.y))
+        .rotateZ(Math.toRadians(rotation.z))
+        .scale(scale);
+    float[16] floatBuffer = objectMatrix.getFloatArray();
+    glUniformMatrix4fv(getShader("main").getUniform("objectMatrix"),1, GL_FALSE, floatBuffer.ptr);
+}
+
+/*
+This is where the camera gets it's viewpoint for the frame
+
+it does 3 things:
+
+1. Calculates and sets it's aspect ratio from the window
+
+2. Calculates it's position in 4d space, and locks it in place
+
+3. It updates GLSL so it can work with it
+*/
 void updateCameraMatrix() {
+    aspectRatio = Window.getAspectRatio();
     GameShader mainShader = getShader("main");
-    Matrix4d stackWorkerMatrix = getCameraMatrix()
-        .rotate(rotation.x, 0,1,0)
-        .rotate(rotation.y, 1,0,0)
+    cameraMatrix.identity()
+        .perspective(FOV, aspectRatio, Z_NEAR, Z_FAR)
+        // These are inverted because yaw is the y axis and pitch is the x axis        
+        .rotate(Math.toRadians(rotation.x), 1,0,0)
+        .rotate(Math.toRadians(rotation.y), 0,1,0)
         .translate(-position.x, -position.y, -position.z);
-    float[16] floatBuffer = stackWorkerMatrix.getFloatArray();
+    writeln(position.x);
+    float[16] floatBuffer = cameraMatrix.getFloatArray();
     glUniformMatrix4fv(mainShader.getUniform("cameraMatrix"),1, GL_FALSE, floatBuffer.ptr);
 }
 
@@ -116,9 +128,9 @@ void rotationLimiter(){
     }
     // Yaw overflower
     if (rotation.y > 180) {
-        rotation.y -= 180.0;
+        rotation.y -= 360.0;
     } else if (rotation.y < -180) {
-        rotation.y += 180.0;
+        rotation.y += 360.0;
     }
 }
 
