@@ -64,7 +64,7 @@ void close() {
 }
 
 // Returns true if there was an error
-private bool startGLFW() {
+private bool initializeGLFW() {
 
     GLFWSupport returnedError;
     
@@ -107,7 +107,7 @@ private bool startGLFW() {
 bool initializeGLFWComponents(string name) {
 
     // Something fails to load
-    if (startGLFW()) {
+    if (initializeGLFW()) {
         return true;
     }
 
