@@ -129,6 +129,7 @@ void createShaderProgram(
     string[] uniforms
     ) {
 
+    // The game cannot run without shaders, allow this to crash program
     string vertexShaderCode = cast(string)read(vertexShaderLocation);
     string fragmentShaderCode = cast(string)read(fragmentShaderLocation);
 
