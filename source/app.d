@@ -141,13 +141,13 @@ void main() {
         double delta = getDelta();
 
         if (raveUp) {
-            rave += delta;
+            rave += delta / 2.0;
             if (rave > 1) {
                 rave = 1.0;
                 raveUp = false;
             }
         } else {
-            rave -= delta;
+            rave -= delta / 2.0;
             if (rave < 0) {
                 rave = 0.0;
                 raveUp = true;
@@ -165,6 +165,10 @@ void main() {
                 up = true;
             }
         }
+
+        double videoColor = Math.abs(rave - 1);
+
+        Camera.setClearColor(videoColor,videoColor,videoColor);
 
         // writeln("scaler: ", scaler);
 
