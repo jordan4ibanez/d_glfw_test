@@ -161,10 +161,7 @@ void main() {
 
         Camera.clear();        
 
-        // It is extremely important to clear the buffer bit!
-        // Put this into the camera, camera controls all rendering
-        // It's the gl movie studio basically
-        glClear(GL_DEPTH_BUFFER_BIT);
+        Camera.clearDepthBuffer();
 
         // Rendering goes here
         glUseProgram(getShader("main").shaderProgram);

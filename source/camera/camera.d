@@ -108,6 +108,11 @@ void clear() {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
+// It is extremely important to clear the buffer bit!
+void clearDepthBuffer() {
+    glClear(GL_DEPTH_BUFFER_BIT);
+}
+
 void setClearColor(double r, double g, double b) {
     clearColor = Vector3d(r,g,b);
     glClearColor(clearColor.x,clearColor.y,clearColor.z,1);
