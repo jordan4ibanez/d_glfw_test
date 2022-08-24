@@ -2,14 +2,14 @@
 	"fileVersion": 1,
 	"versions": {
 		"arsd-official": "10.8.4",
+		"audio-formats": "1.5.3",
 		"bindbc-glfw": "1.0.1",
 		"bindbc-loader": "1.0.1",
 		"bindbc-openal": "1.0.0",
 		"bindbc-opengl": "1.0.2",
 		"delta_time": "1.0.5",
-		"derelict-ogg": "1.0.3",
-		"derelict-util": "2.0.6",
-		"derelict-vorbis": "1.0.4",
-		"doml": "0.0.4"
+		"doml": "0.0.4",
+		"dplug": "12.7.12",
+		"intel-intrinsics": "1.10.2"
 	}
 }
