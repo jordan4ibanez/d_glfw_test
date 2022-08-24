@@ -10,6 +10,7 @@
 		"delta_time": "1.0.5",
 		"doml": "0.0.4",
 		"dplug": "12.7.12",
-		"intel-intrinsics": "1.10.2"
+		"intel-intrinsics": "1.10.2",
+		"stb_vorbis": "1.0.0"
 	}
 }

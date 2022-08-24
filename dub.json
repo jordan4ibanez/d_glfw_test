@@ -5,12 +5,12 @@
 	"copyright": "Copyright © 2022, jordan4ibanez",
 	"dependencies": {
 		"arsd-official:image_files": "~>10.8.4",
-		"audio-formats": "~>1.5.3",
 		"bindbc-glfw": "~>1.0.1",
 		"bindbc-openal": "~>1.0.0",
 		"bindbc-opengl": "~>1.0.2",
 		"delta_time": "~>1.0.2",
-		"doml": "~>0.0.3"
+		"doml": "~>0.0.3",
+		"stb_vorbis": "~>1.0.0"
 	},
 	"description": "A learning experience for GLFW in D",
 	"license": "MIT",
