@@ -2,6 +2,7 @@ module openal.al_interface;
 
 import bindbc.openal;
 import std.stdio;
+import stb_vorbis;
 
 /*
 This is utilizing OpenAL Soft for maximum compatibility.
@@ -36,6 +37,21 @@ bool initializeOpenAL() {
     }
 
     writeln("OpenAL initialized successfully!");
+
+
+    string inputPath = "sounds/button.ogg";
+    VorbisDecoder vorbisHandler = VorbisDecoder(inputPath);
+
+    writeln("SampleRate:", vorbisHandler.sampleRate());
+    writeln("Channels: ", vorbisHandler.chans());
+    writeln("", );
+    writeln("", );
+    writeln("", );
+
+    writeln(vorbisHandler.opened());
+
+
+
     // No errors
     return false;
 }
