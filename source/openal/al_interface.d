@@ -44,11 +44,18 @@ bool initializeOpenAL() {
 
     writeln("SampleRate:", vorbisHandler.sampleRate());
     writeln("Channels: ", vorbisHandler.chans());
-    writeln("", );
-    writeln("", );
+    writeln("Length (seconds): ", vorbisHandler.streamLengthInSeconds());
+    writeln("Length (samples): ", vorbisHandler.streamLengthInSamples());
+    writeln("Max Frame Size: ", vorbisHandler.maxFrameSize());
     writeln("", );
 
-    writeln(vorbisHandler.opened());
+    float[] pcm;
+
+    vorbisHandler.seekFrame(0);    
+
+    writeln(pcm);
+
+    writeln("File is open: ",vorbisHandler.opened());
 
 
 
