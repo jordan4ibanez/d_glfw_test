@@ -12,7 +12,7 @@ import std.conv: to;
 import vector_3d;
 import mesh.mesh;
 import mesh.texture;
-import openal.al_interface;
+import OpenAL = openal.al_interface;
 
 import Math = math;
 import loader = bindbc.loader.sharedlib;
@@ -32,8 +32,8 @@ void main() {
         return;
     }
 
-    // al_interface acts like a static class handler for all of OpenAL Soft
-    if (initializeOpenAL()){
+    // OpenAL acts like a static class handler for all of OpenAL Soft
+    if (OpenAL.initializeOpenAL()){
         return;
     }
     
