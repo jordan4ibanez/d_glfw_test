@@ -36,6 +36,12 @@ void main() {
     if (OpenAL.initializeOpenAL()){
         return;
     }
+
+    bool testMe = true;
+
+    if (testMe) {
+        return;
+    }
     
 
     createShaderProgram(
