@@ -112,13 +112,19 @@ struct SoundBuffer {
         alBufferData(this.id, vorbisHandler.chans() == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, cast(const(void)*)pcm, cast(int)(pcm.length * short.sizeof), vorbisHandler.sampleRate());
         // Make sure nothing dumb is happening
         // debugOpenAL();
+        writeln("My sound buffer ID is: ", this.id);
         this.exists = true;
+    }
+
+    bool doesExist() {
+        return this.exists;
     }
 
     void cleanUp() {
         if (this.exists) {
             alDeleteBuffers(1, &this.id);
             writeln("cleaned up albuffer ", this.id);
+            this.exists = false;
         }
     }
 }
@@ -134,11 +140,19 @@ struct SoundSource {
         alSourcei(this.id,AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
         alSourcei(this.id, AL_SOURCE_RELATIVE, relative ? AL_TRUE : AL_FALSE);
         this.exists = true;
+        writeln("My sound source ID is: ", this.id);
+    }
+
+    bool doesExist() {
+        return this.exists;
     }
 
     void cleanUp() {
-        stop();
-        alDeleteSources(1, &this.id);
+        if (this.exists){
+            alDeleteSources(1, &this.id);
+            this.exists = false;
+            writeln("cleaned up sound source: ", this.id);
+        }
     }
 
     ALuint getID() {
