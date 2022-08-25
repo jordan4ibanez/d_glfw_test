@@ -17,6 +17,8 @@ This acts as a static factory class and will allow the whole program
 to easily access all OpenAL related components, safely.
 */
 
+private immutable bool debugNow = false;
+
 // We do not need that many buffers, this is WAY more than enough
 immutable int MAX_SOUNDS = 512;
 private SoundBuffer[MAX_SOUNDS] buffers      = new SoundBuffer[MAX_SOUNDS];
@@ -69,8 +71,10 @@ bool freeBuffers() {
             // Now they're both freed
             found = true;
 
-            writeln("deleted buffer,  ", thisSoundSource.getBuffer());
-            writeln("deleted sound source, ", i);
+            if (debugNow) {
+                writeln("deleted buffer,  ", thisSoundSource.getBuffer());
+                writeln("deleted sound source, ", i);
+            }
             break;
         }
     }
@@ -116,7 +120,9 @@ void updateListenerPosition() {
 
 void initializeListener() {
     listener = SoundListener(Vector3d(0,0,0));
-    writeln("OpenAL sound listener initialized");
+    if (debugNow) {
+        writeln("OpenAL sound listener initialized");
+    }
 }
 
 void cleanUpSoundManager() {
@@ -128,12 +134,16 @@ private void cleanSoundBuffers() {
     for (int i = 0; i < MAX_SOUNDS; i++) {
         buffers[i].cleanUp();
     }
-    writeln("Sound buffers are cleaned");
+    if (debugNow) {
+        writeln("Sound buffers are cleaned");
+    }
 }
 
 private void cleanSoundSources() {
     for (int i = 0; i < MAX_SOUNDS; i++) {
         soundSources[i].cleanUp();
     }
-    writeln("Sound sources are cleaned");
+    if (debugNow) {
+        writeln("Sound sources are cleaned");
+    }
 }
