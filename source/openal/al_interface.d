@@ -85,8 +85,7 @@ bool initializeOpenAL() {
     return false;
 }
 
-// Make this private
-struct Buffer {
+struct SoundBuffer {
 
     private bool exists = false;
     private ALuint id = 0;
@@ -137,7 +136,6 @@ struct Buffer {
 }
 
 
-// Make this private
 struct SoundSource {
     private bool exists = false;
     private ALuint id = 0;
