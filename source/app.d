@@ -158,7 +158,7 @@ void main() {
             fpsCounter = 0;
 
             // Random pitch
-            SoundManager.playSound("sounds/button.ogg",Vector3d(xPos,0,0), true);
+            SoundManager.playSound("sounds/cow_hurt_1.ogg",Vector3d(xPos,0,0), true);
         }
 
         // Finally the mesh will be rendered, GLSL will automatically
