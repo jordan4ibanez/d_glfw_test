@@ -9,7 +9,10 @@ import std.conv: to;
 This is utilizing OpenAL Soft for maximum compatibility.
 
 This acts as a static class/factory class and will allow the whole program
-to easily access all OpenAL related components, safely
+to easily access all OpenAL related components, safely.
+
+This will run through a sound api, as it's extremely tedious to juggle all
+the aspects of it throughout the program.
 */
 
 private void* context;
