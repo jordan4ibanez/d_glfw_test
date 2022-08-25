@@ -73,13 +73,13 @@ bool initializeOpenAL() {
     alcMakeContextCurrent(context);
 
     // Generate buffers
-    
     alGetError();
 
     // We don't need that many buffers
     alGenBuffers(256,buffers.ptr);
-    debugOpenAL();
 
+    // Make sure nothing dumb is happening
+    debugOpenAL();
 
     writeln("OpenAL initialized successfully!");
 
@@ -122,7 +122,8 @@ struct Buffer {
 
         alBufferData(this.id, vorbisHandler.chans() == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, cast(const(void)*)pcm, cast(int)(pcm.length * short.sizeof), vorbisHandler.sampleRate());
 
-        
+        // Make sure nothing dumb is happening
+        debugOpenAL();
     }
 }
 
@@ -155,4 +156,12 @@ void debugOpenAL() {
 
         assert(true == false);
     }
+}
+
+void cleanUpOpenAL() {
+    alcMakeContextCurrent(null);
+    alcDestroyContext(context);
+    alcCloseDevice(device);
+
+    writeln("OpenAL has successfully closed");
 }
