@@ -13,6 +13,8 @@ This is utilizing OpenAL Soft for maximum compatibility.
 This holds all OpenAL init, and structs for sound_manager to use.
 */
 
+private immutable bool debugNow = false;
+
 private void* context;
 private void* device;
 private string deviceName;
@@ -53,9 +55,10 @@ bool initializeOpenAL() {
         writeln("OPENAL NULL DEVICE!!");
         return true;
     }
-    
-    writeln("the AL device pointer: ", device);
-    writeln("the AL device name: ", deviceName);
+    if (debugNow) {
+        writeln("the AL device pointer: ", device);
+        writeln("the AL device name: ", deviceName);
+    }
 
     ALCint[] attributes = [
         ALC_MAJOR_VERSION, 1,
@@ -85,7 +88,9 @@ bool initializeOpenAL() {
 
     initializeListener();
 
-    writeln("OpenAL initialized successfully!");
+    if (debugNow) {
+        writeln("OpenAL initialized successfully!");
+    }
 
     // No errors
     return false;
@@ -135,8 +140,9 @@ struct SoundBuffer {
                 cacheSound.pcmLength,
                 cacheSound.sampleRate
             );
-
-            writeln("Loaded ", fileName, " from cache!");
+            if (debugNow) {
+                writeln("Loaded ", fileName, " from cache!");
+            }
         } else { // Load from disk and cache for next use
             VorbisDecoder vorbisHandler = VorbisDecoder(fileName);
             int streamLength = vorbisHandler.streamLengthInSamples();
@@ -157,10 +163,14 @@ struct SoundBuffer {
             );
             // Make sure nothing dumb is happening
             // debugOpenAL();
-            writeln("caching ", fileName, "!");
+            if (debugNow) {
+                writeln("caching ", fileName, "!");
+            }
             soundCache[fileName] = VorbisCache(pcm,pcmLength,channels,sampleRate);
         }
-        writeln("My sound buffer ID is: ", this.id);
+        if (debugNow) {
+            writeln("My sound buffer ID is: ", this.id);
+        }
         this.exists = true;
     }
 
@@ -171,7 +181,9 @@ struct SoundBuffer {
     void cleanUp() {
         if (this.exists) {
             alDeleteBuffers(1, &this.id);
-            writeln("cleaned up albuffer ", this.id);
+            if (debugNow) {
+                writeln("cleaned up albuffer ", this.id);
+            }
             this.exists = false;
         }
     }
@@ -188,7 +200,9 @@ struct SoundSource {
         alSourcei(this.id,AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
         alSourcei(this.id, AL_SOURCE_RELATIVE, relative ? AL_TRUE : AL_FALSE);
         this.exists = true;
-        writeln("My sound source ID is: ", this.id);
+        if (debugNow) {
+            writeln("My sound source ID is: ", this.id);
+        }
     }
 
     bool doesExist() {
@@ -199,7 +213,9 @@ struct SoundSource {
         if (this.exists){
             alDeleteSources(1, &this.id);
             this.exists = false;
-            writeln("cleaned up sound source: ", this.id);
+            if (debugNow) {
+                writeln("cleaned up sound source: ", this.id);
+            }
         }
     }
 
@@ -321,6 +337,7 @@ void cleanUpOpenAL() {
     alcMakeContextCurrent(null);
     alcDestroyContext(context);
     alcCloseDevice(device);
-
-    writeln("OpenAL has successfully closed");
+    if (debugNow) {
+        writeln("OpenAL has successfully closed");
+    }
 }
