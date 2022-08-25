@@ -99,10 +99,6 @@ void main() {
 
     Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
 
-    // Debugging OpenAL
-
-    Buffer bufferTest = Buffer("sounds/button.ogg");
-
 
 
     while(!Window.shouldClose()) {
