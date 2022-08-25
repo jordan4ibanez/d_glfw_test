@@ -6,6 +6,7 @@ import openal.al_interface;
 import vector_3d;
 import matrix_4d;
 import Math = math;
+import Camera = camera.camera;
 
 /*
 This is the work horse of the game's OpenAL implementation.
@@ -98,7 +99,9 @@ void setAttenuationModel(ALint model) {
     alDistanceModel(model);
 }
 
-void updateListenerPosition(Matrix4d cameraMatrix, Vector3d cameraPosition) {
+void updateListenerPosition() {
+    Matrix4d cameraMatrix = Camera.getCameraMatrix();
+    Vector3d cameraPosition = Camera.getPosition();
     listener.setPosition(cameraPosition);
     Vector3d at = Vector3d();
     // This might need testing
@@ -109,11 +112,6 @@ void updateListenerPosition(Matrix4d cameraMatrix, Vector3d cameraPosition) {
     listener.setOrientation(at, up);
 
 }
-
-
-
-
-
 
 
 void initializeListener() {

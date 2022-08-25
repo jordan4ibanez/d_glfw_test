@@ -138,14 +138,6 @@ void main() {
 
         fpsCounter++;
 
-        if (clock >= 0.01) {
-            // writeln("FPS: ", fpsCounter);
-            clock = 0;
-            fpsCounter = 0;
-
-            SoundManager.playSound("sounds/button.ogg",Vector3d(xPos,0,0), false);
-        }
-
         Camera.clear();        
 
         Camera.clearDepthBuffer();
@@ -157,6 +149,16 @@ void main() {
 
         // This is only to be called ONCE, unless switching to ortholinear view
         Camera.updateCameraMatrix();
+
+        SoundManager.updateListenerPosition();
+
+        if (clock >= 0.01) {
+            // writeln("FPS: ", fpsCounter);
+            clock = 0;
+            fpsCounter = 0;
+
+            SoundManager.playSound("sounds/button.ogg",Vector3d(0,0,0), false);
+        }
 
         // Finally the mesh will be rendered, GLSL will automatically
         // Move the fragments into the correct position based on the matrices

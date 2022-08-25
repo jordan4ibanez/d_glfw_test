@@ -126,6 +126,10 @@ double getFOV() {
     return FOV;
 }
 
+Vector3d getPosition() {
+    return position;
+}
+
 void movePosition(Vector3d positionModification) {
     if ( positionModification.z != 0 ) {
         position.x += -Math.sin(Math.toRadians(rotation.y)) * positionModification.z;
