@@ -1,6 +1,7 @@
 module openal.sound_manager;
 
 import std.stdio;
+import bindbc.openal;
 import openal.al_interface;
 import vector_3d;
 
