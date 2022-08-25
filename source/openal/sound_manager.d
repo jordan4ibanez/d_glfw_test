@@ -19,11 +19,18 @@ private SoundBuffer[256] buffers = new SoundBuffer[256];
 private SoundSource[string] soundSources;
 
 
+void cleanUpSoundManager() {
+    cleanSoundBuffers();
+    cleanSoundSources();
+}
+
 private void cleanSoundBuffers(){
     for (int i = 0; i < 256; i++){
         // Call destructor by replacing it with blank
         buffers[i] = SoundBuffer();
     }
+
+    writeln("Sound buffers are cleaned");
 }
 
 private void cleanSoundSources(){
@@ -33,4 +40,6 @@ private void cleanSoundSources(){
         soundSources[key] = SoundSource();
         soundSources.remove(key);
     }
+
+    writeln("Sound sources are cleaned");
 }

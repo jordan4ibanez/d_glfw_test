@@ -5,6 +5,7 @@ import std.stdio;
 import stb_vorbis;
 import std.conv: to;
 import vector_3d;
+import openal.sound_manager;
 
 /*
 This is utilizing OpenAL Soft for maximum compatibility.
@@ -253,6 +254,9 @@ void debugOpenAL() {
 }
 
 void cleanUpOpenAL() {
+
+    cleanUpSoundManager();
+
     alcMakeContextCurrent(null);
     alcDestroyContext(context);
     alcCloseDevice(device);
