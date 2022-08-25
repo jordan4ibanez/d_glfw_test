@@ -16,7 +16,8 @@ import Mouse = input.mouse;
 // Starts off as a null pointer
 private GLFWwindow* window;
 private GLFWmonitor* monitor;
-private Vector2i size;
+private Vector2i monitorSize = Vector2i(0,0);
+private Vector2i size = Vector2i(0,0);
 
 nothrow
 static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, int y) {
