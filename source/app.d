@@ -25,7 +25,7 @@ import SoundManager = openal.sound_manager;
 void main() {
 
     // Window acts as a static class handler for GLFW & game window
-    if (Window.initializeGLFWComponents("Crafter Engine 0.0.0")) {
+    if (Window.initializeGLFWComponents("Crafter Engine 0.0.0", 200, 200)) {
         return;
     }
 
@@ -124,10 +124,12 @@ void main() {
 
         fpsCounter++;
 
-        if (clock >= 1) {
+        if (clock >= 0.01) {
             // writeln("FPS: ", fpsCounter);
             clock = 0;
             fpsCounter = 0;
+
+            SoundManager.playMusic("sounds/button.ogg");
         }
 
         Camera.clear();        
