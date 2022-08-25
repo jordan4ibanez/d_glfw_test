@@ -24,15 +24,22 @@ private SoundListener listener;
 public void playMusic(string name) {
 
     bool found = false;
-    for (int i = 0; i < MAX_SOUNDS; i++) {
+    // 0 is reserved for error
+    for (int i = 1; i < MAX_SOUNDS; i++) {
         SoundSource thisSoundSource = soundSources[i];
-        if (!thisSoundSource.isPlaying()){
+        if (!thisSoundSource.doesExist() || !thisSoundSource.isPlaying()){
             // Free the buffer & sound source
-            buffers[thisSoundSource.getBuffer()].cleanUp();
+            // THIS NEEDS TO GO IN THIS ORDER!
+            // IF IT ISN'T THE BUFFERS WILL KEEP GOING UP!     
             soundSources[i].cleanUp();
+            buffers[thisSoundSource.getBuffer()].cleanUp();
+            
 
             // Now they're both freed
             found = true;
+
+            writeln("deleted buffer,  ", thisSoundSource.getBuffer());
+            writeln("deleted sound source, ", i);
             break;
         }
     }
@@ -50,7 +57,11 @@ public void playMusic(string name) {
     thisSource.play();
 
     buffers[thisBuffer.getID()] = thisBuffer;
-    soundSources[thisBuffer.getID()] = thisSource;
+    soundSources[thisSource.getID()] = thisSource;
+}
+
+void debugALInterfaceThing() {
+    writeln(soundSources[1].isPlaying());
 }
 
 void playSoundSource(string name) {
