@@ -9,8 +9,7 @@ import vector_3d;
 /*
 This is utilizing OpenAL Soft for maximum compatibility.
 
-This acts as a static class/factory class and will allow the whole program
-to easily access all OpenAL related components, safely.
+This holds all OpenAL init, and structs for sound_manager to use.
 */
 
 private void* context;
@@ -215,7 +214,6 @@ struct SoundListener {
             up.z
         ];
         alListenerfv(AL_ORIENTATION, data.ptr);
-
     }
 }
 
