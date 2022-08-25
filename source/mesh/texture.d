@@ -62,6 +62,8 @@ struct Texture {
         }
     }
 
+    @disable this(this);
+
     ~this() {
         glDeleteTextures(1, &this.id);
         writeln("TEXTURE ", this.id, " HAS BEEN DELETED");
