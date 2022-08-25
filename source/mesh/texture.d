@@ -9,6 +9,12 @@ import image;
 // Automatically deletes when the program ends
 private Texture[string] container;
 
+void cleanUpAllTextures() {
+    foreach (Texture thisTexture; container) {
+        thisTexture.cleanUp();
+    }
+}
+
 uint getTexture(string name) {
     return container[name].id;
 }
@@ -62,9 +68,7 @@ struct Texture {
         }
     }
 
-    @disable this(this);
-
-    ~this() {
+    void cleanUp() {
         glDeleteTextures(1, &this.id);
         writeln("TEXTURE ", this.id, " HAS BEEN DELETED");
     }

@@ -144,10 +144,7 @@ struct Mesh {
         }       
     }
 
-    @disable this(this);
-
-    // Automatically clean up the mesh
-    ~this() {
+    void cleanUp() {
 
         // Don't bother the gpu with garbage data
         if (!this.exists) {

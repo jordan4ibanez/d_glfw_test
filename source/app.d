@@ -162,6 +162,8 @@ void main() {
         glfwPollEvents();
     }
 
+    thisMesh.cleanUp();
+    cleanUpAllTextures();
     deleteShaders();
     cleanUpOpenAL();
     Window.destroy();
