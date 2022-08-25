@@ -173,7 +173,7 @@ private bool initializeGLFWComponents(string name, int windowSizeX, int windowSi
 
     // Using 3.3 regardless so enable raw input
     // This is so windows, kde, & gnome scale identically with cursor input, only the mouse dpi changes this
-    // This allows a constant sensitivity to be controlled in game
+    // This allows the sensitivity to be controlled in game and behave the same regardless
     glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
     // Automatically fullscreen, this is a bolt on
