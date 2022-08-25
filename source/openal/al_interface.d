@@ -129,6 +129,10 @@ struct Buffer {
         // Make sure nothing dumb is happening
         debugOpenAL();
     }
+
+    ~this() {
+        alDeleteBuffers(1, &this.id);
+    }
 }
 
 void debugOpenAL() {
