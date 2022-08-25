@@ -152,17 +152,22 @@ void main() {
 
         SoundManager.updateListenerPosition();
 
-        if (clock >= 0.01) {
+        if (clock >= 0.6) {
             // writeln("FPS: ", fpsCounter);
             clock = 0;
             fpsCounter = 0;
 
-            SoundManager.playSound("sounds/button.ogg",Vector3d(0,0,0), false);
+            // Random pitch
+            SoundManager.playSound("sounds/button.ogg",Vector3d(xPos,0,0), true);
         }
 
         // Finally the mesh will be rendered, GLSL will automatically
         // Move the fragments into the correct position based on the matrices
         thisMesh.render(Vector3d(0,0,0),Vector3d(0,0,0), 1, 1);
+
+        // This will be very annoying
+        // EVEN MORE ANNOYING!
+        thisMesh.render(Vector3d(xPos,0,0),Vector3d(0,0,0), 0.5, Math.abs(xPos / 5.0));
         
 
         Window.swapBuffers();
