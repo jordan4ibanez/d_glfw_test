@@ -4,6 +4,7 @@ import std.stdio;
 import bindbc.opengl;
 import image;
 
+private immutable bool debugNow = false;
 
 // Unlike meshes, textures never go out of scope until the program ends
 // Automatically deletes when the program ends
@@ -70,6 +71,8 @@ struct Texture {
 
     void cleanUp() {
         glDeleteTextures(1, &this.id);
-        writeln("TEXTURE ", this.id, " HAS BEEN DELETED");
+        if (debugNow) {
+            writeln("TEXTURE ", this.id, " HAS BEEN DELETED");
+        }
     }
 }
