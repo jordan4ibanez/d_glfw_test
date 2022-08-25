@@ -93,6 +93,10 @@ struct SoundBuffer {
     private bool exists = false;
     private ALuint id = 0;
 
+    ALuint getID() {
+        return this.id;
+    }
+
     this(string fileName) {
 
         // Hold this data in an associative array
@@ -128,9 +132,7 @@ struct SoundBuffer {
         this.exists = true;
     }
 
-    @disable this(this);
-
-    ~this() {
+    void cleanUp() {
         if (this.exists) {
             alDeleteBuffers(1, &this.id);
             writeln("cleaned up albuffer ", this.id);
@@ -142,6 +144,7 @@ struct SoundBuffer {
 struct SoundSource {
     private bool exists = false;
     private ALuint id = 0;
+    private ALuint buffer = 0;
 
     this(bool loop, bool relative) {
         alGenSources(1, &this.id);
@@ -150,11 +153,13 @@ struct SoundSource {
         this.exists = true;
     }
 
-    @disable this(this);
-
-    ~this() {
+    void cleanUp() {
         stop();
         alDeleteSources(1, &this.id);
+    }
+
+    ALuint getID() {
+        return this.id;
     }
 
     bool isPlaying() {
@@ -174,6 +179,11 @@ struct SoundSource {
     void setBuffer(ALuint bufferID) {
         stop();
         alSourcei(this.id, AL_BUFFER, bufferID);
+        this.buffer = bufferID;
+    }
+
+    ALuint getBuffer() {
+        return this.buffer;
     }
 
     void setPosition(Vector3d newPosition) {

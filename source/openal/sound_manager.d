@@ -16,21 +16,52 @@ to easily access all OpenAL related components, safely.
 */
 
 // We do not need that many buffers, this is WAY more than enough
-private SoundBuffer[256] buffers = new SoundBuffer[256];
-private SoundSource[string] soundSources;
+immutable int MAX_SOUNDS = 512;
+private SoundBuffer[MAX_SOUNDS] buffers      = new SoundBuffer[MAX_SOUNDS];
+private SoundSource[MAX_SOUNDS] soundSources = new SoundSource[MAX_SOUNDS];
 private SoundListener listener;
 
-void playSoundSource(string name) {
-    if ((name in soundSources) != null && !soundSources[name].isPlaying()) {
-        soundSources[name].play();
+public void playMusic(string name) {
+
+    bool found = false;
+    for (int i = 0; i < MAX_SOUNDS; i++) {
+        SoundSource thisSoundSource = soundSources[i];
+        if (!thisSoundSource.isPlaying()){
+            // Free the buffer & sound source
+            buffers[thisSoundSource.getBuffer()].cleanUp();
+            soundSources[i].cleanUp();
+
+            // Now they're both freed
+            found = true;
+            break;
+        }
     }
+
+    // Couldn't find a free slot, something went seriously wrong
+    // Either that, or somebody found a bug and went crazy
+    if (!found) {
+        writeln("All ", MAX_SOUNDS, " buffers are full (OpenAL)");
+        return;
+    }
+
+    SoundBuffer thisBuffer = SoundBuffer(name);
+    SoundSource thisSource = SoundSource(false, false);
+    thisSource.setBuffer(thisBuffer.getID());
+    thisSource.play();
+
+    buffers[thisBuffer.getID()] = thisBuffer;
+    soundSources[thisBuffer.getID()] = thisSource;
+}
+
+void playSoundSource(string name) {
+    // soundSources[name].play();
 }
 
 void removeSoundSource(string name) {
-    if ((name in soundSources) != null) {
-        soundSources[name].stop();
-        soundSources.remove(name);
-    }
+    // if ((name in soundSources) != null) {
+       // soundSources[name].stop();
+        // soundSources.remove(name);
+    // }
 }
 
 void setAttenuationModel(ALint model) {
@@ -65,22 +96,16 @@ void cleanUpSoundManager() {
     cleanSoundSources();
 }
 
-private void cleanSoundBuffers(){
-    for (int i = 0; i < 256; i++){
-        // Call destructor by replacing it with blank
-        buffers[i] = SoundBuffer();
+private void cleanSoundBuffers() {
+    for (int i = 0; i < MAX_SOUNDS; i++) {
+        buffers[i].cleanUp();
     }
-
     writeln("Sound buffers are cleaned");
 }
 
-private void cleanSoundSources(){
-    string[] keys = soundSources.keys();
-    foreach (string key; keys) {
-        writeln("cleaning: ",key);
-        soundSources[key] = SoundSource();
-        soundSources.remove(key);
+private void cleanSoundSources() {
+    for (int i = 0; i < MAX_SOUNDS; i++) {
+        soundSources[i].cleanUp();
     }
-
     writeln("Sound sources are cleaned");
 }
