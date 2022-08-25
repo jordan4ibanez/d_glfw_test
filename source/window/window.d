@@ -104,7 +104,7 @@ private bool initializeGLFW() {
 }
 
 
-bool initializeGLFWComponents(string name) {
+bool initializeGLFWComponents(string name, int windowSizeX, int windowSizeY) {
 
     // Something fails to load
     if (initializeGLFW()) {
@@ -125,7 +125,7 @@ bool initializeGLFWComponents(string name) {
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
     // Nice 720p window, why not?
-    window = glfwCreateWindow(1280, 720, name.ptr, null, null);
+    window = glfwCreateWindow(windowSizeX, windowSizeY, name.ptr, null, null);
 
     // Something even scarier fails to load
     if (!window) {
