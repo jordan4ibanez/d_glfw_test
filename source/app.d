@@ -12,7 +12,7 @@ import std.conv: to;
 import vector_3d;
 import mesh.mesh;
 import mesh.texture;
-import OpenAL = openal.al_interface;
+import /*OpenAL =*/ openal.al_interface;
 
 import Math = math;
 import loader = bindbc.loader.sharedlib;
@@ -33,11 +33,11 @@ void main() {
     }
 
     // OpenAL acts like a static class handler for all of OpenAL Soft
-    if (OpenAL.initializeOpenAL()){
+    if (initializeOpenAL()){
         return;
     }
 
-    bool testMe = true;
+    bool testMe = false;
 
     if (testMe) {
         return;
@@ -98,6 +98,12 @@ void main() {
     GLenum glErrorInfo = 0;
 
     Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
+
+    // Debugging OpenAL
+
+    Buffer bufferTest = Buffer("sounds/button.ogg");
+
+
 
     while(!Window.shouldClose()) {
 
@@ -161,6 +167,6 @@ void main() {
     }
 
     deleteShaders();
+    cleanUpOpenAL();
     Window.destroy();
-    
 }
