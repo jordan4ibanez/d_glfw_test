@@ -15,4 +15,12 @@ to easily access all OpenAL related components, safely.
 */
 
 // We do not need that many buffers, this is WAY more than enough
-private ALuint[256] buffers = new ALuint[256];
+private SoundBuffer[256] buffers = new SoundBuffer[256];
+
+
+private void cleanSoundBuffers(){
+    for (int i = 0; i < 256; i++){
+        // Call destructor by replacing it with blank
+        buffers[i] = SoundBuffer();
+    }
+}
