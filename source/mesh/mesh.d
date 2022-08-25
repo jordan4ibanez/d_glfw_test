@@ -144,6 +144,8 @@ struct Mesh {
         }       
     }
 
+    @disable this(this);
+
     // Automatically clean up the mesh
     ~this() {
 
