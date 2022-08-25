@@ -49,7 +49,11 @@ struct Buffer {
     private ALuint id = 0;
 
     this(string fileName) {
+
+        // Hold this data in an associative array
+        // After the first call, the game can pull data out of it instead of from disk
         string inputPath = "sounds/button.ogg";
+
         VorbisDecoder vorbisHandler = VorbisDecoder(inputPath);
 
         writeln("SampleRate:", vorbisHandler.sampleRate());
@@ -64,7 +68,6 @@ struct Buffer {
         vorbisHandler.getSamplesShortInterleaved(vorbisHandler.chans(), pcm.ptr, vorbisHandler.streamLengthInSamples());
 
         writeln(cast(short[])pcm);
-
         writeln("File is open: ",vorbisHandler.opened());
 
         // Get a buffer ID
