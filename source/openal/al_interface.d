@@ -17,6 +17,8 @@ private void* context;
 private void* device;
 private string deviceName;
 
+private short[string] soundCache;
+
 bool initializeOpenAL() {
 
     ALSupport returnedError;
@@ -103,32 +105,13 @@ struct SoundBuffer {
         // After the first call, the game can pull data out of it instead of from disk
 
         VorbisDecoder vorbisHandler = VorbisDecoder(fileName);
-
-        writeln("SampleRate:", vorbisHandler.sampleRate());
-        writeln("Channels: ", vorbisHandler.chans());
-        writeln("Length (seconds): ", vorbisHandler.streamLengthInSeconds());
-        writeln("Length (samples): ", vorbisHandler.streamLengthInSamples());
-        writeln("Max Frame Size: ", vorbisHandler.maxFrameSize());
-        writeln("", );
-
         short[] pcm = new short[vorbisHandler.streamLengthInSamples];
-
         vorbisHandler.getSamplesShortInterleaved(vorbisHandler.chans(), pcm.ptr, vorbisHandler.streamLengthInSamples());
-
-        writeln(cast(short[])pcm);
-        writeln("File is open: ",vorbisHandler.opened());
-
-
         // Get a buffer ID
         alGenBuffers(1, &this.id);
-
-        writeln("my buffer ID is: ", this.id);
-
         alBufferData(this.id, vorbisHandler.chans() == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, cast(const(void)*)pcm, cast(int)(pcm.length * short.sizeof), vorbisHandler.sampleRate());
-
         // Make sure nothing dumb is happening
-        debugOpenAL();
-
+        // debugOpenAL();
         this.exists = true;
     }
 

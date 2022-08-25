@@ -20,6 +20,8 @@ import Camera = camera.camera;
 import Window = window.window;
 import opengl.shaders;
 
+import SoundManager = openal.sound_manager;
+
 void main() {
 
     // Window acts as a static class handler for GLFW & game window
@@ -100,6 +102,7 @@ void main() {
     Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
 
 
+    SoundManager.playMusic("sounds/button.ogg");
 
     while(!Window.shouldClose()) {
 
