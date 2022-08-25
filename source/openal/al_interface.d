@@ -16,6 +16,8 @@ private void* context;
 private void* device;
 private string deviceName;
 
+private ALuint[256] buffers = new ALuint[256];
+
 bool initializeOpenAL() {
 
     ALSupport returnedError;
@@ -59,9 +61,9 @@ bool initializeOpenAL() {
         0,                 0
     ];
 
+    // Attempt to get a context
     if (device != null) {
         context = alcCreateContext(device,attributes.ptr);
-
     } else {
         // Something went horribly wrong
         return true;
@@ -71,12 +73,12 @@ bool initializeOpenAL() {
     alcMakeContextCurrent(context);
 
     // Generate buffers
+    
     alGetError();
 
     // We don't need that many buffers
-    // alGenBuffers(256);
+    alGenBuffers(256,buffers.ptr);
     debugOpenAL();
-
 
 
     writeln("OpenAL initialized successfully!");
