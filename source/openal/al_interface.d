@@ -3,6 +3,7 @@ module openal.al_interface;
 import bindbc.openal;
 import std.stdio;
 import stb_vorbis;
+import std.conv: to;
 
 /*
 This is utilizing OpenAL Soft for maximum compatibility.
@@ -11,6 +12,8 @@ This acts as a static class/factory class and will allow the whole program
 to easily access all OpenAL related components, safely
 */
 
+void* device;
+string deviceName;
 
 bool initializeOpenAL() {
 
@@ -36,6 +39,15 @@ bool initializeOpenAL() {
         return true;
     }
 
+    device = alcOpenDevice(cast(const(char)*)null);
+
+    deviceName = to!string(alcGetString(device, ALC_DEVICE_SPECIFIER));
+    
+    writeln("the AL device pointer: ", device);
+    writeln("the AL device name: ", deviceName);
+
+    debugOpenAL();
+
     writeln("OpenAL initialized successfully!");
 
     // No errors
@@ -52,9 +64,8 @@ struct Buffer {
 
         // Hold this data in an associative array
         // After the first call, the game can pull data out of it instead of from disk
-        string inputPath = "sounds/button.ogg";
 
-        VorbisDecoder vorbisHandler = VorbisDecoder(inputPath);
+        VorbisDecoder vorbisHandler = VorbisDecoder(fileName);
 
         writeln("SampleRate:", vorbisHandler.sampleRate());
         writeln("Channels: ", vorbisHandler.chans());
@@ -70,11 +81,45 @@ struct Buffer {
         writeln(cast(short[])pcm);
         writeln("File is open: ",vorbisHandler.opened());
 
+
         // Get a buffer ID
         alGenBuffers(1, &this.id);
 
         writeln("my buffer ID is: ", this.id);
 
         alBufferData(this.id, vorbisHandler.chans() == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, cast(const(void)*)pcm, cast(int)(pcm.length * short.sizeof), vorbisHandler.sampleRate());
+
+        
+    }
+}
+
+void debugOpenAL() {
+    int error = alGetError();
+
+    if (!error == AL_NO_ERROR) {
+
+        writeln("OpenAL buffer error! Error number: ", error);
+        switch (error) {
+            case ALC_INVALID_DEVICE: {
+                writeln("AL_INVALID_DEVICE");
+                break;
+            }
+            case ALC_INVALID_CONTEXT: {
+                writeln("AL_INVALID_CONTEXT");
+                break;
+            }
+            case AL_INVALID_VALUE:{
+                writeln("AL_INVALID_VALUE");
+                break;
+            }
+            case AL_OUT_OF_MEMORY: {
+                writeln("AL_OUT_OF_MEMORY");
+                break;
+            }                
+            default:
+                writeln("Unknown error code");
+        }
+
+        assert(true == false);
     }
 }
