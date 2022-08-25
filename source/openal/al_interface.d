@@ -12,8 +12,9 @@ This acts as a static class/factory class and will allow the whole program
 to easily access all OpenAL related components, safely
 */
 
-void* device;
-string deviceName;
+private void* context;
+private void* device;
+private string deviceName;
 
 bool initializeOpenAL() {
 
@@ -42,11 +43,41 @@ bool initializeOpenAL() {
     device = alcOpenDevice(cast(const(char)*)null);
 
     deviceName = to!string(alcGetString(device, ALC_DEVICE_SPECIFIER));
+
+    // Blank devices aren't allowed, this is a software api
+    if (deviceName == null) {
+        writeln("OPENAL NULL DEVICE!!");
+        return true;
+    }
     
     writeln("the AL device pointer: ", device);
     writeln("the AL device name: ", deviceName);
 
+    ALCint[] attributes = [
+        ALC_MAJOR_VERSION, 1,
+        ALC_MINOR_VERSION, 1,
+        0,                 0
+    ];
+
+    if (device != null) {
+        context = alcCreateContext(device,attributes.ptr);
+
+    } else {
+        // Something went horribly wrong
+        return true;
+    }
+
+    // Now we have a context
+    alcMakeContextCurrent(context);
+
+    // Generate buffers
+    alGetError();
+
+    // We don't need that many buffers
+    // alGenBuffers(256);
     debugOpenAL();
+
+
 
     writeln("OpenAL initialized successfully!");
 
