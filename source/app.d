@@ -101,11 +101,29 @@ void main() {
 
     Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
 
+    double xPos = 0;
+    bool up = true;
 
-    SoundManager.playMusic("sounds/button.ogg");
+    SoundManager.playSound("sounds/button.ogg");
 
     while(!Window.shouldClose()) {
 
+        calculateDelta();
+
+        double delta = getDelta();
+
+        writeln(xPos, " XPOS IS AT");
+        if (up) {
+            xPos += delta * 10;
+            if (xPos > 5) {
+                up = false;
+            }
+        } else {
+            xPos -= delta * 10;
+            if (xPos < -5){
+                up = true;
+            }
+        }
         // Game load simulation
         /*
         int q = 0;
@@ -113,10 +131,6 @@ void main() {
             q += q + 1 * 2;
         }
         */
-
-        calculateDelta();
-
-        double delta = getDelta();
 
         Camera.setClearColor(1,1,1);
 
@@ -129,7 +143,7 @@ void main() {
             clock = 0;
             fpsCounter = 0;
 
-            SoundManager.playMusic("sounds/button.ogg");
+            SoundManager.playSound("sounds/button.ogg",Vector3d(xPos,0,0), false);
         }
 
         Camera.clear();        

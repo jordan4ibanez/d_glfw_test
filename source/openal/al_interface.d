@@ -241,6 +241,10 @@ struct SoundSource {
         );
     }
 
+    void setPitch(float pitch) {
+        alSourcef(this.id, AL_PITCH, pitch);
+    }
+
     void stop() {
         alSourceStop(this.id);
     }

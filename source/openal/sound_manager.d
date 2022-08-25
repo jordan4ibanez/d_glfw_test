@@ -5,6 +5,7 @@ import bindbc.openal;
 import openal.al_interface;
 import vector_3d;
 import matrix_4d;
+import Math = math;
 
 /*
 This is the work horse of the game's OpenAL implementation.
@@ -21,14 +22,29 @@ private SoundBuffer[MAX_SOUNDS] buffers      = new SoundBuffer[MAX_SOUNDS];
 private SoundSource[MAX_SOUNDS] soundSources = new SoundSource[MAX_SOUNDS];
 private SoundListener listener;
 
+// PlayMusic will LOCK it's buffer
 public void playSound(string name) {
     if (!freeBuffers()) {
-        writeln("All ", MAX_SOUNDS, " buffers are full (OpenAL)");
         return;
     }
     SoundBuffer thisBuffer = SoundBuffer(name);
     SoundSource thisSource = SoundSource(false, false);
     thisSource.setBuffer(thisBuffer.getID());
+    thisSource.play();
+    buffers[thisBuffer.getID()] = thisBuffer;
+    soundSources[thisSource.getID()] = thisSource;
+}
+public void playSound(string name, Vector3d position, bool randomPitch) {
+    if (!freeBuffers()) {
+        return;
+    }
+    SoundBuffer thisBuffer = SoundBuffer(name);
+    SoundSource thisSource = SoundSource(false, false);
+    thisSource.setBuffer(thisBuffer.getID());
+    thisSource.setPosition(position);
+    if (randomPitch) {
+        thisSource.setPitch(0.75 + (Math.random() / 2));
+    }
     thisSource.play();
     buffers[thisBuffer.getID()] = thisBuffer;
     soundSources[thisSource.getID()] = thisSource;
@@ -56,6 +72,9 @@ bool freeBuffers() {
             writeln("deleted sound source, ", i);
             break;
         }
+    }
+    if (!found) {
+        writeln("All ", MAX_SOUNDS, " buffers are full (OpenAL)");
     }
     return found;
 }
