@@ -27,7 +27,7 @@ void main() {
     // We can automatically get the window size
 
     // Window acts as a static class handler for GLFW & game window
-    if (Window.initializeWindow("Crafter Engine 0.0.0", 1280, 720)) {
+    if (Window.initializeWindow("Crafter Engine 0.0.0")) {
         return;
     }
 
@@ -114,7 +114,7 @@ void main() {
 
         double delta = getDelta();
 
-        writeln(xPos, " XPOS IS AT");
+        // writeln(xPos, " XPOS IS AT");
         if (up) {
             xPos += delta * 10;
             if (xPos > 5) {
