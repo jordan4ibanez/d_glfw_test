@@ -21,9 +21,23 @@ private SoundBuffer[MAX_SOUNDS] buffers      = new SoundBuffer[MAX_SOUNDS];
 private SoundSource[MAX_SOUNDS] soundSources = new SoundSource[MAX_SOUNDS];
 private SoundListener listener;
 
-public void playMusic(string name) {
+public void playSound(string name) {
+    if (!freeBuffers()) {
+        writeln("All ", MAX_SOUNDS, " buffers are full (OpenAL)");
+        return;
+    }
+    SoundBuffer thisBuffer = SoundBuffer(name);
+    SoundSource thisSource = SoundSource(false, false);
+    thisSource.setBuffer(thisBuffer.getID());
+    thisSource.play();
+    buffers[thisBuffer.getID()] = thisBuffer;
+    soundSources[thisSource.getID()] = thisSource;
+}
 
+bool freeBuffers() {
     bool found = false;
+    // Couldn't find a free slot, something went seriously wrong
+    // Either that, or somebody found a bug and went crazy
     // 0 is reserved for error
     for (int i = 1; i < MAX_SOUNDS; i++) {
         SoundSource thisSoundSource = soundSources[i];
@@ -43,21 +57,7 @@ public void playMusic(string name) {
             break;
         }
     }
-
-    // Couldn't find a free slot, something went seriously wrong
-    // Either that, or somebody found a bug and went crazy
-    if (!found) {
-        writeln("All ", MAX_SOUNDS, " buffers are full (OpenAL)");
-        return;
-    }
-
-    SoundBuffer thisBuffer = SoundBuffer(name);
-    SoundSource thisSource = SoundSource(false, false);
-    thisSource.setBuffer(thisBuffer.getID());
-    thisSource.play();
-
-    buffers[thisBuffer.getID()] = thisBuffer;
-    soundSources[thisSource.getID()] = thisSource;
+    return found;
 }
 
 void debugALInterfaceThing() {
