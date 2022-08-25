@@ -24,8 +24,10 @@ import SoundManager = openal.sound_manager;
 
 void main() {
 
+    // We can automatically get the window size
+
     // Window acts as a static class handler for GLFW & game window
-    if (Window.initializeGLFWComponents("Crafter Engine 0.0.0", 200, 200)) {
+    if (Window.initializeWindow("Crafter Engine 0.0.0", 1280, 720)) {
         return;
     }
 

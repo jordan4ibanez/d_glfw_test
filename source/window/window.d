@@ -15,6 +15,7 @@ import Mouse = input.mouse;
 
 // Starts off as a null pointer
 private GLFWwindow* window;
+private GLFWmonitor* monitor;
 private Vector2i size;
 
 nothrow
@@ -103,8 +104,25 @@ private bool initializeGLFW() {
     return false;
 }
 
+// Gets the primary monitor's size and halfs it automatically
+bool initializeWindow(string name){   
+    // -1, -1 indicates that it will automatically interpret as half window size
+    return initializeGLFWComponents(name, -1, -1, false);
+}
 
-bool initializeGLFWComponents(string name, int windowSizeX, int windowSizeY) {
+// Allows for predefined window size
+bool initializeWindow(string name, int windowSizeX, int windowSizeY){   
+    return initializeGLFWComponents(name, windowSizeX, windowSizeY, false);
+}
+
+// Automatically half sizes, then full screens it
+bool initializeWindow(string name, bool fullScreen){   
+    // -1, -1 indicates that it will automatically interpret as half window size
+    return initializeGLFWComponents(name, -1, -1, fullScreen);
+}
+
+// Window talks directly to GLFW
+private bool initializeGLFWComponents(string name, int windowSizeX, int windowSizeY, bool fullScreenAuto) {
 
     // Something fails to load
     if (initializeGLFW()) {
@@ -124,7 +142,12 @@ bool initializeGLFWComponents(string name, int windowSizeX, int windowSizeY) {
     // Allow driver optimizations
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    // Nice 720p window, why not?
+    // Automatically half the monitor size
+    if (windowSizeX == -1 || windowSizeY == -1) {
+        writeln("automatically half sizing the window");
+    }
+
+    // Create a window on the primary monitor
     window = glfwCreateWindow(windowSizeX, windowSizeY, name.ptr, null, null);
 
     // Something even scarier fails to load
@@ -133,7 +156,7 @@ bool initializeGLFWComponents(string name, int windowSizeX, int windowSizeY) {
         "ABORTING!");
         glfwTerminate();
         return true;
-    }
+    }    
 
     glfwGetWindowSize(window,&size.x, &size.y);
 
@@ -145,8 +168,19 @@ bool initializeGLFWComponents(string name, int windowSizeX, int windowSizeY) {
 
     glfwSetCursorPosCallback(window, &externalcursorPositionCallback);
 
-    // Using 3.3 regardless so enable
+    // In the future, get array of monitor pointers with: GLFWmonitor** monitors = glfwGetMonitors(&count);
+    monitor = glfwGetPrimaryMonitor();
+
+    // Using 3.3 regardless so enable raw input
+    // This is so windows, kde, & gnome scale identically with cursor input, only the mouse dpi changes this
+    // This allows a constant sensitivity to be controlled in game
     glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
+
+    // Automatically fullscreen, this is a bolt on
+    if (fullScreenAuto) {
+        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+        writeln("full screen function goes here");
+    }
 
     // No error :)
     return false;
