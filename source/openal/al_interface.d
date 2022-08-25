@@ -19,6 +19,7 @@ private void* context;
 private void* device;
 private string deviceName;
 
+// We do not need that many buffers, this is WAY more than enough
 private ALuint[256] buffers = new ALuint[256];
 
 bool initializeOpenAL() {
