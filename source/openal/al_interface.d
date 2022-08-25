@@ -17,7 +17,8 @@ private void* context;
 private void* device;
 private string deviceName;
 
-private short[string] soundCache;
+// Holds the cache of loaded sounds - Automatically deleted on program exit, it's contained in GC Heap
+private VorbisCache[string] soundCache;
 
 bool initializeOpenAL() {
 
@@ -90,6 +91,24 @@ bool initializeOpenAL() {
     return false;
 }
 
+struct VorbisCache {
+    short[] pcm;
+    int pcmLength = 0;
+    ubyte channels = 0;
+    int sampleRate = 0;
+    this(
+        short[] pcm,
+        int pcmLength,
+        ubyte channels,
+        int sampleRate
+    ) {
+        this.pcm = pcm;
+        this.pcmLength = pcmLength;
+        this.channels = channels;
+        this.sampleRate = sampleRate;
+    }
+}
+
 struct SoundBuffer {
 
     private bool exists = false;
@@ -104,14 +123,43 @@ struct SoundBuffer {
         // Hold this data in an associative array
         // After the first call, the game can pull data out of it instead of from disk
 
-        VorbisDecoder vorbisHandler = VorbisDecoder(fileName);
-        short[] pcm = new short[vorbisHandler.streamLengthInSamples];
-        vorbisHandler.getSamplesShortInterleaved(vorbisHandler.chans(), pcm.ptr, vorbisHandler.streamLengthInSamples());
-        // Get a buffer ID
-        alGenBuffers(1, &this.id);
-        alBufferData(this.id, vorbisHandler.chans() == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, cast(const(void)*)pcm, cast(int)(pcm.length * short.sizeof), vorbisHandler.sampleRate());
-        // Make sure nothing dumb is happening
-        // debugOpenAL();
+        // Can load out of RAM
+        if (fileName in soundCache) {
+            VorbisCache cacheSound = soundCache[fileName];
+            // Get a buffer ID
+            alGenBuffers(1, &this.id);
+            alBufferData(
+                this.id,
+                cacheSound.channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16,
+                cast(const(void)*)cacheSound.pcm,
+                cacheSound.pcmLength,
+                cacheSound.sampleRate
+            );
+
+            writeln("Loaded ", fileName, " from cache!");
+        } else { // Load from disk and cache for next use
+            VorbisDecoder vorbisHandler = VorbisDecoder(fileName);
+            int streamLength = vorbisHandler.streamLengthInSamples();
+            short[] pcm = new short[streamLength];
+            int pcmLength = cast(int)(pcm.length * short.sizeof);
+            ubyte channels = vorbisHandler.chans();
+            int sampleRate = vorbisHandler.sampleRate();
+
+            vorbisHandler.getSamplesShortInterleaved(channels, pcm.ptr, streamLength);
+            // Get a buffer ID
+            alGenBuffers(1, &this.id);
+            alBufferData(
+                this.id,
+                channels == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16,
+                cast(const(void)*)pcm,
+                pcmLength,
+                sampleRate
+            );
+            // Make sure nothing dumb is happening
+            // debugOpenAL();
+            writeln("caching ", fileName, "!");
+            soundCache[fileName] = VorbisCache(pcm,pcmLength,channels,sampleRate);
+        }
         writeln("My sound buffer ID is: ", this.id);
         this.exists = true;
     }
