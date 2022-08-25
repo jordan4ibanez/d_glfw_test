@@ -38,27 +38,40 @@ bool initializeOpenAL() {
 
     writeln("OpenAL initialized successfully!");
 
-
-    string inputPath = "sounds/button.ogg";
-    VorbisDecoder vorbisHandler = VorbisDecoder(inputPath);
-
-    writeln("SampleRate:", vorbisHandler.sampleRate());
-    writeln("Channels: ", vorbisHandler.chans());
-    writeln("Length (seconds): ", vorbisHandler.streamLengthInSeconds());
-    writeln("Length (samples): ", vorbisHandler.streamLengthInSamples());
-    writeln("Max Frame Size: ", vorbisHandler.maxFrameSize());
-    writeln("", );
-
-    float[] pcm;
-
-    vorbisHandler.seekFrame(0);    
-
-    writeln(pcm);
-
-    writeln("File is open: ",vorbisHandler.opened());
-
-
-
     // No errors
     return false;
+}
+
+// Make this private
+struct Buffer {
+
+    private bool exists = false;
+    private ALuint id = 0;
+
+    this(string fileName) {
+        string inputPath = "sounds/button.ogg";
+        VorbisDecoder vorbisHandler = VorbisDecoder(inputPath);
+
+        writeln("SampleRate:", vorbisHandler.sampleRate());
+        writeln("Channels: ", vorbisHandler.chans());
+        writeln("Length (seconds): ", vorbisHandler.streamLengthInSeconds());
+        writeln("Length (samples): ", vorbisHandler.streamLengthInSamples());
+        writeln("Max Frame Size: ", vorbisHandler.maxFrameSize());
+        writeln("", );
+
+        short[] pcm = new short[vorbisHandler.streamLengthInSamples];
+
+        vorbisHandler.getSamplesShortInterleaved(vorbisHandler.chans(), pcm.ptr, vorbisHandler.streamLengthInSamples());
+
+        writeln(cast(short[])pcm);
+
+        writeln("File is open: ",vorbisHandler.opened());
+
+        // Get a buffer ID
+        alGenBuffers(1, &this.id);
+
+        writeln("my buffer ID is: ", this.id);
+
+        alBufferData(this.id, vorbisHandler.chans() == 1 ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16, cast(const(void)*)pcm, cast(int)(pcm.length * short.sizeof), vorbisHandler.sampleRate());
+    }
 }
