@@ -80,6 +80,8 @@ bool initializeOpenAL() {
     // Make sure nothing dumb is happening
     debugOpenAL();
 
+    initializeListener();
+
     writeln("OpenAL initialized successfully!");
 
     // No errors
