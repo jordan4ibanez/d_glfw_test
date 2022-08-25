@@ -4,6 +4,7 @@ import bindbc.openal;
 import std.stdio;
 import stb_vorbis;
 import std.conv: to;
+import vector_3d;
 
 /*
 This is utilizing OpenAL Soft for maximum compatibility.
@@ -80,7 +81,7 @@ bool initializeOpenAL() {
     alGetError();
 
     // We don't need that many buffers
-    alGenBuffers(256,buffers.ptr);
+    // alGenBuffers(256,buffers.ptr);
 
     // Make sure nothing dumb is happening
     debugOpenAL();
@@ -128,12 +129,105 @@ struct Buffer {
 
         // Make sure nothing dumb is happening
         debugOpenAL();
+
+        this.exists = true;
     }
 
     ~this() {
-        alDeleteBuffers(1, &this.id);
+        if (this.exists) {
+            alDeleteBuffers(1, &this.id);
+            writeln("cleaned up albuffer ", this.id);
+        }
     }
 }
+
+
+// Make this private
+struct SoundSource {
+    private bool exists = false;
+    private ALuint id = 0;
+
+    this(bool loop, bool relative) {
+        alGenSources(1, &this.id);
+        alSourcei(this.id,AL_LOOPING, loop ? AL_TRUE : AL_FALSE);
+        alSourcei(this.id, AL_SOURCE_RELATIVE, relative ? AL_TRUE : AL_FALSE);
+        this.exists = true;
+    }
+
+    ~this() {
+        stop();
+        alDeleteSources(1, &this.id);
+    }
+
+    bool isPlaying() {
+        ALint value;
+        alGetSourcei(this.id, AL_SOURCE_STATE, &value);
+        return value == AL_PLAYING;
+    }
+
+    void pause() {
+        alSourcePause(this.id);
+    }
+
+    void play() {
+        alSourcePlay(this.id);
+    }
+
+    void setBuffer(ALuint bufferID) {
+        stop();
+        alSourcei(this.id, AL_BUFFER, bufferID);
+    }
+
+    void setPosition(Vector3d newPosition) {
+        alSource3f(
+            this.id,
+            AL_POSITION,
+            newPosition.x,
+            newPosition.y,
+            newPosition.z
+        );
+    }
+
+    void stop() {
+        alSourceStop(this.id);
+    }
+}
+
+
+// There can only be one listener or else weird things will happen
+struct SoundListener {
+    bool exists = false;
+
+    this(Vector3d position) {
+        alListener3f(AL_POSITION, position.x, position.y, position.z);
+        alListener3f(AL_VELOCITY,0.0,0.0,0.0);
+    }
+
+    void setSpeed(Vector3d speed){
+        alListener3f(AL_VELOCITY, speed.x, speed.y, speed.z);
+    }
+
+    void setPosition(Vector3d newPosition){
+        alListener3f(AL_POSITION, newPosition.x, newPosition.y, newPosition.z);
+    }
+
+    void setOrientation(Vector3d at, Vector3d up) {
+        float[6] data = [
+            at.x,
+            at.y,
+            at.z,
+            up.x,
+            up.y,
+            up.z
+        ];
+        alListenerfv(AL_ORIENTATION, data.ptr);
+
+    }
+}
+
+
+
+
 
 void debugOpenAL() {
     int error = alGetError();
