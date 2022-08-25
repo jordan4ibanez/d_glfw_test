@@ -126,6 +126,8 @@ struct Buffer {
         this.exists = true;
     }
 
+    @disable this(this);
+
     ~this() {
         if (this.exists) {
             alDeleteBuffers(1, &this.id);
@@ -146,6 +148,8 @@ struct SoundSource {
         alSourcei(this.id, AL_SOURCE_RELATIVE, relative ? AL_TRUE : AL_FALSE);
         this.exists = true;
     }
+
+    @disable this(this);
 
     ~this() {
         stop();
@@ -189,8 +193,6 @@ struct SoundSource {
 
 // There can only be one listener or else weird things will happen
 struct SoundListener {
-    bool exists = false;
-
     this(Vector3d position) {
         alListener3f(AL_POSITION, position.x, position.y, position.z);
         alListener3f(AL_VELOCITY,0.0,0.0,0.0);
