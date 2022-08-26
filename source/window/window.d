@@ -212,6 +212,18 @@ private void updateVideoMode() {
     videoMode = *mode;
 }
 
+void toggleFullScreen() {
+    if (fullscreen) {
+        setHalfSizeInternal();
+    } else {
+        setFullScreenInternal();
+    }
+}
+
+bool isFullScreen() {
+    return fullscreen;
+}
+
 private void setFullScreenInternal() {
     updateVideoMode();
 
@@ -240,7 +252,7 @@ private void setHalfSizeInternal() {
     int windowPositionY = videoMode.height / 4;
     glfwSetWindowPos(window, windowPositionX, windowPositionY);
 
-    writeln("make sure you make the half sizer automatically unlock full screen");
+    fullscreen = false;
 }
 
 void lockMouse() {

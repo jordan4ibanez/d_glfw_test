@@ -62,6 +62,14 @@ void keyCallback(int key, int scancode, int action, int mods){
             break;
         }
 
+        // Special handler for fullscreening
+        case GLFW_KEY_F11: {
+            if (action == GLFW_PRESS) {
+                Window.toggleFullScreen();
+                writeln("SHOULD WORK");
+            }
+            break;
+        }
 
         default:{
             writeln("YOU HIT THE WRONG BUTTON");
