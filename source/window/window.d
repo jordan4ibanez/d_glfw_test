@@ -16,8 +16,9 @@ import Mouse = input.mouse;
 // Starts off as a null pointer
 private GLFWwindow* window;
 private GLFWmonitor* monitor;
-private Vector2i monitorSize = Vector2i(0,0);
+private GLFWvidmode videoMode;
 private Vector2i size = Vector2i(0,0);
+private bool fullscreen = false;
 
 nothrow
 static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, int y) {
@@ -186,30 +187,59 @@ private bool initializeGLFWComponents(string name, int windowSizeX, int windowSi
 
 
     // Monitor information & full screening & halfscreening
-    // Get primary monitor specs
-    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
-    // Decyper the pointer into a usable structure on stack
-    GLFWvidmode movedMode = *mode;
-    monitorSize = Vector2i(movedMode.width, movedMode.height);
 
     // Automatically half the monitor size
     if (halfScreenAuto) {
         writeln("automatically half sizing the window");
-        windowSizeX = monitorSize.x / 2;
-        windowSizeY = monitorSize.y / 2;
-
-        glfwSetWindowSize(window, windowSizeX, windowSizeY);
-        // Divide by 2 again to get a "perfectly" centered window
-        glfwSetWindowPos(window, windowSizeX / 2, windowSizeY / 2);
+        setHalfSizeInternal();
     }
 
     // Automatically fullscreen, this is a bolt on
     if (fullScreenAuto) {
-        writeln("full screen function goes here");
+        writeln("automatically fullscreening the window");
+        setFullScreenInternal();
     }
 
     // No error :)
     return false;
+}
+
+private void updateVideoMode() {
+    // Get primary monitor specs
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    // Dereference the pointer into a usable structure in class
+    videoMode = *mode;
+}
+
+private void setFullScreenInternal() {
+    updateVideoMode();
+
+    glfwSetWindowMonitor(
+        window,
+        monitor,
+        0,
+        0,
+        videoMode.width,
+        videoMode.height,
+        videoMode.refreshRate
+    );
+    fullscreen = true;
+}
+
+private void setHalfSizeInternal() {
+    updateVideoMode();
+    
+    // Divide by 2 to get a "perfectly" half sized window
+    int windowSizeX = videoMode.width  / 2;
+    int windowSizeY = videoMode.height / 2;
+    glfwSetWindowSize(window, windowSizeX, windowSizeY);
+
+    // Divide by 4 to get a "perfectly" centered window
+    int windowPositionX = videoMode.width  / 4;
+    int windowPositionY = videoMode.height / 4;
+    glfwSetWindowPos(window, windowPositionX, windowPositionY);
+
+    writeln("make sure you make the half sizer automatically unlock full screen");
 }
 
 void lockMouse() {
