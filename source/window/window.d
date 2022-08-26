@@ -143,9 +143,16 @@ private bool initializeGLFWComponents(string name, int windowSizeX, int windowSi
     // Allow driver optimizations
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 
-    // Automatically half the monitor size
+    bool halfScreenAuto = false;
+
+    // Auto start as half screened
     if (windowSizeX == -1 || windowSizeY == -1) {
-        writeln("automatically half sizing the window");
+        halfScreenAuto = true;
+        // Literally one pixel so glfw does not crash.
+        // Is automatically changed before the player even sees the window.
+        // Desktops like KDE will override the height (y) regardless
+        windowSizeX = 1;
+        windowSizeY = 1;
     }
 
     // Create a window on the primary monitor
@@ -177,9 +184,27 @@ private bool initializeGLFWComponents(string name, int windowSizeX, int windowSi
     // This allows the sensitivity to be controlled in game and behave the same regardless
     glfwSetInputMode(window, GLFW_RAW_MOUSE_MOTION, GLFW_TRUE);
 
+
+    // Monitor information & full screening & halfscreening
+    // Get primary monitor specs
+    const GLFWvidmode* mode = glfwGetVideoMode(monitor);
+    // Decyper the pointer into a usable structure on stack
+    GLFWvidmode movedMode = *mode;
+    monitorSize = Vector2i(movedMode.width, movedMode.height);
+
+    // Automatically half the monitor size
+    if (halfScreenAuto) {
+        writeln("automatically half sizing the window");
+        windowSizeX = monitorSize.x / 2;
+        windowSizeY = monitorSize.y / 2;
+
+        glfwSetWindowSize(window, windowSizeX, windowSizeY);
+        // Divide by 2 again to get a "perfectly" centered window
+        glfwSetWindowPos(window, windowSizeX / 2, windowSizeY / 2);
+    }
+
     // Automatically fullscreen, this is a bolt on
     if (fullScreenAuto) {
-        const GLFWvidmode* mode = glfwGetVideoMode(monitor);
         writeln("full screen function goes here");
     }
 
