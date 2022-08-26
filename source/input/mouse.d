@@ -4,7 +4,7 @@ import std.stdio;
 import vector_2d;
 import vector_3d;
 
-private immutable bool debugNow = false;
+private immutable bool debugNow = true;
 
 import Window = window.window;
 import Camera = camera.camera;
@@ -19,6 +19,7 @@ private bool locked = false;
 
 void mouseCallback(Vector2d newPosition) {
     if (debugNow) {
+        writeln("mouse was at: ", position);
         writeln("mouse is at: ", newPosition);
         writeln("the mouse vector is: ", vector);
     }
