@@ -77,3 +77,6 @@ void debugLockMouse() {
 void setOldPosition(Vector2d newOldPosition) {
     oldPosition = newOldPosition;
 }
+void setNewPosition(Vector2d newPosition) {
+    position = newPosition;
+}
