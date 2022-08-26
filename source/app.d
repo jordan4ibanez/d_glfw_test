@@ -154,13 +154,15 @@ void main() {
 
         SoundManager.updateListenerPosition();
 
-        if (clock >= 0.6) {
+        if (clock >= 1) {
             // writeln("FPS: ", fpsCounter);
             clock = 0;
             fpsCounter = 0;
 
             // Random pitch
             SoundManager.playSound("sounds/cow_hurt_1.ogg",Vector3d(xPos,0,0), true);
+
+            writeln("tick");
         }
 
         // Finally the mesh will be rendered, GLSL will automatically
