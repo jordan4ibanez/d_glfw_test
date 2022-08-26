@@ -227,8 +227,6 @@ bool isFullScreen() {
 private void setFullScreenInternal() {
     updateVideoMode();    
 
-    zeroMouse();
-
     glfwSetWindowMonitor(
         window,
         monitor,
@@ -238,6 +236,9 @@ private void setFullScreenInternal() {
         videoMode.height,
         videoMode.refreshRate
     );
+
+    centerMouse();
+    stopMouseJolt();
 
     fullscreen = true;
 }
@@ -254,8 +255,6 @@ private void setHalfSizeInternal() {
     int windowPositionX = videoMode.width  / 4;
     int windowPositionY = videoMode.height / 4;
 
-    zeroMouse();
-
     glfwSetWindowMonitor(
         window,
         null,
@@ -266,23 +265,27 @@ private void setHalfSizeInternal() {
         videoMode.refreshRate
     );
 
+    centerMouse();
+    stopMouseJolt();
+
     fullscreen = false;
 }
 
 void lockMouse() {
-    centerMouse();
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+    centerMouse();
+    stopMouseJolt();
 }
 
 void unlockMouse() {
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
     centerMouse();
+    stopMouseJolt();
 }
 
 void setMousePosition(double x, double y) {
     glfwSetCursorPos(window, x, y);
 }
-
 
 Vector2d centerMouse() {
     double x = size.x / 2.0;
@@ -292,6 +295,9 @@ Vector2d centerMouse() {
         x,
         y
     );
-
     return Vector2d(x,y);
+}
+
+void stopMouseJolt(){
+    Mouse.setOldPosition(Vector2d(size.x / 2.0, size.y / 2.0));
 }
