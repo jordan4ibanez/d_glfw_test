@@ -147,9 +147,8 @@ void setPosition(Vector3d newCameraPosition){
 }
 
 
-void rotationLimiter(){
-
-    writeln("rotation Y: ", rotation.y);
+void rotationLimiter() {    
+    
     // Pitch limiter
     if (rotation.x > 90) {
         rotation.x = 90;
