@@ -27,7 +27,7 @@ void main() {
     // We can automatically get the window size
 
     // Window acts as a static class handler for GLFW & game window
-    if (Window.initializeWindow("Crafter Engine 0.0.0")) {
+    if (Window.initializeWindow("Crafter Engine 0.0.0", true)) {
         return;
     }
 

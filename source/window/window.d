@@ -19,6 +19,7 @@ private GLFWmonitor* monitor;
 private GLFWvidmode videoMode;
 private Vector2i size = Vector2i(0,0);
 private bool fullscreen = false;
+private byte vsync = 1; // 0 none, 1 normal vsync, 2 double buffered
 
 nothrow
 static extern(C) void myframeBufferSizeCallback(GLFWwindow* theWindow, int x, int y) {
