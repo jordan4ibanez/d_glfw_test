@@ -13,3 +13,4 @@ d_glfw_test-test-*
 *.o
 *.obj
 *.lst
+*.pdb
