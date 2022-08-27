@@ -14,8 +14,8 @@ import loader = bindbc.loader.sharedlib;
 import Mouse = input.mouse;
 
 // Starts off as a null pointer
-private GLFWwindow* window;
-private GLFWmonitor* monitor;
+private GLFWwindow* window = null;
+private GLFWmonitor* monitor = null;
 private GLFWvidmode videoMode;
 private Vector2i size = Vector2i(0,0);
 private bool fullscreen = false;
@@ -161,22 +161,12 @@ private bool initializeGLFWComponents(string name, int windowSizeX, int windowSi
     window = glfwCreateWindow(windowSizeX, windowSizeY, name.ptr, null, null);
 
     // Something even scarier fails to load
-    if (!window) {
+    if (!window || window == null) {
         writeln("WINDOW FAILED TO OPEN!\n",
         "ABORTING!");
         glfwTerminate();
         return true;
-    }    
-
-    glfwGetWindowSize(window,&size.x, &size.y);
-
-    glfwMakeContextCurrent(window);
-
-    glfwSetFramebufferSizeCallback(window, &myframeBufferSizeCallback);
-
-    glfwSetKeyCallback(window, &externalKeyCallBack);
-
-    glfwSetCursorPosCallback(window, &externalcursorPositionCallback);
+    }
 
     // In the future, get array of monitor pointers with: GLFWmonitor** monitors = glfwGetMonitors(&count);
     monitor = glfwGetPrimaryMonitor();
@@ -200,6 +190,16 @@ private bool initializeGLFWComponents(string name, int windowSizeX, int windowSi
         writeln("automatically fullscreening the window");
         setFullScreenInternal();
     }
+
+    glfwSetFramebufferSizeCallback(window, &myframeBufferSizeCallback);
+
+    glfwSetKeyCallback(window, &externalKeyCallBack);
+
+    glfwSetCursorPosCallback(window, &externalcursorPositionCallback);    
+    
+    glfwMakeContextCurrent(window);
+
+    glfwGetWindowSize(window,&size.x, &size.y);
 
     // No error :)
     return false;
@@ -244,12 +244,12 @@ private void setFullScreenInternal() {
 }
 
 private void setHalfSizeInternal() {
+
     updateVideoMode();
     
     // Divide by 2 to get a "perfectly" half sized window
     int windowSizeX = videoMode.width  / 2;
     int windowSizeY = videoMode.height / 2;
-    glfwSetWindowSize(window, windowSizeX, windowSizeY);
 
     // Divide by 4 to get a "perfectly" centered window
     int windowPositionX = videoMode.width  / 4;
@@ -262,7 +262,7 @@ private void setHalfSizeInternal() {
         windowPositionY,
         windowSizeX,
         windowSizeY,
-        videoMode.refreshRate
+        0 // ignored
     );
 
     centerMouse();
