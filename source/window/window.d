@@ -199,7 +199,11 @@ private bool initializeGLFWComponents(string name, int windowSizeX, int windowSi
     
     glfwMakeContextCurrent(window);
 
-    glfwGetWindowSize(window,&size.x, &size.y);
+    // The swap interval is ignored before context is current
+    // We must set it again, even though it is automated in fullscreen/halfsize
+    glfwSwapInterval(vsync);
+
+    glfwGetWindowSize(window,&size.x, &size.y);    
 
     // No error :)
     return false;
