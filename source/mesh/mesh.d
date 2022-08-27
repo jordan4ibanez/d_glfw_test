@@ -9,7 +9,7 @@ import vector_3d;
 
 import Camera = camera.camera;
 
-private immutable bool debugNow = true;
+private immutable bool debugNow = false;
 
 struct Mesh {
 
