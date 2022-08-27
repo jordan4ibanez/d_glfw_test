@@ -129,7 +129,7 @@ struct Mesh {
 
         GLuint glErrorInfo = glGetError();
 
-        if (glErrorInfo != 0) {
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH CONSTRUCTOR");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
@@ -190,7 +190,7 @@ struct Mesh {
 
         GLenum glErrorInfo = glGetError();
 
-        if (glErrorInfo != 0) {
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH DESTRUCTOR");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
@@ -229,7 +229,7 @@ struct Mesh {
         
         GLuint glErrorInfo = glGetError();
 
-        if (glErrorInfo != 0) {
+        if (glErrorInfo != GL_NO_ERROR) {
             writeln("GL ERROR: ", glErrorInfo);
             writeln("ERROR IN A MESH RENDER");
             writeln("FREEZING PROGRAM TO ALLOW DIAGNOSTICS!");
