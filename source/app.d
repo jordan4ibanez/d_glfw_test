@@ -24,23 +24,24 @@ import SoundManager = openal.sound_manager;
 
 void main() {
 
-    // We can automatically get the window size
-
-    // Window acts as a static class handler for GLFW & game window
+    // Window acts as a static class handler for GLFW & game window    
     if (Window.initializeWindow("Crafter Engine 0.0.0", true)) {
+        writeln("GLFW init failed!");
         return;
-    }
+    }    
 
     // GL init is purely functional
     if(initializeOpenGL()) {
+        writeln("OpenGL init failed!");
         return;
     }
 
     // OpenAL acts like a static class handler for all of OpenAL Soft
     if (initializeOpenAL()){
+        writeln("OpenAL init failed!");
         return;
     }
-
+    
     bool testMe = false;
 
     if (testMe) {
@@ -133,7 +134,6 @@ void main() {
             q += q + 1 * 2;
         }
         */
-
         Camera.setClearColor(1,1,1);
 
         clock += delta;
