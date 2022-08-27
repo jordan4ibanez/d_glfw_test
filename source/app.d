@@ -165,7 +165,7 @@ void main() {
 
         // Finally the mesh will be rendered, GLSL will automatically
         // Move the fragments into the correct position based on the matrices
-        thisMesh.render(Vector3d(0,0,0),Vector3d(0,0,0), 1, 1);
+        thisMesh.render(Vector3d(0,0,0),Vector3d(0,xPos * 10,0), 1, 1);
 
         // This will be very annoying
         // EVEN MORE ANNOYING!
