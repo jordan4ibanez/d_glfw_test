@@ -100,8 +100,6 @@ void main() {
 
     GLenum glErrorInfo = 0;
 
-    Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
-
     double xPos = 0;
     bool up = true;
 
@@ -163,6 +161,8 @@ void main() {
             writeln("tick");
         }
 
+        Mesh thisMesh = Mesh(vertices, indices, textureCoordinates, colors, "textures/debug.png");
+
         // Finally the mesh will be rendered, GLSL will automatically
         // Move the fragments into the correct position based on the matrices
         thisMesh.render(Vector3d(0,0,0),Vector3d(0,xPos * 10,0), 1, 1);
@@ -171,6 +171,7 @@ void main() {
         // EVEN MORE ANNOYING!
         thisMesh.render(Vector3d(xPos,0,0),Vector3d(0,0,0), 0.5, Math.abs(xPos / 5.0));
         
+        thisMesh.cleanUp();
 
         Window.swapBuffers();
 
@@ -190,7 +191,6 @@ void main() {
         glfwPollEvents();
     }
 
-    thisMesh.cleanUp();
     cleanUpAllTextures();
     deleteShaders();
     cleanUpOpenAL();
