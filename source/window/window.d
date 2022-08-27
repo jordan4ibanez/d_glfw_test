@@ -237,6 +237,8 @@ private void setFullScreenInternal() {
         videoMode.refreshRate
     );
 
+    glfwSwapInterval(vsync);
+
     centerMouse();
     stopMouseJolt();
 
@@ -262,8 +264,10 @@ private void setHalfSizeInternal() {
         windowPositionY,
         windowSizeX,
         windowSizeY,
-        0 // ignored
+        videoMode.refreshRate // Windows cares about this for some reason
     );
+
+    glfwSwapInterval(vsync);
 
     centerMouse();
     stopMouseJolt();

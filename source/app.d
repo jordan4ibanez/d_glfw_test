@@ -89,8 +89,6 @@ void main() {
     writeln("INITIAL LOADED GL VERSION: ", getInitialOpenGLVersion());
     writeln("FORWARD COMPATIBILITY VERSION: ", to!string(glGetString(GL_VERSION)));
 
-    glfwSwapInterval(1);
-
     double clock = 0.0;
 
     int fpsCounter = 1;
